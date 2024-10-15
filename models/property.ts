@@ -4,14 +4,7 @@ import mongoose, { Schema } from 'mongoose'
 const locationSchema = new Schema({
     adress:{type:String,required:true},
     city:{type:String,required:true},
-    country:{type:String,required:true}
-})
-
-const reviewSchema = new Schema({
-    author:{type:String,required:true},
-    rating:{type:Number,required:true},
-    comment:{type:String,required:true},
-    date:{type:Date,default:Date.now}
+    district:{type:String}
 })
 
 const propertySchema = new Schema({
@@ -24,15 +17,19 @@ const propertySchema = new Schema({
     available_dates:[{type:String,required:true}],
     maximum_guest:{type:Number,required:true},
     house_rules:[{type:String,required:true}],
-    facilities:[{type:String,default:[]}]
-})
+    facilities:[{type:String,default:[]}],
+    accessibilityFeatures:[{type:String,default:[]}],
+    distanceToNearestBus:{type:String},
+    accessibilityImages:[{type:String,default:[]},],
+    listingId:{type:String,required:true}
+},{timestamps:true})
 
 const listingSchema = new Schema({
     listingId:{type:String},
     listings:[propertySchema]
 })
 
-const Review = mongoose.models.Review || mongoose.model('Review',reviewSchema)
+
 
 
 const Property = mongoose.models.Property || mongoose.model('Property',propertySchema)

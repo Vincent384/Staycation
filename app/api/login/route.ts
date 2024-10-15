@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server"
 import { User } from "../../../models/user"
 import bcrypt from 'bcryptjs'
+import { connectMongoDb } from "@/libs/mongodb"
 
 
 
-export async function POST(req:Request){
+export async function POST(res:Request){
     try {
 
-    const { email, password }:Login = await req.json()
+        await connectMongoDb()
+
+    const { email, password }:Login = await res.json()
 
     if(!email || !password){
         return NextResponse.json({message:'Please fill all the fields'},{status:400})

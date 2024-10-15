@@ -10,9 +10,9 @@ export async function POST(req:Request){
         
         await connectMongoDb()
         
-        const {firstName,lastName, email,password}:User = await req.json()
+        const {firstName,lastName,phone, email,password}:User = await req.json()
         
-        if(!firstName || !lastName || !email || !password){
+        if(!firstName || !lastName || !email || !phone || !password){
             return NextResponse.json({message:'Please fill all fields required bajs'},{status:400})
         }
         
@@ -25,7 +25,7 @@ export async function POST(req:Request){
 
         const haschedPassword = await bcrypt.hash(password,10)
 
-        const newContact = await User.create({firstName,lastName,email,password:haschedPassword})
+        const newContact = await User.create({firstName,lastName,phone,email,password:haschedPassword})
 
 
 

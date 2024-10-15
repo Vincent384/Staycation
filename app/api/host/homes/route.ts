@@ -48,3 +48,39 @@ export async function POST(req:Request):Promise<NextResponse>{
         return NextResponse.json({ message: 'An error occurred', error: (error as Error).message }, { status: 500 });
     }
 }
+
+
+export async function PUT(req:Request):Promise<NextResponse>{
+    try {
+        await connectMongoDb()
+        
+        const {name,avatar,hostId} = await req.json()
+
+        if(!name || !avatar || !hostId){
+            return NextResponse.json({message:'Please fill all the fields'},{status:400})
+        }
+
+
+        const updateHost = {
+            name:name,
+            avatar:avatar
+        }
+
+        const findUserAndUpdate = await Host.findByIdAndUpdate(hostId,updateHost)
+        
+        console.log(updateHost)
+        console.log(findUserAndUpdate)
+        
+        if(!findUserAndUpdate){
+            return NextResponse.json({message:'Could not find that user'},{status:500})
+        }
+        
+        return NextResponse.json({message:'Update successful',updated:updateHost},{status:200})
+
+
+    } catch (error) {   
+        console.log(error)
+        return NextResponse.json({error:(error as Error).message},{status:500})
+    }
+
+}
