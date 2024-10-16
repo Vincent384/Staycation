@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { User } from "../../../models/user"
 import bcrypt from 'bcryptjs'
 import { connectMongoDb } from "@/libs/mongodb"
+import { generateToken } from "@/utils/generateToken"
 
 
 
@@ -28,10 +29,15 @@ export async function POST(res:Request){
         return NextResponse.json({message:'Unauthorized'},{status:401})
     }
 
+    const token = await generateToken(user._id)
+
+    console.log(token)
+
     const responsUserData = {
         firstName:user.firstName,
         lastName:user.lastName,
-        email:user.email
+        email:user.email,
+        token:token
     }
 
     return NextResponse.json(responsUserData,{status:200})
