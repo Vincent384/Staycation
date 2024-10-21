@@ -12,6 +12,7 @@
     "@svgr/webpack": "^8.1.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.0",
+    "jose": "^5.9.4",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.441.0",
     "next": "14.2.11",

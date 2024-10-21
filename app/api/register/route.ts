@@ -1,6 +1,5 @@
 import { connectMongoDb } from "@/libs/mongodb";
 import { NextResponse } from "next/server";
-
 import bcrypt from 'bcryptjs'
 import { User } from "../../../models/user";
 import { generateToken } from "@/utils/generateToken";
@@ -14,7 +13,7 @@ export async function POST(req:Request){
         const {firstName,lastName,phone, email,password}:IUser = await req.json()
         
         if(!firstName || !lastName || !email || !phone || !password){
-            return NextResponse.json({message:'Please fill all fields required bajs'},{status:400})
+            return NextResponse.json({message:'Please fill all fields required'},{status:400})
         }
         
         const user = await User.exists({email}) as IUser | null

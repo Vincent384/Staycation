@@ -21,7 +21,7 @@ const propertySchema = new Schema({
     accessibilityFeatures:[{type:String,default:[]}],
     distanceToNearestBus:{type:String},
     accessibilityImages:[{type:String,default:[]},],
-    listingId:{type:String,required:true}
+    reviews:[{type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
 },{timestamps:true})
 
 const listingSchema = new Schema({

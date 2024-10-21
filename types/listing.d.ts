@@ -12,7 +12,7 @@ type location = {
 }
 
 
-type Listing = {
+type ListingProperty = {
     title:string,
     description:string,
     images:string[],
@@ -23,5 +23,9 @@ type Listing = {
     maximum_guest:number,
     house_rules:string[],
     facilities:string[],
+    listingId:string,
+    accessibilityFeatures:string[],
+    distanceToNearestBus:string,
+    accessibilityImages:[]
     _id:string
 }

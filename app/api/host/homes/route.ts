@@ -4,17 +4,13 @@ import { NextResponse } from "next/server";
 import { Host } from "../../../../models/host";
 import { User } from "../../../../models/user";
 
-
-
-
-
 export async function POST(req:Request):Promise<NextResponse>{
     try {
         await connectMongoDb()
 
         const {name,avatar,userId} :Host = await req.json()
 
-        if(!name || !avatar || !userId){
+        if(!name || !userId){
             return NextResponse.json({message:'Please fill all the fields'},{status:400})
         }
 

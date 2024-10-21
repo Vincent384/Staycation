@@ -11,13 +11,33 @@ try {
     const url = new URL(req.url)
     const id = url.searchParams.get('id')
 
-    const findProperty = await Property.findById(id)
+    const property = await Property.findById(id).populate('host')
 
-    if(!findProperty){
+    if(!property){
         return NextResponse.json({message:"Did not find any property with that Id"},{status:404})
     }
+
+    const hostAvatar = property.host?.avatar
+    const hostName = property.host?.name
+
+    const responseData = {
+        title: property.title,
+        description: property.description,
+        images: property.images,
+        hostName: hostName,
+        hostAvatar: hostAvatar,
+        price_per_night: property.price_per_night,
+        available_dates: property.available_dates,
+        maximum_guest: property.maximum_guest,
+        house_rules: property.house_rules,
+        facilities: property.facilities,
+        accessibilityFeatures: property.accessibilityFeatures,
+        distanceToNearestBus: property.distanceToNearestBus,
+        accessibilityImages: property.accessibilityImages,
+        reviews: property.reviews,
+    };
     
-    return NextResponse.json(findProperty,{status:200})
+    return NextResponse.json(responseData,{status:200})
     
 } catch (error) {
     console.error(error)  
@@ -32,7 +52,8 @@ export async function POST(req:Request){
     await connectMongoDb()
 
     const {title,description,images,host,location,price_per_night,maximum_guest,house_rules,
-        facilities,available_dates,listingId,accessibilityFeatures,distanceToNearestBus,accessibilityImages} = await req.json()
+        facilities,available_dates,listingId,accessibilityFeatures,distanceToNearestBus,accessibilityImages}
+        :ListingProperty = await req.json()
 
     if(!title || !description || !images || !host || !location || 
         !price_per_night || !maximum_guest || !house_rules || !available_dates || !listingId){
@@ -59,7 +80,8 @@ export async function POST(req:Request){
         accessibilityFeatures:accessibilityFeatures,
         distanceToNearestBus: distanceToNearestBus,
         accessibilityImages: accessibilityImages,
-        listingId:listingId
+        listingId:listingId,
+        reviews:[]
     })
 
     const listing = await Listing.findById(listingId)
