@@ -7,7 +7,7 @@ Listing:ListingProperty[]
 type location = {
     adress:string,
     city:string,
-    country:string,
+    district:string,
     _id:string
 }
 
@@ -26,6 +26,7 @@ type ListingProperty = {
     listingId:string,
     accessibilityFeatures:string[],
     distanceToNearestBus:string,
-    accessibilityImages:[]
+    accessibilityImages:[],
+    review:UserReview[]
     _id:string
 }

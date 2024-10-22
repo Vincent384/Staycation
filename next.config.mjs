@@ -2,7 +2,7 @@
 const nextConfig = {
     images: {
       domains: ['images.unsplash.com',
-        
+        "plus.unsplash.com",
         "res.cloudinary.com"
       ], // Lägg till Unsplash som en tillåten domän
     },

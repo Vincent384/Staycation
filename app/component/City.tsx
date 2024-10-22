@@ -1,8 +1,10 @@
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export const City = () => {
 
+    const router = useRouter()
     const [cities, setCities] = useState<Cityies[] | null>(null)
 
     useEffect(() => {
@@ -28,13 +30,18 @@ export const City = () => {
     }, [])
     
 console.log(cities)
+
+    function handleCityClick(city:string){
+        router.push(`listings/${city}`)
+    }
+
   return (
     <main className='grid place-items-center mt-10 gap-7 max-w-[750px] m-auto grid-cols-3 
     cursor-pointer max-lg:grid-cols-2 max-lg:max-w-[500px] max-sm:grid-cols-1 max-sm:max-w-[300px]  '>
         {
             cities && cities.map((city,_id) =>(
                     <>
-                <div className='border border-borderGray rounded-md relative w-full h-48 mb-10 max-sm:mb-5' key={_id}>
+                <div className='border border-borderGray rounded-md relative w-full h-48 mb-10 max-sm:mb-5' onClick={() => handleCityClick(city.cityName)} key={_id}>
                     <Image className='object-cover rounded-md rounded-b-none '
                     src={city.cityImage}
                     layout='fill'
