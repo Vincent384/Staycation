@@ -8,9 +8,11 @@ const Register = () => {
     <div>
         <Navbar/>
         <form className='flex flex-col justify-center items-center m-10 border-2 border-customGray  p-10 bg-customWhite'>
-            <h1 className='py-2 px-[100px] bg-customLightGreen text-customWhite text-2xl rounded-lg font-semibold'>Registrera</h1>
+            <h1 className='py-2 px-[100px]  bg-customLightGreen text-customWhite text-2xl 
+            rounded-lg font-semibold max-sm:px-[4rem]'>Registrera</h1>
             <InputForm nameText={'firstName'} typeText='text' placeHolder='Förnamn...' labelText='Förnamn'/>
             <InputForm nameText={'lastName'} typeText='text' placeHolder='Efternamn...' labelText='Efternamn'/>
+            <InputForm nameText={'phone'} typeText='text' placeHolder='07300000...' labelText='Telefon'/>
             <InputForm nameText={'email'} typeText='email' placeHolder='E-postadress...' labelText='E-postadress'/>
             <InputForm nameText={'password'} typeText='password' placeHolder='Lösenord...' labelText='Lösenord'/>
                 <h2 className='text-center mt-10 text-lg'>Födelsedatum</h2>

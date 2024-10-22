@@ -20,7 +20,8 @@ export const SearchBar:React.FC<SearchBarProps> = ({listings,displayResult,onSub
               placeholder='Sök...'
               value={input}
               onChange={e => setInput(e.target.value)}
-              className='rounded rounded-r-none pr-[10rem] pl-4 py-3 border bg-customWhite border-black '
+              className='rounded rounded-r-none pr-[10rem] pl-4 py-3 border bg-customWhite border-black
+              max-sm:pr-[5rem] '
               type='search'
               autoComplete='off'
             />

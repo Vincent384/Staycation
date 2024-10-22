@@ -5,7 +5,8 @@ const userSchema = new Schema<IUser>({
     lastName:{type:String,required:true},
     phone:{type:String,required:true},
     email:{type:String,required:true},
-    password:{type:String,required:true}
+    password:{type:String,required:true},
+    birthday:{type:String,requried:true}
 },{timestamps:true})
 
 const User = mongoose.models.User || mongoose.model('User',userSchema)

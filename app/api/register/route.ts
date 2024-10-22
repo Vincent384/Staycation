@@ -10,9 +10,9 @@ export async function POST(req:Request){
         
         await connectMongoDb()
         
-        const {firstName,lastName,phone, email,password}:IUser = await req.json()
+        const {firstName,lastName,phone, email,password,birthday}:IUser = await req.json()
         
-        if(!firstName || !lastName || !email || !phone || !password){
+        if(!firstName || !lastName || !email || !phone || !password || !birthday){
             return NextResponse.json({message:'Please fill all fields required'},{status:400})
         }
         
@@ -35,6 +35,7 @@ export async function POST(req:Request){
             lastName,
             phone,
             email,
+            birthday,
             token
         }
 
