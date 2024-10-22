@@ -1,6 +1,6 @@
 type Listings = {
 _id:string    
-Listing:Listing[]
+Listing:ListingProperty[]
 }
 
 

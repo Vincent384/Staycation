@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-      >
+       className="bg-custom-gradient bg-no-repeat h-full">
         {children}
       </body>
     </html>
