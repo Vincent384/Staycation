@@ -41,12 +41,13 @@ console.log(cities)
         {
             cities && cities.map((city,_id) =>(
                     <>
-                <div className='border border-borderGray rounded-md relative w-full h-48 mb-10 max-sm:mb-5' onClick={() => handleCityClick(city.cityName)} key={_id}>
-                    <Image className='object-cover rounded-md rounded-b-none '
+                <div className='border border-borderGray rounded-lg relative w-full h-48 mb-10 max-sm:mb-5' onClick={() => handleCityClick(city.cityName)} key={_id}>
+                    <Image className='object-cover rounded-md rounded-b-lg '
                     src={city.cityImage}
                     layout='fill'
                     alt={city.cityName}/>
-                    <p className='absolute bottom-0 left-0 right-0 p-2 bg-customWhite text-center text-2xl z-10'>{city.cityName}</p>
+                    <p className='absolute bottom-0 left-0 right-0 p-2
+                    rounded-b-lg bg-customWhite text-center text-2xl z-10'>{city.cityName}</p>
                 </div>
                 </>
             ))
