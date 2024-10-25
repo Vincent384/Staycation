@@ -26,6 +26,7 @@ try {
         images: property.images,
         hostName: hostName,
         hostAvatar: hostAvatar,
+        location:property.location,
         price_per_night: property.price_per_night,
         available_dates: property.available_dates,
         maximum_guest: property.maximum_guest,

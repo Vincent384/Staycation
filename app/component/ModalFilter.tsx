@@ -30,7 +30,7 @@ buttonModal ? (
   </button>
   <ChevronUp onClick={buttonToggler} className={ `absolute top-2.5 right-2 cursor-pointer ${buttonModal? 'transition-all' :''}`} />
 
-    <div className={`relative transition-all`}>
+    <div className={`relative animate-slideDown`}>
       <div className='absolute top-[145px] left-1/2 transform -translate-x-1/2
             -translate-y-1/2 
             bg-customBeige py-5 px-5 z-10 rounded-lg mt-3 border-2 border-customGray ease-ease-in-out'>

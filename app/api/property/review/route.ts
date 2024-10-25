@@ -42,3 +42,40 @@ export async function POST(res:Request){
     }
 
 }
+
+
+export async function GET(req: Request) {
+    try {
+        await connectMongoDb();
+
+
+        const url = new URL(req.url);
+        const propertyId = url.searchParams.get("id")
+
+        if (!propertyId) {
+            return NextResponse.json({ message: 'propertyId is required' }, { status: 400 })
+        }
+
+ 
+        const findProperty = await Property.findOne({ _id: propertyId })
+            .populate({
+                path: 'reviews',
+                model: 'Review',
+                select: 'rating comment createdAt', 
+                populate: {
+                    path: 'hostId',
+                    model: 'Host',
+                    select: 'name avatar', 
+                },
+            });
+
+        if (!findProperty) {
+            return NextResponse.json({ message: 'Property not found' }, { status: 404 })
+        }
+
+        return NextResponse.json({ message: 'Successfully retrieved', property: findProperty }, { status: 200 })
+
+    } catch (error) {
+        return NextResponse.json({ message: 'An error occurred', error: (error as Error).message }, { status: 500 })
+    }
+}
