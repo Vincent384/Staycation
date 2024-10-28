@@ -43,8 +43,11 @@ export async function POST(req:Request){
         response.cookies.set('token',token,{
             httpOnly:true,
             secure:process.env.NODE_ENV === 'production',
+            sameSite:'none',
             maxAge:60*60*24
         })
+
+        return response
 
     } catch (error) {
      console.log((error as Error).message)   

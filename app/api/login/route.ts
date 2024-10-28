@@ -33,14 +33,23 @@ export async function POST(res:Request){
 
     console.log(token)
 
-    const responsUserData = {
+    const responseData = {
         firstName:user.firstName,
         lastName:user.lastName,
         email:user.email,
         token:token
     }
 
-    return NextResponse.json(responsUserData,{status:200})
+    const response = NextResponse.json({message:'Successfull login',responseData},{status:201})
+
+    response.cookies.set('token',token,{
+        httpOnly:true,
+        secure:process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        maxAge:60*60*24
+    })
+
+    return response
 
     } catch (error) {
         console.error(error)

@@ -3,9 +3,12 @@ import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
 import { validateLogin } from '@/utils/validateLogin'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 const Login = () => {
+
+  const router = useRouter()
 
   const [form, setForm] = useState<LoginForm>({
     email:'',
@@ -24,8 +27,40 @@ const Login = () => {
         return console.log('inte korrekt')
       }
 
-      console.log('Klar')
+      async function logIn(){
 
+        const bodyPost = {
+          email:form.email,
+          password:form.password
+        }
+
+         try {
+            const res = await fetch('http://localhost:3000/api/login',{
+                method:'POST',
+                headers:{
+                  'Content-type':'application/json'
+                },
+                body:JSON.stringify(bodyPost)
+            })
+
+            if(res.status === 401){
+              return
+            }
+
+            const data = await res.json()
+            console.log(data)
+            if(data.status === 401){
+              throw new Error(data.message)
+            }
+
+            
+          } catch (error) {
+            console.log((error as Error).message)
+          }
+        }
+        
+      router.push('/dashboard')
+      logIn()
   }
 
 
