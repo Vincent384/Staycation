@@ -10,9 +10,9 @@ export async function POST(req:Request){
         
         await connectMongoDb()
         
-        const {firstName,lastName,phone, email,password,birthday}:IUser = await req.json()
+        const {firstName,lastName,phone, email,password}:IUser = await req.json()
         
-        if(!firstName || !lastName || !email || !phone || !password || !birthday){
+        if(!firstName || !lastName || !email || !phone || !password){
             return NextResponse.json({message:'Please fill all fields required'},{status:400})
         }
         
@@ -35,11 +35,16 @@ export async function POST(req:Request){
             lastName,
             phone,
             email,
-            birthday,
             token
         }
 
-        return NextResponse.json({message:'Account created',responseData},{status:201})
+        const response = NextResponse.json({message:'Account created',responseData},{status:201})
+
+        response.cookies.set('token',token,{
+            httpOnly:true,
+            secure:process.env.NODE_ENV === 'production',
+            maxAge:60*60*24
+        })
 
     } catch (error) {
      console.log((error as Error).message)   

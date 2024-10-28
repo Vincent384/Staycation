@@ -9,34 +9,20 @@ export async function GET(req:Request):Promise<NextResponse>{
     try {
         await connectMongoDb()
 
-        const {name,avatar,userId} :Host = await req.json()
+        const { searchParams } = new URL(req.url)
+        const userId = searchParams.get('userId')
 
-        if(!name || !userId){
+        if(!userId){
             return NextResponse.json({message:'Please fill all the fields'},{status:400})
         }
 
-        const findUser = await User.findById(userId)
+        const findUser = await Host.findOne({userId:userId})
        
         if(!findUser){
-            return NextResponse.json({message:'Could not find that user'},{status:500})
+            return NextResponse.json({message:'Could not find that user'},{status:404})
         }
 
-        const newHost = new Host({
-            name:name,
-            avatar:avatar,
-            userId:userId
-        })
-        await newHost.save()
-        
-
-        const populatedHost = await Host.findById(newHost._id).populate('userId')
-    
-        if (!populatedHost) {
-            return NextResponse.json({ message: 'Could not find the created host' }, { status: 404 });
-        }
-
-        console.log(populatedHost)
-        return NextResponse.json({message:'Created a host',host:populatedHost},{status:201})
+        return NextResponse.json({message:'Successfully retrieved',findUser},{status:200})
         
 
 
@@ -50,7 +36,7 @@ export async function POST(req:Request):Promise<NextResponse>{
     try {
         await connectMongoDb()
 
-        const {name,avatar,userId} :Host = await req.json()
+        const {name,avatar,userId} :HostType = await req.json()
 
         if(!name || !userId){
             return NextResponse.json({message:'Please fill all the fields'},{status:400})
@@ -59,7 +45,7 @@ export async function POST(req:Request):Promise<NextResponse>{
         const findUser = await User.findById(userId)
        
         if(!findUser){
-            return NextResponse.json({message:'Could not find that user'},{status:500})
+            return NextResponse.json({message:'Could not find that user'},{status:404})
         }
 
         const newHost = new Host({

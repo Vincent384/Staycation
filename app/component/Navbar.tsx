@@ -3,37 +3,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import favicon from '../favicon.ico'
+import Cookies from 'js-cookie'
 
 export const Navbar = () => {
 
-    const [avatar, setAvatar] = useState<Host | null>(null)
+    const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
     useEffect(() => {
         
-       async function getHost(){
+        const token = Cookies.get('token')
 
-            //KOlla om användaren är inloggad
-
-            try {
-                const res = await fetch('http://localhost:3000/api/host/homes')
-
-                if(!res.ok){
-                    throw new Error('Hittade inte någon host')
-                }
-
-                const data = await res.json()
-                console.log(data)
-
-                setAvatar(data)
-
-            } catch (error) {
-                console.log((error as Error).message)
-            }
-
+        if(token){
+            setLoggedIn(true)
         }
-
-        // getHost()
-
+     
     }, [])
     
 
@@ -43,7 +26,11 @@ export const Navbar = () => {
             <Link href={'/'}><Image src={favicon} width={70} height={70} alt='Älg'/></Link>
         </ul>
         <ul>
-            <Link href={'/login'}><li className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer'>Logga in</li></Link>
+            { loggedIn ?
+                <Link href={'/login'}><li className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer'>Logga ut</li></Link>
+                :
+                <Link href={'/login'}><li className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer'>Logga in</li></Link>
+            }
         </ul>
         
     </header>
