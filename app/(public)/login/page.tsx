@@ -15,13 +15,21 @@ const Login = () => {
     password:''
   })
 
+  const [successMessage, setSuccessMessage] = useState<string>('')
+
   const [error, setError] = useState<LoginForm>({
     email:'',
     password:''
   })
 
+  const [messageError, setMessageError] = useState<string>('')
+
   function submitLoginForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
+      
+      setError({email:'',password:''})
+      setMessageError('')
+      
 
       if(!validateLogin(form,setError)){
         return console.log('inte korrekt')
@@ -43,14 +51,25 @@ const Login = () => {
                 body:JSON.stringify(bodyPost)
             })
 
-            if(res.status === 401){
-              return
+            if(res.status !== 200){
+              return setMessageError(res.statusText)
+            }
+
+            if(res.ok){
+              localStorage.setItem('status','Inloggad')
             }
 
             const data = await res.json()
             console.log(data)
-            if(data.status === 401){
-              throw new Error(data.message)
+
+            setSuccessMessage(data.message)
+              
+          
+            try {
+              console.log('Navigeras vidare')
+              router.push('/dashboard')
+            } catch (error) {
+              console.log('navigeras inte')
             }
 
             
@@ -58,10 +77,9 @@ const Login = () => {
             console.log((error as Error).message)
           }
         }
-        
-      router.push('/dashboard')
       logIn()
-  }
+        
+      }
 
 
   function onChangeHandler(e:React.ChangeEvent<HTMLInputElement>){
@@ -98,9 +116,17 @@ const Login = () => {
             onChangeInput={onChangeHandler}
             errorText={error.password}
             valueText={form.password}/>
-            <div className='mt-10 '>
-                <input className='mx-5 h-4 w-4 text-customBeige border-2 cursor-pointer' type="checkbox" />
-                <span>Håll mig inloggad</span>
+            <div className={``}>
+                {
+                  messageError &&
+                <p className='bg-red-600 mt-5 py-2 px-6 text-customWhite font-bold'>{messageError}</p>
+                }
+            </div>
+            <div>
+              {
+                successMessage && 
+                <p className='bg-emerald-600 mt-5 py-2 px-6 text-customWhite font-bold'>{successMessage}</p>
+              }
             </div>
             <button className='py-2 px-10 bg-customOrange text-customWhite rounded-lg
              text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Logga in</button>

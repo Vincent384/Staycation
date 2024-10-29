@@ -28,6 +28,7 @@ const Register = () => {
     email:'',
     password:''
   })
+  const [messageError, setMessageError] = useState<string>('')
 
   const [successMessage, setSuccessMessage] = useState('')
 
@@ -52,11 +53,14 @@ const Register = () => {
       const data = await res.json()
 
       if(res.status !== 201){
-        throw new Error(data.message)
+        return setMessageError(res.statusText)
       }
-     
+    
+      if(res.ok){
+        localStorage.setItem('status','Inloggad')
+      }
 
-      setSuccessMessage('Skapat en ny användare')
+      setSuccessMessage(data.message)
 
 
       window.setTimeout(() => {
@@ -73,6 +77,7 @@ const Register = () => {
   function submitRegisterForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
       setError({firstName:'', lastName:'', phone:'', email:'',password:''})
+      setMessageError('')
 
       if(!validateRgister(form,setError)){
         return 
@@ -116,6 +121,12 @@ const Register = () => {
             <Link className='text-customBlue my-2' href={'/login'}>Har du redan ett konto? Logga in här</Link>
         </form>
         <p>{successMessage}</p>
+        <div className={``}>
+                {
+                  messageError &&
+                <p className='bg-red-600 mt-5 py-2 px-6 text-customWhite font-bold'>{messageError}</p>
+                }
+            </div>
     </div>
   )
 }

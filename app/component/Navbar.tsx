@@ -3,15 +3,19 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import favicon from '../favicon.ico'
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 export const Navbar = () => {
 
     const [loggedIn, setLoggedIn] = useState<boolean>(false)
+    
+
 
     useEffect(() => {
-        const token = Cookies.get('token')
-        
+  
+      const token = localStorage.getItem('status')
+
+        console.log(token)
         if(token){
             setLoggedIn(true)
         }
@@ -20,8 +24,12 @@ export const Navbar = () => {
         
     }, [])
     
-    function onLogoutButton(){
-        Cookies.remove('token')
+    async function onLogoutButton(){
+        await fetch('http://localhost:3000/api/logout',{
+            method:'POST'
+        }
+        )
+        localStorage.removeItem('status')
         setLoggedIn(false)
     }
 
@@ -32,9 +40,9 @@ export const Navbar = () => {
         </ul>
         <ul>
             { loggedIn ?
-                <Link href={'/login'}><li className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer'>Logga in</li></Link>
-                :
                 <Link href={'/login'}><li onClick={onLogoutButton} className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer'>Logga ut</li></Link>
+                :
+                <Link href={'/login'}><li className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer'>Logga in</li></Link>
             }
         </ul>
         

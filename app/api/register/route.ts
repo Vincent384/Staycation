@@ -40,12 +40,12 @@ export async function POST(req:Request){
 
         const response = NextResponse.json({message:'Account created',responseData},{status:201})
 
-        response.cookies.set('token',token,{
-            httpOnly:true,
-            secure:process.env.NODE_ENV === 'production',
-            sameSite:'none',
-            maxAge:60*60*24
-        })
+        response.cookies.set('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',  
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',  
+            maxAge: 60 * 60 * 24,  
+        });
 
         return response
 

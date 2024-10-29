@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,9 +22,23 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "target": "ES2017"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(public)/listings/[city]/property/[id]/[checkinDate]/[checkoutDate]/[guests]/page.tsx", "models/property.ts", "app/api/host/homes/route.ts", "app/api/login/route.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/(public)/listings/[city]/property/[id]/[checkinDate]/[checkoutDate]/[guests]/page.tsx",
+    "models/property.ts",
+    "app/api/host/homes/route.ts",
+    "app/api/login/route.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
