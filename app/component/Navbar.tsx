@@ -4,9 +4,11 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import favicon from '../favicon.ico'
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation'
 
 export const Navbar = () => {
 
+    const router = useRouter()
     const [loggedIn, setLoggedIn] = useState<boolean>(false)
     
 
@@ -14,15 +16,13 @@ export const Navbar = () => {
     useEffect(() => {
   
       const token = localStorage.getItem('status')
-
-        console.log(token)
         if(token){
             setLoggedIn(true)
         }
-
-        
         
     }, [])
+
+
     
     async function onLogoutButton(){
         await fetch('http://localhost:3000/api/logout',{

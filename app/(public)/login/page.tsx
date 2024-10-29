@@ -1,6 +1,7 @@
 'use client'
 import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
+import { useAuthContext } from '@/context/authContext'
 import { validateLogin } from '@/utils/validateLogin'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -14,6 +15,8 @@ const Login = () => {
     email:'',
     password:''
   })
+
+  const { getDataAvatar } = useAuthContext()
 
   const [successMessage, setSuccessMessage] = useState<string>('')
 
@@ -60,8 +63,10 @@ const Login = () => {
             }
 
             const data = await res.json()
-            console.log(data)
+            
 
+            getDataAvatar(data.responseData.id)
+            
             setSuccessMessage(data.message)
               
           

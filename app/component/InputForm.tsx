@@ -7,7 +7,7 @@ type InputProps={
     nameText:string
     onChangeInput:(e:React.ChangeEvent<HTMLInputElement>) => (void),
     valueText:string,
-    errorText:string,
+    errorText?:string,
 }
 
 export const InputForm = ({typeText,placeHolder,labelText,nameText,onChangeInput,valueText,errorText}:InputProps) => {
