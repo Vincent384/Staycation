@@ -13,13 +13,13 @@ export async function POST(req:Request){
         const {firstName,lastName,phone, email,password}:IUser = await req.json()
         
         if(!firstName || !lastName || !email || !phone || !password){
-            return NextResponse.json({message:'Please fill all fields required'},{status:400})
+            return NextResponse.json({message:'Fyll i alla fält'},{status:400})
         }
         
         const user = await User.exists({email}) as IUser | null
         
         if(user){
-            return NextResponse.json({message:'Unautherized'},{status:401})
+            return NextResponse.json({message:'E-postadressen finns redan'},{status:401})
         }
         
         const haschedPassword = await bcrypt.hash(password,10)
@@ -38,7 +38,7 @@ export async function POST(req:Request){
             token
         }
 
-        const response = NextResponse.json({message:'Account created',responseData},{status:201})
+        const response = NextResponse.json({message:'Ditt konto har skapats',responseData},{status:201})
 
         response.cookies.set('token', token, {
             httpOnly: true,

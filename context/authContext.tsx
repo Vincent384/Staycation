@@ -1,7 +1,7 @@
 'use client';
 import { createContext, ReactNode, useContext, useState } from "react";
 
-type HostData = { name: string; avatar: string | null }
+
 type AuthContextProps = {
     children: ReactNode
 }
@@ -12,8 +12,9 @@ type AuthContextType = {
     setToken: (token: string | null) => void
     setUserId: (id: string | null) => void
     getDataAvatar: (e: string) => void
-    setAvatar: (name: string, avatar: string | null) => void
-    avatar: HostData | null
+    setAvatar: (name: string , avatar: string ) => void
+    avatar: HostData | null,
+    avatarId:string | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -22,6 +23,7 @@ const AuthContextProvider = ({ children }: AuthContextProps) => {
     const [token, setToken] = useState<string | null>(null)
     const [userId, setUserId] = useState<string | null>(null)
     const [avatar, setAvatar] = useState<HostData | null>(null)
+    const [avatarId, setAvatarId] = useState<string | null>(null)
 
     async function getDataAvatar(id: string) {
         setUserId(id);
@@ -33,9 +35,13 @@ const AuthContextProvider = ({ children }: AuthContextProps) => {
             }
 
             const data = await res.json()
-
+            setAvatarId(data.findUser._id)
             setAvatar({ name: data.findUser.name, avatar: data.findUser.avatar })
-            console.log(data)
+            if(data){
+                console.log(id)
+                localStorage.setItem('User',JSON.stringify(id))
+                localStorage.setItem('Host',JSON.stringify(data.findUser))
+            }
         } catch (error) {
             console.error(error)
         }
@@ -48,7 +54,8 @@ const AuthContextProvider = ({ children }: AuthContextProps) => {
         setUserId,
         getDataAvatar,
         avatar,
-        setAvatar: (name: string, avatar: string | null) => setAvatar({ name, avatar }), 
+        avatarId,
+        setAvatar: (name: string, avatar: string) => setAvatar({ name, avatar }), 
     };
 
     return (

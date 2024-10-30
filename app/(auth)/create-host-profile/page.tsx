@@ -22,12 +22,12 @@ const CreateHost = () => {
 
   const [successMessage, setSuccessMessage] = useState<string>('')
 
-  const [messageError, setMessageError] = useState<string>('')
+  const [messageError, setMessageError] = useState<string | null>(null)
 
   function submitLoginForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
       
-      setMessageError('')
+      setMessageError(null)
 
       async function postHostData(){
 
@@ -48,7 +48,7 @@ const CreateHost = () => {
 
           if (res.status !== 201) {
             const errorMessage = await res.text()
-            return setMessageError(errorMessage || res.statusText)
+            return setMessageError(errorMessage)
           }
           const data = await res.json()
           
@@ -83,47 +83,58 @@ const CreateHost = () => {
         <Navbar/>
         <form onSubmit={e => submitLoginForm(e)} className='flex flex-col justify-center items-center m-10 border-2 border-customGray  p-10 bg-customWhite'>
             <h1 className='py-2 px-[100px] bg-customLightGreen text-customWhite text-2xl rounded-lg font-semibold
-            max-sm:px-[4rem]'>Skapa&nbsp;-&nbsp;HostName</h1>
+            max-sm:px-[4rem]'>Skapa&nbsp;-&nbsp;Användarnamn</h1>
             <InputForm 
             nameText={'name'} 
             typeText='text' 
             placeHolder='Olof100...' 
-            labelText='Host-namn'
+            labelText='Användarnamn'
             valueText={form.name}
             onChangeInput={onChangeHandler}/>
 
-<CldUploadWidget 
-  signatureEndpoint='/api/sign-image'
-  options={{ sources: ['local', 'camera', 'google_drive'] }}
-  onSuccess={(result) => {
-    if (result && 'info' in result) {
-      const info = result.info as CloudinaryUploadWidgetInfo; 
-      if (info && info.secure_url) {
-        const url = info.secure_url
-        setForm((prev) => ({ ...prev, avatar: url }))
-        console.log(url)
-      } else {
-        console.error('Info saknar secure_url:', info);
-      }
-    } else {
-      console.error('Resultat saknar info:', result);
-    }
-  }}
->
-            {({ open }) => {
-              return (
-                <button type='button' className='py-4 px-4 bg-customGreen text-customWhite font-bold mt-10 rounded-lg' onClick={() => open()}>
-                  Ladda upp en bild på dig
-                </button>
-              );
-            }}
-          </CldUploadWidget>
-            <div className={``}>
-                {
-                  messageError &&
-                <p className='bg-red-600 mt-5 py-2 px-6 text-customWhite font-bold'>{messageError}</p>
-                }
-            </div>
+
+      <div className=''>
+        <CldUploadWidget 
+          signatureEndpoint='/api/sign-image'
+          options={{ sources: ['local', 'camera', 'google_drive'] }}
+          onSuccess={(result) => {
+            if (result && 'info' in result) {
+              const info = result.info as CloudinaryUploadWidgetInfo; 
+              if (info && info.secure_url) {
+                const url = info.secure_url
+                setForm((prev) => ({ ...prev, avatar: url }))
+                console.log(url)
+              } else {
+                console.error('Info saknar secure_url:', info);
+              }
+            } else {
+              console.error('Resultat saknar info:', result);
+            }
+          }}
+        >
+                    {({ open }) => {
+                      return (
+                        <button type='button' className='py-4 px-4 bg-customGreen text-customWhite font-bold mt-10 rounded-lg' onClick={() => open()}>
+                          Ladda upp en bild på dig
+                        </button>
+                      );
+                    }}
+                  </CldUploadWidget>
+                  <div className='flex justify-center items-center mt-6'>
+                    {
+                      form.avatar !== '' ? 
+                      <CldImage
+                      src={form.avatar}
+                      width={100}
+                      height={100}
+                      crop={'fill'}
+                      alt='Profil-bild'
+                      /> : <div className='flex justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
+                          <span className=''>ProfilBild</span>
+                      </div>
+                    }
+                  </div>
+        </div>
             <div>
               {
                 successMessage && 

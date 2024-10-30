@@ -15,3 +15,12 @@ type Login = {
 type UpdateUser = User & {
     userId:string
 }
+
+type GetUserProfile = {
+    firstName:string,
+    lastName:string,
+    phone:string,
+    email:string,
+    avatar:string,
+    name:string
+}

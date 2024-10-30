@@ -39,7 +39,7 @@ export async function POST(req:Request):Promise<NextResponse>{
         const {name,avatar,userId} :HostType = await req.json()
 
         if(!name || !userId){
-            return NextResponse.json({message:'Please fill all the fields'},{status:400})
+            return NextResponse.json({message:'Fyll i alla fält'},{status:400})
         }
 
         const findUser = await User.findById(userId)
@@ -78,15 +78,14 @@ export async function PUT(req:Request):Promise<NextResponse>{
     try {
         await connectMongoDb()
         
-        const {name,avatar,hostId} = await req.json()
+        const {avatar,hostId} = await req.json()
 
-        if(!name || !avatar || !hostId){
-            return NextResponse.json({message:'Please fill all the fields'},{status:400})
+        if(!avatar || !hostId){
+            return NextResponse.json({message:'Fyll i alla fält'},{status:400})
         }
 
 
         const updateHost = {
-            name:name,
             avatar:avatar
         }
 
@@ -96,10 +95,10 @@ export async function PUT(req:Request):Promise<NextResponse>{
         console.log(findUserAndUpdate)
         
         if(!findUserAndUpdate){
-            return NextResponse.json({message:'Could not find that user'},{status:500})
+            return NextResponse.json({message:'"Användaren kunde inte hittas"'},{status:500})
         }
         
-        return NextResponse.json({message:'Update successful',updated:updateHost},{status:200})
+        return NextResponse.json({message:'Uppdateringen lyckades',updated:updateHost},{status:201})
 
 
     } catch (error) {   

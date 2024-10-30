@@ -11,7 +11,7 @@ export async function PUT(req:Request):Promise<NextResponse>{
         const {password,userId}: {password:string,userId:string} = await req.json()
 
         if(!userId || !password){
-            return NextResponse.json({message:'Please provide userId and password'},{status:401})
+            return NextResponse.json({message:'Fyll i ett nytt lösenord'},{status:400})
         }
 
         const hashedPassword = await bcrypt.hash(password,10)
@@ -22,7 +22,7 @@ export async function PUT(req:Request):Promise<NextResponse>{
             return NextResponse.json({message:'User not found'},{status:404})
         }
 
-        return NextResponse.json({message:'Password updated successfully'},{status:200})
+        return NextResponse.json({message:'Lösenordet har uppdaterats'},{status:200})
         
     } catch (error) {
         console.log(error)

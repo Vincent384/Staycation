@@ -10,14 +10,14 @@ try {
     const findProperty = await Listing.find()
 
     if(!findProperty){
-        return NextResponse.json({message:"Did not find any property with that Id"},{status:404})
+        return NextResponse.json({message:"Hittade ingen egendom med det angivna ID"},{status:404})
     }
     
     return NextResponse.json(findProperty,{status:200})
     
 } catch (error) {
     console.error(error)  
-    return NextResponse.json({ message: 'An error occurred', error:(error as Error).message }, { status: 500 });
+    return NextResponse.json({ message: 'Ett fel inträffade', error:(error as Error).message }, { status: 500 });
    }
 }
 
@@ -28,7 +28,7 @@ export async function POST(req:Request){
         const { listingId } = await req.json()
     
         if(!listingId){
-            return NextResponse.json({message:"Did not find any property with that Id"},{status:404})
+            return NextResponse.json({message:"Hittade ingen egendom med det angivna ID"},{status:404})
         }
         
        const newList =  await Listing.create({listingId:listingId})
@@ -38,7 +38,7 @@ export async function POST(req:Request){
         
     } catch (error) {
         console.error(error)  
-        return NextResponse.json({ message: 'An error occurred', error:(error as Error).message }, { status: 500 });
+        return NextResponse.json({ message: 'Ett fel inträffade', error:(error as Error).message }, { status: 500 });
        }
     }
     

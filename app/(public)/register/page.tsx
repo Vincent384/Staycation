@@ -10,7 +10,7 @@ import { useAuthContext } from '@/context/authContext'
 
 const Register = () => {
 
-  const { setUser, setToken } = useAuthContext()
+  const { setToken,getDataAvatar } = useAuthContext()
   const router = useRouter()
 
   const [form, setForm] = useState<RegisterForm>({
@@ -59,6 +59,8 @@ const Register = () => {
       if(res.ok){
         localStorage.setItem('status','Inloggad')
       }
+
+      getDataAvatar(data.responseData.id)
 
       setSuccessMessage(data.message)
 

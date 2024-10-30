@@ -14,19 +14,19 @@ export async function POST(res:Request){
     const { email, password }:Login = await res.json()
 
     if(!email || !password){
-        return NextResponse.json({message:'Please fill all the fields'},{status:400})
+        return NextResponse.json({message:'Fyll i alla fält'},{status:400})
     }
 
     const user = await User.findOne({email})
 
     if(!user){
-        return NextResponse.json({message:'Unauthorized'},{status:401})
+        return NextResponse.json({message:'E-post eller lösenord stämmer inte'},{status:401})
     }
 
     const compareUser = await bcrypt.compare(password,user.password)
 
     if(!compareUser){
-        return NextResponse.json({message:'Unauthorized'},{status:401})
+        return NextResponse.json({message:'E-post eller lösenord stämmer inte'},{status:401})
     }
 
     const token = await generateToken(user._id)
@@ -41,7 +41,7 @@ export async function POST(res:Request){
         token:token
     }
 
-    const response = NextResponse.json({message:'Successfull login',responseData},{status:200})
+    const response = NextResponse.json({message:'Inloggning lyckades',responseData},{status:200})
 
     response.cookies.set('token',token,{
         httpOnly:true,

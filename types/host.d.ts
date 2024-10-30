@@ -8,3 +8,7 @@ type HostData = {
     name:string,
     avatar:string,
 }
+
+type HostDataWithId = HostData & {
+    _id:string
+}

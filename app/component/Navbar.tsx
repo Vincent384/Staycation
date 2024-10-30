@@ -12,17 +12,24 @@ export const Navbar = () => {
 
     const router = useRouter()
     const [loggedIn, setLoggedIn] = useState<boolean>(false)
-    
-
-    const { avatar } = useAuthContext()
+    const [avatar, setAvatar] = useState<HostData | null>(null)
 
     useEffect(() => {
-  
+        
       const token = localStorage.getItem('status')
         if(token){
             setLoggedIn(true)
         }
+    
+        const getHost = localStorage.getItem('Host')
 
+        if(getHost == null){
+            return
+        }
+
+    const avatarData = JSON.parse(getHost)
+        
+    setAvatar(avatarData)
         
     }, [])
 
@@ -39,7 +46,6 @@ export const Navbar = () => {
 
     const defaultAvatarSrc = 'https://res.cloudinary.com/drkty7j9v/image/upload/v1729774400/profileDefault_hfv9ys.png';
 
-    console.log(avatar)
 
     const avatarSrc: string = avatar?.avatar && avatar.avatar !== '' ? avatar.avatar : defaultAvatarSrc;
 
@@ -54,19 +60,22 @@ export const Navbar = () => {
                     
                 {
                     loggedIn &&
-                    <Link href={''}>
 
+                    <div className='flex items-center justify-center gap-5'>
+                            <Link href={'/change-host-profile'}>
+                            <div className="relative w-12 h-12 overflow-hidden rounded-full"> 
+                                <CldImage
+                                    src={avatarSrc} 
+                                    height={50}
+                                    width={50}
+                                    alt='Profilbild'
+                                    className="absolute top-0 left-0 w-full h-full object-cover" 
+                                />
+                            </div>
+                            </Link>
 
-                    <div className="relative w-12 h-12 overflow-hidden rounded-full"> {/* Behållare för rund bild */}
-                        <CldImage
-                            src={avatarSrc} // Använder avatarSrc som sträng
-                            height={50}
-                            width={50}
-                            alt='Profilbild'
-                            className="absolute top-0 left-0 w-full h-full object-cover" // CSS för att göra bilden rund
-                        />
                     </div>
-                    </Link>
+
 
 
                 }
