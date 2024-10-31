@@ -62,7 +62,7 @@ export const Navbar = () => {
                     loggedIn &&
 
                     <div className='flex items-center justify-center gap-5'>
-                            <Link href={'/change-host-profile'}>
+                            <Link href={'/dashboard'}>
                             <div className="relative w-12 h-12 overflow-hidden rounded-full"> 
                                 <CldImage
                                     src={avatarSrc} 

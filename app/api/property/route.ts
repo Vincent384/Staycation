@@ -53,11 +53,11 @@ export async function POST(req:Request){
     await connectMongoDb()
 
     const {title,description,images,host,location,price_per_night,maximum_guest,house_rules,
-        facilities,available_dates,listingId,accessibilityFeatures,distanceToNearestBus,accessibilityImages}
+        facilities,available_dates,accessibilityFeatures,distanceToNearestBus,accessibilityImages}
         :ListingProperty = await req.json()
 
     if(!title || !description || !images || !host || !location || 
-        !price_per_night || !maximum_guest || !house_rules || !available_dates || !listingId){
+        !price_per_night || !maximum_guest || !house_rules || !available_dates){
         return NextResponse.json({message:'Please fill all the fields'},{status:401})
     }
 
@@ -81,9 +81,10 @@ export async function POST(req:Request){
         accessibilityFeatures:accessibilityFeatures,
         distanceToNearestBus: distanceToNearestBus,
         accessibilityImages: accessibilityImages,
-        listingId:listingId,
         reviews:[]
     })
+
+    const listingId = '670e44711445d7876123e5ce'
 
     const listing = await Listing.findById(listingId)
 

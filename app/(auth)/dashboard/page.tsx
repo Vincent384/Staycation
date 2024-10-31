@@ -54,7 +54,8 @@ const Dashboard = () => {
         <div className=''>
             {
               userProfile && 
-              <div className='flex justify-center items-center gap-10 h-screen'>
+              <div className='flex justify-center items-center gap-10 h-screen max-md:grid max-md:grid-cols-1 
+              max-md:place-content-center max-md:mx-auto max-md:w-[300px]'>
                     <div className="relative w-[300px] h-[300px] overflow-hidden rounded-full">
                       <Link href={'/change-host-profile'} >
                         <CldImage
@@ -66,25 +67,25 @@ const Dashboard = () => {
                                       />
                       </Link> 
                       </div> 
-                      <div className='flex justify-center items-center bg-customWhite rounded-lg p-10'>
-                        <div className='flex px-10 justify-center items-center gap-5  flex-col '>
-                          <h1 className='text-2xl font-semibold border-b-2 border-customGray'>Min&nbsp;Profil</h1>
-                          <div className='grid grid-cols-2 gap-4 container'>
-                            <label className='text-lg border-b-2 border-customGray'>Användarnamn</label> 
+                      <div className='flex justify-center items-center bg-customWhite rounded-lg p-10 max-md:grid grid-cols-1 max-md:p-0'>
+                        <div className='flex px-10 justify-center items-center gap-5 flex-col'>
+                          <h1 className='text-2xl font-semibold border-b-2 border-customGray max-md:mt-5'>Min&nbsp;Profil</h1>
+                          <div className='grid grid-cols-2 gap-4 container max-md:grid-cols-1'>
+                            <label className='text-lg border-b-2 border-customGray max-md:hidden'>Användarnamn</label> 
                             <span className='font-semibold text-lg border-customGray'>{userProfile.name}</span>
                             
-                            <label className='text-lg border-b-2 border-customGray'>Namn</label> 
-                            <span className='font-semibold text-lg border-customGray'>{userProfile.firstName} {userProfile.lastName}</span>
+                            <label className='text-lg border-b-2 border-customGray max-md:hidden'>Namn</label> 
+                            <span className='font-semibold text-lg border-customGray '>{userProfile.firstName} {userProfile.lastName}</span>
 
-                            <label className='text-lg border-b-2 border-customGray'>Telefonnummer</label> 
+                            <label className='text-lg border-b-2 border-customGray max-md:hidden'>Telefonnummer</label> 
                             <span className='font-semibold text-lg border-customGray'>{userProfile.phone}</span>
 
-                            <label className='text-lg border-b-2 border-customGray'>Epostadress</label> 
-                            <span className='font-semibold text-lg border-customGray'>{userProfile.email}</span>
+                            <label className='text-lg border-b-2 border-customGray max-md:hidden'>Epostadress</label> 
+                            <span className='font-semibold text-lg border-customGray max-md:mb-5 max-md:overflow-auto'>{userProfile.email}</span>
                     </div>
                         </div>
                         <div className='flex flex-col gap-5 px-10'>
-                            <Link href={'/create-listing'}>
+                            <Link href={'/dashboard/create-listing'}>
                             <button className='py-2 px-4 bg-customLightGreen container text-customWhite font-semibold text-lg
                             rounded-lg'>Skapa&nbsp;Annons</button>
                             </Link>

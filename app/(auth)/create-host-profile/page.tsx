@@ -83,7 +83,7 @@ const CreateHost = () => {
         <Navbar/>
         <form onSubmit={e => submitLoginForm(e)} className='flex flex-col justify-center items-center m-10 border-2 border-customGray  p-10 bg-customWhite'>
             <h1 className='py-2 px-[100px] bg-customLightGreen text-customWhite text-2xl rounded-lg font-semibold
-            max-sm:px-[4rem]'>Skapa&nbsp;-&nbsp;Användarnamn</h1>
+            max-sm:px-[2rem] '>Skapa&nbsp;-&nbsp;Användarnamn</h1>
             <InputForm 
             nameText={'name'} 
             typeText='text' 
