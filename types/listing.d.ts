@@ -26,7 +26,8 @@ type ListingProperty = {
     accessibilityFeatures:string[],
     distanceToNearestBus:string,
     accessibilityImages:[],
-    reviews:UserReview[]
+    reviews:UserReview[],
+    _id:string
 }
 
 type CreateListingProperty = {

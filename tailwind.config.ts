@@ -7,6 +7,10 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    'hover:bg-black',
+    'rounded-full',
+    ],
   theme: {
   	extend: {
   		colors: {
@@ -21,6 +25,10 @@ const config: Config = {
   			customGray: '#828181',
   			customBlue: '#1B14FA',
   			customBlack: '#252525',
+			customCalenderGray:'#EAEAEA',
+			customCalenderDay:'#656565',
+			customCalenderGreen:'#00CC99',
+			customCalenderRed:'#CC3333',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'

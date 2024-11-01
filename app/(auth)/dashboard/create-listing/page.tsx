@@ -9,6 +9,8 @@ import { setTimeout } from 'timers/promises'
 import { useAuthContext } from '@/context/authContext'
 import { CldImage, CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { CldUploadWidget,CloudinaryUploadWidgetInfo  } from 'next-cloudinary'
+import { Calender } from '@/app/component/Calender'
+
 
 const CreatePage = () => {
   const { setToken,getDataAvatar } = useAuthContext()
@@ -163,7 +165,7 @@ const CreatePage = () => {
             <input type="number" value={form.price_per_night} onChange={onChangeHandler} />
             <InputForm nameText={'password'} typeText='password' placeHolder='Lösenord...' 
             labelText='Lösenord' onChangeInput={onChangeHandler} valueText={form.location.district} errorText={error.location.district} />
-  
+            <Calender/>  
 
             <button className='py-2 px-10 bg-customOrange text-customWhite rounded-lg 
             text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Skapa&nbsp;Annons</button>
