@@ -2,12 +2,17 @@
 import { ArrowBigLeft, ArrowBigRight, X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
-export const Calender = () => {
+
+type CalenderProps = {
+  onHandleDay:(day:string,year:string,month:string) => (void)
+}
+
+export const Calender = ({onHandleDay}:CalenderProps) => {
 
   const [toggler, setToggler] = useState(false)
   const [days, setDays] = useState<string[] | null>(null)
-  const [displayMonth, setDisplayMonth] = useState('')
-  const [year, setYear] = useState<string | null>(null)
+  const [displayMonth, setDisplayMonth] = useState<string>('')
+  const [year, setYear] = useState<string>('')
   const [weekDays, setWeekDays] = useState<string []>(['Mån','Tis','Ons','Tors','Fre','Lör','Sön'])
   const [monthOffset, setMonthOffset] = useState(0)
   
@@ -59,6 +64,8 @@ export const Calender = () => {
     displayDays(monthOffset)
   }, [monthOffset])
 
+
+
   return (
     <div onClick={onClickHandler} className='bg-customGray px-4 py-2 cursor-pointer relative text-white border border-l-0 border-black'>
       <span>2024/06/18</span>
@@ -98,7 +105,7 @@ export const Calender = () => {
           </div>
           <div className='grid grid-cols-7 cursor-pointer p-5'>
             {days && days.map((dag, index) => (
-              <span key={index}>{dag}</span>
+              <span onClick={() => onHandleDay(dag,year,displayMonth)} key={index}>{dag}</span>
             ))}
           </div>
         </div>

@@ -26,9 +26,9 @@ const CreatePage = () => {
       city: '',
       district: ''
     },
-    price_per_night: 0,
+    price_per_night: '',
     available_dates: [],
-    maximum_guest: 0,
+    maximum_guest: '',
     house_rules: [],
     facilities: [],
     listingId: '',
@@ -47,9 +47,9 @@ const CreatePage = () => {
       city: '',
       district: ''
     },
-    price_per_night: 0,
+    price_per_night: '',
     available_dates: [],
-    maximum_guest: 0,
+    maximum_guest: '',
     house_rules: [],
     facilities: [],
     listingId: '',
@@ -93,6 +93,14 @@ const CreatePage = () => {
     
     }
 
+    function onHandleDay(day:string,year:string,month:string){
+      const date = `${year}-${month}-${day}`
+      setForm((prev) =>({
+        ...prev,
+        available_dates:[...prev.available_dates,date]
+      }))
+
+    }
 
 
   return (
@@ -156,16 +164,41 @@ const CreatePage = () => {
                   </div>
         </div>
             <InputForm nameText={'adress'} typeText='text' placeHolder='Bovägen 123' 
-            labelText='Adress' onChangeInput={onChangeHandler} valueText={form.location.adress} errorText={error.location.adress}/>
-            <InputForm nameText={'city'} typeText='text' placeHolder='Stockholm' 
-            labelText='Stad' onChangeInput={onChangeHandler} valueText={form.location.city} errorText={error.location.city}/>
-            <InputForm nameText={'district'} typeText='text' placeHolder='Täby' 
-            labelText='Kommun' onChangeInput={onChangeHandler} valueText={form.location.district} errorText={error.location.district} />
-            <label>Pris&nbsp;per&nbsp;natt</label>
-            <input type="number" value={form.price_per_night} onChange={onChangeHandler} />
-            <InputForm nameText={'password'} typeText='password' placeHolder='Lösenord...' 
-            labelText='Lösenord' onChangeInput={onChangeHandler} valueText={form.location.district} errorText={error.location.district} />
-            <Calender/>  
+            labelText='Adress' 
+            onChangeInput={onChangeHandler} 
+            valueText={form.location.adress} 
+            errorText={error.location.adress}/>
+            <InputForm nameText={'city'} 
+            typeText='text' placeHolder='Stockholm' 
+            labelText='Stad' 
+            onChangeInput={onChangeHandler}
+             valueText={form.location.city} 
+             errorText={error.location.city}
+             changeInputSize={true}/>
+            <InputForm nameText={'district'} 
+            typeText='text' placeHolder='Täby' 
+            labelText='Kommun' 
+            onChangeInput={onChangeHandler} 
+            valueText={form.location.district} 
+            errorText={error.location.district} 
+            changeInputSize={true}/>
+            <InputForm nameText={'price_per_night'} 
+            typeText='text' placeHolder='500' 
+            labelText='Pris per natt' 
+            onChangeInput={onChangeHandler} 
+            valueText={form.price_per_night} 
+            errorText={error.location.district}
+            changeInputSize={true} />
+              <InputForm nameText={'price_per_night'} 
+            typeText='text' placeHolder='500' 
+            labelText='Pris per natt' 
+            onChangeInput={onChangeHandler} 
+            valueText={form.location.district} 
+            errorText={error.location.district}
+            changeInputSize={true} />
+            <div className='mt-5'>
+                <Calender onHandleDay={onHandleDay} />  
+            </div>
 
             <button className='py-2 px-10 bg-customOrange text-customWhite rounded-lg 
             text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Skapa&nbsp;Annons</button>
