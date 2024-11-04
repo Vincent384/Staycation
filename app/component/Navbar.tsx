@@ -66,8 +66,8 @@ export const Navbar = () => {
                             <div className="relative w-12 h-12 overflow-hidden rounded-full"> 
                                 <CldImage
                                     src={avatarSrc} 
-                                    height={50}
-                                    width={50}
+                                    height={1200}
+                                    width={1200}
                                     alt='Profilbild'
                                     className="absolute top-0 left-0 w-full h-full object-cover" 
                                 />

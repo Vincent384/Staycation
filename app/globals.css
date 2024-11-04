@@ -66,6 +66,10 @@
   animation: slideUp 0.5 ease-in forwards;
 }
 
+.icon:active {
+  opacity: 0.5; 
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

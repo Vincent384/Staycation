@@ -33,10 +33,8 @@ export const Calender = ({onHandleDay}:CalenderProps) => {
     const getMonth = date.getMonth() 
 
 
- 
-
-    const months = ['Januari', 'February', 'Mars', 'April', 'Maj', 'Juni', 'Juli',
-      'August', 'September', 'Oktober', 'November', 'December']
+    const months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli',
+      'Augusti', 'September', 'Oktober', 'November', 'December']
 
 
 

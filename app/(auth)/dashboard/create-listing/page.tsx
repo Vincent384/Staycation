@@ -10,7 +10,8 @@ import { useAuthContext } from '@/context/authContext'
 import { CldImage, CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { CldUploadWidget,CloudinaryUploadWidgetInfo  } from 'next-cloudinary'
 import { Calender } from '@/app/component/Calender'
-import { X } from 'lucide-react'
+import { Check, CheckCheckIcon, X } from 'lucide-react'
+import { convertMonthAndDay } from '@/utils/monthDayConvert'
 
 
 const CreatePage = () => {
@@ -20,6 +21,11 @@ const CreatePage = () => {
   const [currentRule, setCurrentRule] = useState<string>('')
   const [currentFacilities, setCurrentFacilities] = useState<string>('')
   const [currentAccessibilityFeatures, setcurrentAccessibilityFeatures] = useState<string>('')
+  const [isActive, setIsActive] = useState<{[key:number]:boolean}>({})
+  const [currentAccessibilityImage, setcurrentAccessibilityImage] = useState<string[] | null>(null)
+  const [imageArray, setImageArray] = useState(['https://res.cloudinary.com/drkty7j9v/image/upload/v1729670272/Namnl%C3%B6st-1_koufja.png',
+    'https://res.cloudinary.com/drkty7j9v/image/upload/v1730714294/%C3%B6ron_wnmxtf.png','https://res.cloudinary.com/drkty7j9v/image/upload/v1730713492/84529_ix44n3.png'])
+
 
   const [form, setForm] = useState<CreateListingProperty>({
     title: '',
@@ -71,7 +77,21 @@ const CreatePage = () => {
     
   }
 
+  function onClickActive(bild:string,index:number){
+    setForm((prev) => ({
+      ...prev,
+      accessibilityImages: [...prev.accessibilityImages.includes(bild)
+        ? prev.accessibilityImages.filter((img) => img !== bild)
+        :[...prev.accessibilityImages,bild]
+      ],
+    }));
 
+
+    setIsActive((prev) =>({
+      ...prev,
+      [index]:!prev[index]
+    }))
+  }
 
   function submitRegisterForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
@@ -86,27 +106,37 @@ const CreatePage = () => {
   }
 
 
-  function onChangeHandler(e:React.ChangeEvent<HTMLInputElement>){
-    const {name,value} = e.target
-        
-    setForm((prev) =>{
-            return {
-                ...prev,
-                [name]:value
-            }
-        })
-    
-    }
+  function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+  
+    setForm((prev) => {
+      if (name === 'adress' || name === 'city' || name === 'district') {
+        return {
+          ...prev,
+          location: {
+            ...prev.location,
+            [name]: value,
+          },
+        };
+      } else {
+        return {
+          ...prev,
+          [name]: value,
+        };
+      }
+    });
+  }
 
     function onHandleDay(day:string,year:string,month:string){
+      
       const date = `${year}-${month}-${day}`
+      console.log(date)
       setForm((prev) =>({
         ...prev,
         available_dates:[...prev.available_dates,date]
       }))
 
     }
-    console.log(form.house_rules)
 
     function onAddRule(){
 
@@ -177,61 +207,64 @@ const CreatePage = () => {
             labelText='Titel' onChangeInput={onChangeHandler} valueText={form.title} errorText={error.title}/>
             <InputForm nameText={'description'} typeText='text' placeHolder='Mitt hus ligger nära...'
              labelText='Beskrivning' onChangeInput={onChangeHandler} valueText={form.description} errorText={error.description}/>
-            <div className=''>
+            <div className='flex justify-center items-center flex-col'>
         <CldUploadWidget 
           signatureEndpoint='/api/sign-image'
           options={{ sources: ['local', 'camera', 'google_drive'] }}
           onSuccess={(result) => {
             if (result && 'info' in result) {
-              const info = result.info as CloudinaryUploadWidgetInfo; 
+              const info = result.info as CloudinaryUploadWidgetInfo
               if (info && info.secure_url) {
                 const url = info.secure_url
-                setForm((prev) => ({ ...prev, images: [url] }))
-                console.log(url)
+                setForm((prev) => {
+                  const updatedImages = [...prev.images, url]
+                  return { ...prev, images: updatedImages }
+                })
               } else {
-                console.error('Info saknar secure_url:', info);
+                console.error('Info saknar secure_url:', info)
               }
             } else {
-              console.error('Resultat saknar info:', result);
+              console.error('Resultat saknar info:', result)
             }
           }}
         >
                     {({ open }) => {
                       return (
-                        <button type='button' className='py-4 px-4 bg-customGreen text-customWhite font-bold mt-10 rounded-lg' onClick={() => open()}>
+                        <button type='button' className='py-4 px-4 container bg-customGreen text-customWhite font-bold mt-10 rounded-lg' onClick={() => open()}>
                           Ladda&nbsp;upp&nbsp;bilder
                         </button>
                       );
                     }}
                   </CldUploadWidget>
-                  <div className='flex justify-center items-center mt-6'>
+                    </div>
+                  <div className='flex mt-5 gap-5'>
                   {
                 form && form.images.length > 0 && form.images.some(image => image !== '') ? (
                   form.images.map((image, index) =>
-                    image !== '' ? (
-                      <div key={index}>
+                        (
+                      <div className='' key={index}>
                         <CldImage
                           src={image}
                           width={100}
                           height={100}
                           crop={'fill'}
-                          alt='Profil-bild'
+                          alt='Hus-bild'
                         />
                       </div>
-                    ) : null
+                    ) 
                   )) : (
     <div className='flex justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
-      <span className=''>ProfilBild</span>
+      <span className=''>Husbilder</span>
     </div>
   )
 }          
-                  </div>
         </div>
             <InputForm nameText={'adress'} typeText='text' placeHolder='Bovägen 123' 
             labelText='Adress' 
             onChangeInput={onChangeHandler} 
             valueText={form.location.adress} 
-            errorText={error.location.adress}/>
+            errorText={error.location.adress}
+            changeInputSize={true}/>
             <InputForm nameText={'city'} 
             typeText='text' placeHolder='Stockholm' 
             labelText='Stad' 
@@ -253,7 +286,15 @@ const CreatePage = () => {
             valueText={form.price_per_night} 
             errorText={error.price_per_night}
             changeInputSize={true} />
+            <InputForm nameText={'maximum_guest'} 
+            typeText='text' placeHolder='4' 
+            labelText='Max antal gäster' 
+            onChangeInput={onChangeHandler} 
+            valueText={form.maximum_guest} 
+            errorText={error.maximum_guest}
+            changeInputSize={true} />
     
+            <label className='text-center mt-5 text-lg '>Dagar huset är tillgängligt</label>
             <div className='my-5'>
                 <Calender onHandleDay={onHandleDay} />  
             </div>
@@ -323,8 +364,34 @@ const CreatePage = () => {
             <span>{regler}</span>
             <X onClick={() => removeAccessibilityFeatures(index)} className='bg-red-600 border-2 rounded-full cursor-pointer hover:bg-red-800'/>
             </div>
-        )) 
+        ))  
       }
+      <h3 className='text-center text-lg m-5'>Tryck på ikonerna, som rullstolssymbolen,</h3>
+      <h3 className='text-center text-lg '>för att välja tillgänglighetsanpassningar som rullstolsanpassning.</h3>
+      <div className='grid grid-cols-3 mt-10'>
+        {
+          imageArray && imageArray.map((bild,index)=>(
+            <div key={index} onClick={() => onClickActive(bild,index)} className={`relative w-12 h-12 border-2 cursor-pointer 
+            hover:opacity-50 mr-5 transition-opacity'`}>
+             <CldImage 
+             src={bild}
+             width={1200}
+             height={1200}
+             className={`${isActive[index] ? 'border-black opacity-50' : ''}`}
+             alt='TillgänglighetsAnpassade ikoner'/>
+             {
+              isActive[index] ? 
+              <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12'>
+                <Check className='text-customGreen w-full h-full'/></span> : ''
+             }
+           </div>
+          ))
+
+        }
+
+
+      </div>
+
              <InputForm nameText={'price_per_night'} 
             typeText='text' placeHolder='100 m' 
             labelText='Avstånd till buss' 
