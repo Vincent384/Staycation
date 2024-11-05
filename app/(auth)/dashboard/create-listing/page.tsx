@@ -109,9 +109,15 @@ const CreatePage = () => {
 
         
         const data = await res.json()
-        if(res.status === 201){          
+        if(res.status !== 201){          
           setErrorMessage(data.message)
+        }else{
+          setSuccessMessage(data.message)
         }
+
+        window.setTimeout(() => {
+          router.push('/dashboard')
+        }, 2000);
 
         console.log(data)
       } catch (error) {
@@ -160,10 +166,6 @@ const CreatePage = () => {
       if(!validateCreate(form,setError)){
         return setErrorMessage('Fyll i alla fält')
       }
-
-      console.log(form.host)
-      console.log(form)
-      console.log(avatar?._id)
       const pricePerNight = Number(form.price_per_night)
       setForm((prev)=>({
        ...prev,
@@ -333,16 +335,21 @@ const CreatePage = () => {
                       </div>
                     ) 
                   )) : (
-    <div className='flex justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
-      <span className=''>Husbilder</span>
+    <div className='flex flex-col justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
+      <div>
+        <span className=''>Husbilder</span>
+      </div>
     </div>
     
   )
 }   
-{ 
-  error.images && <p>{error.images}</p>
-}       
         </div>
+      <div className='mt-5'>
+      { 
+
+        error.images && <span className='text-red-700 text-lg'>{error.images}</span>
+      }       
+      </div>
             <InputForm nameText={'adress'} typeText='text' placeHolder='Bovägen 123' 
             labelText='Adress' 
             onChangeInput={onChangeHandler} 
@@ -380,7 +387,10 @@ const CreatePage = () => {
     
             <label className='text-center mt-5 text-lg '>Dagar huset är tillgängligt</label>
             <div className='my-5'>
-                <Calender onHandleDay={onHandleDay} selectedDates={selectedDates}/>  
+                <Calender onHandleDay={onHandleDay} selectedDates={selectedDates}/>
+                {
+                  error && <span className='text-lg text-red-700'>{error.available_dates}</span>
+                }
             </div>
             <label className='text-center mt-5 text-lg mb-5'>Hus regler</label>
             <textarea
@@ -468,10 +478,6 @@ const CreatePage = () => {
               <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12'>
                 <Check className='text-customGreen w-full h-full'/></span> : ''
              }
-             {
-              error &&
-              <span className='text-red-700 text-lg'>{error.images}</span>
-             }
            </div>
           ))
 
@@ -492,7 +498,7 @@ const CreatePage = () => {
             text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Skapa&nbsp;Annons</button>
               {
                 successMessage &&
-                <p>{successMessage}</p>
+                <p className='bg-emerald-600 mt-5 py-2 px-6 text-customWhite font-bold'>{successMessage}</p>
               }
               <div className={``}>
                       {

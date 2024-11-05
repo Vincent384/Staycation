@@ -89,7 +89,7 @@ const Dashboard = () => {
                             <button className='py-2 px-4 bg-customLightGreen container text-customWhite font-semibold text-lg
                             rounded-lg'>Skapa&nbsp;Annons</button>
                             </Link>
-                            <Link href={'/create-listing'}>
+                            <Link href={'/dashboard/homes'}>
                             <button className='py-2 px-4 bg-customGreen container text-customWhite font-semibold text-lg
                             rounded-lg'>Mina&nbsp;hem</button>
                             </Link>

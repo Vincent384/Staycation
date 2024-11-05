@@ -41,6 +41,7 @@ export const Navbar = () => {
         }
         )
         localStorage.removeItem('status')
+        localStorage.clear()
         setLoggedIn(false)
     }
 

@@ -105,7 +105,7 @@ export async function POST(req:Request){
         return NextResponse.json({message:'Could not find the created Property'},{status:500})
     }
 
-    return NextResponse.json({message:'A new Property was created',Property:populatedPoperty},{status:201})
+    return NextResponse.json({message:'Ny fastighet tillagd!',Property:populatedPoperty},{status:201})
 
  } catch (error) {
   console.log(error)  
