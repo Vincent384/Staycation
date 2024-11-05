@@ -40,5 +40,6 @@ export function convertMonthAndDay(month:string){
       default:
         break;
     }
+
     return monthNumber
 }

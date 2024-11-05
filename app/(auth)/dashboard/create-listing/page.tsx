@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/app/component/Navbar'
 import { InputForm } from '@/app/component/InputForm'
@@ -21,11 +21,14 @@ const CreatePage = () => {
   const [currentRule, setCurrentRule] = useState<string>('')
   const [currentFacilities, setCurrentFacilities] = useState<string>('')
   const [currentAccessibilityFeatures, setcurrentAccessibilityFeatures] = useState<string>('')
-  const [isActive, setIsActive] = useState<{[key:number]:boolean}>({})
+  const [isActive, setIsActive] = useState<{[key:number]:boolean}>({})  
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const [currentAccessibilityImage, setcurrentAccessibilityImage] = useState<string[] | null>(null)
   const [imageArray, setImageArray] = useState(['https://res.cloudinary.com/drkty7j9v/image/upload/v1729670272/Namnl%C3%B6st-1_koufja.png',
     'https://res.cloudinary.com/drkty7j9v/image/upload/v1730714294/%C3%B6ron_wnmxtf.png','https://res.cloudinary.com/drkty7j9v/image/upload/v1730713492/84529_ix44n3.png'])
-
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  
 
   const [form, setForm] = useState<CreateListingProperty>({
     title: '',
@@ -42,7 +45,6 @@ const CreatePage = () => {
     maximum_guest: '',
     house_rules: [],
     facilities: [],
-    listingId: '',
     accessibilityFeatures: [],
     distanceToNearestBus: '',
     accessibilityImages: [],
@@ -63,17 +65,54 @@ const CreatePage = () => {
     maximum_guest: '',
     house_rules: [],
     facilities: [],
-    listingId: '',
     accessibilityFeatures: [],
     distanceToNearestBus: '',
     accessibilityImages: [],
   })
-  const [messageError, setMessageError] = useState<string>('')
-
-  const [successMessage, setSuccessMessage] = useState('')
 
 
-  async function postPropertyForm(){
+  const [avatar, setAvatar] = useState<HostDataWithId | null>(null)
+
+  useEffect(() => {
+      
+      const getHost = localStorage.getItem('Host')
+
+      if(getHost == null){
+          return
+      }
+
+  const avatarData = JSON.parse(getHost)
+      
+  setAvatar(avatarData)
+  setForm((prev)=>({
+    ...prev,
+    host:avatar?._id as string
+  }))
+      
+  }, [])
+
+
+  async function postPropertyForm(form:CreateListingProperty){
+      try {
+        const res = await fetch('http://localhost:3000/api/property',{
+          method:'POST',
+          headers:{
+            'Content-type':'application/json'
+          },
+          body:JSON.stringify(form)
+        }
+        )
+
+        
+        const data = await res.json()
+        if(res.status === 201){          
+          setErrorMessage(data.message)
+        }
+
+        console.log(data)
+      } catch (error) {
+        console.log((error as Error).message)
+      }
     
   }
 
@@ -93,14 +132,19 @@ const CreatePage = () => {
     }))
   }
 
-  function submitRegisterForm(e:React.FormEvent<HTMLFormElement>){
+  function submitCreateForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
-      // setError({firstName:'', lastName:'', phone:'', email:'',password:''})
-      // setMessageError('')
+      setErrorMessage('')
 
-      // if(!validateRgister(form,setError)){
-      //   return 
-      // }
+      console.log(form.host)
+      console.log(form)
+      console.log(avatar?._id)
+      const pricePerNight = Number(form.price_per_night)
+      setForm((prev)=>({
+       ...prev,
+        price_per_night:pricePerNight
+      }))
+   postPropertyForm(form)
 
 
   }
@@ -128,12 +172,22 @@ const CreatePage = () => {
   }
 
     function onHandleDay(day:string,year:string,month:string){
-      
-      const date = `${year}-${month}-${day}`
+      const monthNumber = convertMonthAndDay(month)
+      const date = `${year}-${monthNumber}-${day}`
       console.log(date)
+
+      setSelectedDates(prevDates =>
+        prevDates.includes(date)
+        ? prevDates.filter(d => d !== date)
+        :[...prevDates,date]
+      )     
+
       setForm((prev) =>({
         ...prev,
-        available_dates:[...prev.available_dates,date]
+        available_dates:[...prev.available_dates.includes(date) ?
+          prev.available_dates.filter((datum) => (datum !== date))
+          : [...prev.available_dates,date]
+        ]
       }))
 
     }
@@ -200,7 +254,7 @@ const CreatePage = () => {
   return (
     <div>
         <Navbar/>
-        <form onSubmit={submitRegisterForm} className='flex flex-col justify-center items-center m-10 border-2 border-customGray  p-10 bg-customWhite'>
+        <form onSubmit={submitCreateForm} className='flex flex-col justify-center items-center m-10 border-2 border-customGray  p-10 bg-customWhite'>
             <h1 className='py-2 px-[100px]  bg-customLightGreen text-customWhite text-2xl 
             rounded-lg font-semibold max-sm:px-[2rem]'>Skapa&nbsp;en&nbsp;annons</h1>
             <InputForm nameText={'title'} typeText='text' placeHolder='Fina villan' 
@@ -280,11 +334,11 @@ const CreatePage = () => {
             errorText={error.location.district} 
             changeInputSize={true}/>
             <InputForm nameText={'price_per_night'} 
-            typeText='text' placeHolder='500' 
+            typeText='number' placeHolder='500' 
             labelText='Pris per natt' 
             onChangeInput={onChangeHandler} 
-            valueText={form.price_per_night} 
-            errorText={error.price_per_night}
+            valueText={form.price_per_night as string} 
+            errorText={error.price_per_night as string} 
             changeInputSize={true} />
             <InputForm nameText={'maximum_guest'} 
             typeText='text' placeHolder='4' 
@@ -296,7 +350,7 @@ const CreatePage = () => {
     
             <label className='text-center mt-5 text-lg '>Dagar huset är tillgängligt</label>
             <div className='my-5'>
-                <Calender onHandleDay={onHandleDay} />  
+                <Calender onHandleDay={onHandleDay} selectedDates={selectedDates}/>  
             </div>
             <label className='text-center mt-5 text-lg mb-5'>Hus regler</label>
             <textarea
@@ -392,7 +446,7 @@ const CreatePage = () => {
 
       </div>
 
-             <InputForm nameText={'price_per_night'} 
+             <InputForm nameText={'distanceToNearestBus'} 
             typeText='text' placeHolder='100 m' 
             labelText='Avstånd till buss' 
             onChangeInput={onChangeHandler} 
@@ -404,11 +458,14 @@ const CreatePage = () => {
             text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Skapa&nbsp;Annons</button>
   
         </form>
-        <p>{successMessage}</p>
+        {
+          successMessage &&
+          <p>{successMessage}</p>
+        }
         <div className={``}>
                 {
-                  messageError &&
-                <p className='bg-red-600 mt-5 py-2 px-6 text-customWhite font-bold'>{messageError}</p>
+                  errorMessage &&
+                <p className='bg-red-600 mt-5 py-2 px-6 text-customWhite font-bold'>{errorMessage}</p>
                 }
             </div>
     </div>

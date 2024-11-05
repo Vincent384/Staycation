@@ -5,15 +5,16 @@ import React, { useEffect, useState } from 'react'
 
 type CalenderProps = {
   onHandleDay:(day:string,year:string,month:string) => (void)
+  selectedDates:string[]
 }
 
-export const Calender = ({onHandleDay}:CalenderProps) => {
+export const Calender = ({onHandleDay,selectedDates}:CalenderProps) => {
 
   const [toggler, setToggler] = useState(false)
   const [days, setDays] = useState<string[] | null>(null)
   const [displayMonth, setDisplayMonth] = useState<string>('')
   const [year, setYear] = useState<string>('')
-  const [weekDays, setWeekDays] = useState<string []>(['Mån','Tis','Ons','Tors','Fre','Lör','Sön'])
+  const weekDays:string[] = ['Mån','Tis','Ons','Tors','Fre','Lör','Sön']
   const [monthOffset, setMonthOffset] = useState(0)
   
   function onClickHandler(){
@@ -35,7 +36,6 @@ export const Calender = ({onHandleDay}:CalenderProps) => {
 
     const months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli',
       'Augusti', 'September', 'Oktober', 'November', 'December']
-
 
 
     const lastDateOfMonth = new Date(getYear, getMonth + 1, 0).getDate()
@@ -102,9 +102,21 @@ export const Calender = ({onHandleDay}:CalenderProps) => {
             ))}
           </div>
           <div className='grid grid-cols-7 cursor-pointer p-5'>
-            {days && days.map((dag, index) => (
-              <span onClick={() => onHandleDay(dag,year,displayMonth)} key={index}>{dag}</span>
-            ))}
+          {days && days.map((dag, index) => {
+             const date = `${year}-${displayMonth}-${dag.padStart(2, '0')}`;
+            const isSelected = selectedDates.includes(date)
+            const isToday = new Date().getDate() === parseInt(dag) && new Date().getMonth() === new Date(parseInt(year), parseInt(displayMonth)).getMonth() && new Date().getFullYear() === parseInt(year);
+            const isPastDate = new Date(parseInt(year), new Date().getMonth() + monthOffset, parseInt(dag)) < new Date();
+            return (
+              <span 
+                key={index} 
+                onClick={() => !isPastDate && onHandleDay(dag, year, displayMonth)} 
+                className={`${isSelected ? 'bg-black text-white' : ''} ${isPastDate ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer'} ${isToday ? 'font-bold underline' : ''}`}
+              >
+                {dag}
+              </span>
+            )
+          })}
           </div>
         </div>
       }
