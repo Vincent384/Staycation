@@ -1,4 +1,5 @@
 'use client'
+import { convertMonthAndDay } from '@/utils/monthDayConvert'
 import { ArrowBigLeft, ArrowBigRight, X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
@@ -76,10 +77,10 @@ export const Calender = ({onHandleDay,selectedDates}:CalenderProps) => {
         >
           <div>
             <span 
-              className='absolute top-2 right-2 cursor-pointer border-2 border-black rounded-full' 
+              className='absolute top-2 right-2 cursor-pointer border-2 border-black rounded-full hover:bg-black hover:text-white' 
               onClick={closeCalendar}
             >
-              <X />
+              <X className=''/>
             </span>
             <span onClick={() => handleMonthChange(-1)}
               className='absolute top-9 left-3 rounded-full hover:bg-customWhite focus:bg-black active:bg-black cursor-pointer'
@@ -103,15 +104,16 @@ export const Calender = ({onHandleDay,selectedDates}:CalenderProps) => {
           </div>
           <div className='grid grid-cols-7 cursor-pointer p-5'>
           {days && days.map((dag, index) => {
-             const date = `${year}-${displayMonth}-${dag.padStart(2, '0')}`;
-            const isSelected = selectedDates.includes(date)
+                const monthNumber = convertMonthAndDay(displayMonth)
+                const date = `${year}-${monthNumber}-${dag}`;
+                const isSelected = selectedDates.includes(date)
             const isToday = new Date().getDate() === parseInt(dag) && new Date().getMonth() === new Date(parseInt(year), parseInt(displayMonth)).getMonth() && new Date().getFullYear() === parseInt(year);
             const isPastDate = new Date(parseInt(year), new Date().getMonth() + monthOffset, parseInt(dag)) < new Date();
             return (
               <span 
                 key={index} 
                 onClick={() => !isPastDate && onHandleDay(dag, year, displayMonth)} 
-                className={`${isSelected ? 'bg-black text-white' : ''} ${isPastDate ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer'} ${isToday ? 'font-bold underline' : ''}`}
+                className={`flex items-center justify-center w-8 h-8 ${isSelected ? 'bg-black rounded-full text-white' : ''} ${isPastDate ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer'} ${isToday ? 'font-bold underline' : ''}`}
               >
                 {dag}
               </span>

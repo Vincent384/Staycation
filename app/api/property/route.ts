@@ -58,7 +58,7 @@ export async function POST(req:Request){
 
     if(!title || !description || !images || !host || !location || 
         !price_per_night || !maximum_guest || !house_rules || !available_dates){
-        return NextResponse.json({message:'Fyll i alla fälten'},{status:401})
+        return NextResponse.json({message:'Fyll i alla fälten'},{status:400})
     }
 
     const findHost = await Host.findById(host)

@@ -12,6 +12,7 @@ import { CldUploadWidget,CloudinaryUploadWidgetInfo  } from 'next-cloudinary'
 import { Calender } from '@/app/component/Calender'
 import { Check, CheckCheckIcon, X } from 'lucide-react'
 import { convertMonthAndDay } from '@/utils/monthDayConvert'
+import { validateCreate } from '@/utils/validateCreate'
 
 
 const CreatePage = () => {
@@ -50,10 +51,10 @@ const CreatePage = () => {
     accessibilityImages: [],
   });
 
-  const [error, setError] = useState<CreateListingProperty>({
+  const [error, setError] = useState<CreateListingPropertyErrors>({
     title: '',
     description: '',
-    images: [],
+    images: '',
     host: '',
     location: {
       adress: '',
@@ -61,13 +62,13 @@ const CreatePage = () => {
       district: ''
     },
     price_per_night: '',
-    available_dates: [],
+    available_dates: '',
     maximum_guest: '',
-    house_rules: [],
-    facilities: [],
-    accessibilityFeatures: [],
+    house_rules: '',
+    facilities: '',
+    accessibilityFeatures: '',
     distanceToNearestBus: '',
-    accessibilityImages: [],
+    accessibilityImages: '',
   })
 
 
@@ -83,13 +84,16 @@ const CreatePage = () => {
 
   const avatarData = JSON.parse(getHost)
       
-  setAvatar(avatarData)
-  setForm((prev)=>({
-    ...prev,
-    host:avatar?._id as string
-  }))
-      
+  setAvatar(avatarData)      
   }, [])
+
+  useEffect(() => {
+    setForm((prev)=>({
+      ...prev,
+      host:avatar?._id as string
+    }))
+  }, [avatar])
+  
 
 
   async function postPropertyForm(form:CreateListingProperty){
@@ -135,6 +139,27 @@ const CreatePage = () => {
   function submitCreateForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
       setErrorMessage('')
+      setError({    title: '',
+        description: '',
+        images: '',
+        host: '',
+        location: {
+          adress: '',
+          city: '',
+          district: ''
+        },
+        price_per_night: '',
+        available_dates: '',
+        maximum_guest: '',
+        house_rules: '',
+        facilities: '',
+        accessibilityFeatures: '',
+        distanceToNearestBus: '',
+        accessibilityImages: '',})
+
+      if(!validateCreate(form,setError)){
+        return setErrorMessage('Fyll i alla fält')
+      }
 
       console.log(form.host)
       console.log(form)
@@ -182,6 +207,7 @@ const CreatePage = () => {
         :[...prevDates,date]
       )     
 
+      console.log(selectedDates)
       setForm((prev) =>({
         ...prev,
         available_dates:[...prev.available_dates.includes(date) ?
@@ -310,8 +336,12 @@ const CreatePage = () => {
     <div className='flex justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
       <span className=''>Husbilder</span>
     </div>
+    
   )
-}          
+}   
+{ 
+  error.images && <p>{error.images}</p>
+}       
         </div>
             <InputForm nameText={'adress'} typeText='text' placeHolder='Bovägen 123' 
             labelText='Adress' 
@@ -438,6 +468,10 @@ const CreatePage = () => {
               <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12'>
                 <Check className='text-customGreen w-full h-full'/></span> : ''
              }
+             {
+              error &&
+              <span className='text-red-700 text-lg'>{error.images}</span>
+             }
            </div>
           ))
 
@@ -456,18 +490,17 @@ const CreatePage = () => {
             
             <button className='py-2 px-10 bg-customOrange text-customWhite rounded-lg 
             text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Skapa&nbsp;Annons</button>
-  
+              {
+                successMessage &&
+                <p>{successMessage}</p>
+              }
+              <div className={``}>
+                      {
+                        errorMessage &&
+                      <p className='bg-red-600 mt-5 py-2 px-6 text-customWhite font-bold'>{errorMessage}</p>
+                      }
+                  </div>
         </form>
-        {
-          successMessage &&
-          <p>{successMessage}</p>
-        }
-        <div className={``}>
-                {
-                  errorMessage &&
-                <p className='bg-red-600 mt-5 py-2 px-6 text-customWhite font-bold'>{errorMessage}</p>
-                }
-            </div>
     </div>
   )
 }
