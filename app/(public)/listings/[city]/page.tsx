@@ -155,8 +155,8 @@ const ListingProperties = () => {
                   </div>
                   <div className='bg-customBlack p-3'>
                     {
-                      property?.accessibilityImages.map((image)=>(
-                        <div className='w-[30px] bg-white'>
+                      property?.accessibilityImages.map((image,index)=>(
+                        <div key={index} className='w-[30px] bg-white'>
                             <Image src={image} width={300} height={300} alt={property.accessibilityFeatures[0]}/>
                         </div>
                       ))

@@ -54,7 +54,7 @@ export const Navbar = () => {
   return (
     <header className='flex justify-between items-center p-4 border-b-2 border-black bg-white sticky top-0 left-0 z-20'>
         <ul>
-            <Link href={'/'}><Image src={favicon} width={70} height={70} alt='Älg'/></Link>
+            <Link href={'/'}><Image className='hover:opacity-50 transition-opacity' src={favicon} width={70} height={70} alt='Älg'/></Link>
         </ul>
         <div className='flex justify-center items-center gap-5'>
                 <ul>
@@ -64,7 +64,7 @@ export const Navbar = () => {
 
                     <div className='flex items-center justify-center gap-5'>
                             <Link href={'/dashboard'}>
-                            <div className="relative w-12 h-12 overflow-hidden rounded-full"> 
+                            <div className="relative w-12 h-12 overflow-hidden rounded-full hover:opacity-50 transition-opacity"> 
                                 <CldImage
                                     src={avatarSrc} 
                                     height={1200}
@@ -84,9 +84,9 @@ export const Navbar = () => {
                 </ul>
                 <ul>
                             { loggedIn ?
-                                <Link href={'/login'}><li onClick={onLogoutButton} className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer'>Logga ut</li></Link>
+                                <Link href={'/login'}><li onClick={onLogoutButton} className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer hover:opacity-50 transition-opacity'>Logga ut</li></Link>
                                 :
-                                <Link href={'/login'}><li className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer'>Logga in</li></Link>
+                                <Link href={'/login'}><li className='py-2 bg-customOrange text-customWhite px-4 rounded-lg font-bold cursor-pointer hover:opacity-50 transition-opacity'>Logga in</li></Link>
                             }
                 </ul>
 

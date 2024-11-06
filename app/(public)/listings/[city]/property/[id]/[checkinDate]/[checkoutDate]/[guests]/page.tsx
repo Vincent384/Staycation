@@ -138,7 +138,7 @@ console.log(property)
                          <div className='relative  flex justify-center mb-10'>
                     <button onClick={modalButtonToggler} className='bg-customOrange
                      text-customWhite mt-2 cursor-pointer py-2 px-10 border border-black
-                    rounded-lg'>Vad&nbsp;som&nbsp;ingår</button>
+                    rounded-lg hover:opacity-50 transition-opacity'>Vad&nbsp;som&nbsp;ingår</button>
                       {
                         modalButton &&
                         <div className='relative animate-slideDown'>
@@ -149,8 +149,8 @@ console.log(property)
                                 <X onClick={modalButtonToggler} className='cursor-pointer  border-2 rounded-full border-black'/>      
                             </div>
                           <div className='flex flex-col gap-5'>
-                            {property?.facilities.map((info)=>(
-                              <div className='flex'><Dot /><span>{info}</span></div>
+                            {property?.facilities.map((info,index)=>(
+                              <div key={index} className='flex'><Dot /><span>{info}</span></div>
                             ))}</div>
                         </div>
 
@@ -168,7 +168,7 @@ console.log(property)
                     <div className='flex justify-center mb-10 '>
                       <button className='bg-customOrange
                      text-customWhite mt-2 cursor-pointer py-2 px-10 border border-black
-                    rounded-lg show-button '>Boka</button>
+                    rounded-lg show-button hover:opacity-50 transition-opacity'>Boka</button>
                     </div>
 
                       <div className='mx-auto mb-10 p-5 rounded-lg border-2 border-customGray bg-customWhite w-[500px] max-md:w-[300px]'>
@@ -176,8 +176,8 @@ console.log(property)
                             property &&
                             <div>
                               <h4 className='text-2xl mb-5'>Recensioner</h4>
-                              {property.reviews.map((rev)=> (
-                                <div>
+                              {property.reviews.map((rev,index)=> (
+                                <div key={index}>
                                   <div className='flex justify-between items-center'>
                                     {
                                       rev.hostId.avatar === '' ?

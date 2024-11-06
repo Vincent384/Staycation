@@ -119,7 +119,7 @@ const Register = () => {
             <InputForm nameText={'email'} typeText='text' placeHolder='E-postadress...' labelText='E-postadress' onChangeInput={onChangeHandler} valueText={form.email} errorText={error.email}/>
             <InputForm nameText={'password'} typeText='password' placeHolder='Lösenord...' labelText='Lösenord' onChangeInput={onChangeHandler} valueText={form.password} errorText={error.password} />
             <button className='py-2 px-10 bg-customOrange text-customWhite rounded-lg 
-            text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Registrera</button>
+            text-2xl font-semibold mt-10 mb-5 hover:opacity-50 transition-opacity'>Registrera</button>
             <Link className='text-customBlue my-2' href={'/login'}>Har du redan ett konto? Logga in här</Link>
         </form>
         <p>{successMessage}</p>

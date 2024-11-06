@@ -134,7 +134,7 @@ const Login = () => {
               }
             </div>
             <button className='py-2 px-10 bg-customOrange text-customWhite rounded-lg
-             text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Logga in</button>
+             text-2xl font-semibold mt-10 mb-5 hover:opacity-50 transition-opacity'>Logga in</button>
             <Link className='text-customBlue my-2' href={'/register'}>Inget&nbsp;konto?&nbsp;Registrera&nbsp;här</Link>
             <Link className='text-customBlue my-2' href={''}>Glömt lösenord?</Link>
         </form>

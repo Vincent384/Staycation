@@ -23,13 +23,13 @@ const Dashboard = () => {
 
     if(userId){
       const id = JSON.parse(userId)
-      console.log(id)
+
       async function getUserProfile(){
         try {
           const res = await fetch(`http://localhost:3000/api/profile?userId=${id}`)
 
           const data = await res.json()
-          console.log(data)
+  
           setUserProfile(data.userProfile)
         } catch (error) {
           console.log(error)
@@ -87,19 +87,19 @@ const Dashboard = () => {
                         <div className='flex flex-col gap-5 px-10'>
                             <Link href={'/dashboard/create-listing'}>
                             <button className='py-2 px-4 bg-customLightGreen container text-customWhite font-semibold text-lg
-                            rounded-lg'>Skapa&nbsp;Annons</button>
+                            rounded-lg hover:opacity-50 transition-opacity'>Skapa&nbsp;Annons</button>
                             </Link>
                             <Link href={'/dashboard/homes'}>
                             <button className='py-2 px-4 bg-customGreen container text-customWhite font-semibold text-lg
-                            rounded-lg'>Mina&nbsp;hem</button>
+                            rounded-lg hover:opacity-50 transition-opacity'>Mina&nbsp;hem</button>
                             </Link>
                             <Link href={'/create-listing'}>
                             <button className='py-2 px-4 bg-customOrange container text-customWhite font-semibold text-lg
-                            rounded-lg'>Ändra&nbsp;profil</button>
+                            rounded-lg hover:opacity-50 transition-opacity'>Ändra&nbsp;profil</button>
                             </Link>
                             <Link href={'/create-listing'}>
                             <button className='py-2 px-4 bg-customGray container text-customWhite font-semibold text-lg
-                            rounded-lg'>Mina meddelande</button>
+                            rounded-lg hover:opacity-50 transition-opacity'>Mina meddelande</button>
                             </Link>
                         </div>
                       </div>

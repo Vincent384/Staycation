@@ -80,13 +80,15 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
            max-lg:flex-col max-lg:border-none '>
                <div className='border-r-2 border-black max-lg:border-none'>
 
-               <span className=''>{property.accessibilityImages?.map((images)=>(
+               <span className=''>{property.accessibilityImages?.map((images,index)=>(
+                <div key={index}>
                  <Image
                    src={images}
                    width={30}
                    height={30}
                    alt='Special anpassningar'
-                 />
+                   />
+                </div>
                ))}</span>
                <span className='flex mt-2 mr-5'><BusIcon/>{property.distanceToNearestBus.slice(0,5)}</span>
                </div>
@@ -99,7 +101,7 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
                <div className='relative container'>
 
              <button onClick={modalButtonToggler} className='bg-customOrange text-customWhite mt-2 cursor-pointer py-2 container border border-black
-             rounded-lg max-lg:hidden'>Visa&nbsp;tillgänglighet</button>
+             rounded-lg max-lg:hidden hover:opacity-50 transition-opacity'>Visa&nbsp;tillgänglighet</button>
              {
                modalButton ?
                <ChevronUp onClick={modalButtonToggler} className={ `absolute top-5 right-2 cursor-pointer max-lg:hidden`} />
@@ -114,8 +116,8 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
                        <X onClick={modalButtonToggler} className='cursor-pointer  border-2 rounded-full border-black'/>      
                    </div>
                  <div className='flex flex-col gap-5'>
-                   {property.accessibilityFeatures.map((info)=>(
-                     <div className='flex'><Dot /><span>{info}</span></div>
+                   {property.accessibilityFeatures.map((info,index)=>(
+                     <div key={index} className='flex'><Dot /><span>{info}</span></div>
                    ))}</div>
                </div>
 

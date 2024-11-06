@@ -18,7 +18,7 @@ export const ModalFilter = ({}) => {
     {
 buttonModal ? (
 <div className='relative inline-block'>
-  <button onClick={buttonToggler} className='bg-customOrange border-2 text-lg  border-black text-customWhite py-2 px-10 rounded-lg'>
+  <button onClick={buttonToggler} className='bg-customOrange border-2 text-lg  border-black text-customWhite py-2 px-10 rounded-lg hover:opacity-50 transition-opacity'>
     Filtrera
   </button>
   <ChevronDown onClick={buttonToggler} className='absolute top-2.5 right-2 cursor-pointer' />
