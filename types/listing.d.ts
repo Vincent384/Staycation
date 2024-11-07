@@ -46,11 +46,43 @@ type CreateListingProperty = {
     accessibilityImages:string[],
 }
 
+type ChangeListingProperty = {
+    title:string,
+    description:string,
+    images:string[],
+    propertyId:string,
+    location:location,
+    price_per_night:string | number,
+    available_dates: string[],
+    maximum_guest:string,
+    house_rules:string[],
+    facilities:string[],
+    accessibilityFeatures:string[],
+    distanceToNearestBus:string,
+    accessibilityImages:string[],
+}
+
 type CreateListingPropertyErrors = {
     title:string,
     description:string,
     images:string,
     host:string,
+    location:location,
+    price_per_night:string,
+    available_dates: string,
+    maximum_guest:string,
+    house_rules:string,
+    facilities:string,
+    accessibilityFeatures:string,
+    distanceToNearestBus:string,
+    accessibilityImages:string,
+}
+
+type ChangeListingPropertyErrors = {
+    title:string,
+    description:string,
+    images:string,
+    propertyId:string,
     location:location,
     price_per_night:string,
     available_dates: string,

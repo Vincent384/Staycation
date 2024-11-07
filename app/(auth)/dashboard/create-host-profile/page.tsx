@@ -78,6 +78,8 @@ const CreateHost = () => {
     
     }
 
+    
+
   return (
     <div>
         <Navbar/>

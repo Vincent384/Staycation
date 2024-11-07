@@ -124,7 +124,7 @@ export async function PUT(req:Request):Promise<NextResponse>{
     
         if(!title || !description || !images || !location || 
             !price_per_night || !maximum_guest || !house_rules || !available_dates || !propertyId){
-            return NextResponse.json({message:'Please fill all the fields'},{status:401})
+            return NextResponse.json({message:'Fyll i alla fält'},{status:400})
         }
 
     
@@ -149,7 +149,7 @@ export async function PUT(req:Request):Promise<NextResponse>{
             return NextResponse.json({message:"No listing found with that id"},{status:404})
         }
 
-        return NextResponse.json({message:"Update Successful",updateProperty})
+        return NextResponse.json({message:"Ändringarna sparade",updateProperty,},{status:200})
 
     } catch (error) {
         console.log(error)
@@ -174,7 +174,7 @@ export async function DELETE(res:Request){
             return NextResponse.json({message:"Could not find any property with that ID"},{status:404})
         }
 
-        const listId = findProperty.listingId
+        const listId = '670e44711445d7876123e5ce'
         const listing = await Listing.findByIdAndUpdate(
             {_id:listId},
             {$pull:{listings:{_id:propertyId}}},

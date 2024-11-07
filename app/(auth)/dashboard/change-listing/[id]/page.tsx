@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Navbar } from '@/app/component/Navbar'
 import { InputForm } from '@/app/component/InputForm'
 import { validateRgister } from '@/types/validateRegister'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { setTimeout } from 'timers/promises'
 import { useAuthContext } from '@/context/authContext'
 import { CldImage, CloudinaryUploadWidgetResults } from 'next-cloudinary'
@@ -15,8 +15,8 @@ import { convertMonthAndDay } from '@/utils/monthDayConvert'
 import { validateCreate } from '@/utils/validateCreate'
 
 
-const CreatePage = () => {
-  const { setToken,getDataAvatar } = useAuthContext()
+const ChangeHome = () => {
+
   const router = useRouter()
 
   const [currentRule, setCurrentRule] = useState<string>('')
@@ -25,17 +25,19 @@ const CreatePage = () => {
   const [isActive, setIsActive] = useState<{[key:number]:boolean}>({})  
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [currentAccessibilityImage, setcurrentAccessibilityImage] = useState<string[] | null>(null)
+  const [currentProperty, setCurrentProperty] = useState<CreateListingProperty | null>(null)
   const [imageArray, setImageArray] = useState(['https://res.cloudinary.com/drkty7j9v/image/upload/v1729670272/Namnl%C3%B6st-1_koufja.png',
     'https://res.cloudinary.com/drkty7j9v/image/upload/v1730714294/%C3%B6ron_wnmxtf.png','https://res.cloudinary.com/drkty7j9v/image/upload/v1730713492/84529_ix44n3.png'])
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
-  
 
-  const [form, setForm] = useState<CreateListingProperty>({
+  const { id } = useParams() 
+
+
+  const [form, setForm] = useState<ChangeListingProperty>({
     title: '',
     description: '',
     images: [],
-    host: '',
+    propertyId:'',
     location: {
       adress: '',
       city: '',
@@ -71,7 +73,6 @@ const CreatePage = () => {
     accessibilityImages: '',
   })
 
-
   const [avatar, setAvatar] = useState<HostDataWithId | null>(null)
 
   useEffect(() => {
@@ -93,13 +94,46 @@ const CreatePage = () => {
       host:avatar?._id as string
     }))
   }, [avatar])
+ 
   
 
+  useEffect(() => {
+    async function getProperty(){
+      try {
+        const res = await fetch(`http://localhost:3000/api/property/?id=${id}`)
 
-  async function postPropertyForm(form:CreateListingProperty){
+        if(res.status !== 200){
+          throw new Error('Något gick fel')
+        }
+        const data = await res.json()
+        console.log(data)
+        setForm(data)
+ 
+          setForm((prev) => ({
+            ...prev,
+            propertyId: id as string,
+          }));
+        
+      } catch (error) {
+        console.log((error as Error).message)
+      }
+    }
+    console.log(id)
+    if(id){
+      getProperty()
+    }
+  }, [id])
+
+  useEffect(() => {
+
+  }, [id]);
+  
+  
+
+  async function postPropertyForm(form:ChangeListingProperty){
       try {
         const res = await fetch('http://localhost:3000/api/property',{
-          method:'POST',
+          method:'PUT',
           headers:{
             'Content-type':'application/json'
           },
@@ -109,15 +143,14 @@ const CreatePage = () => {
 
         
         const data = await res.json()
-        if(res.status !== 201){          
-          setErrorMessage(data.message)
+        if(res.status !== 200){          
+          return setErrorMessage(data.message)
         }else{
           setSuccessMessage(data.message)
-        }
-
-        window.setTimeout(() => {
+          window.setTimeout(() => {
           router.push('/dashboard')
-        }, 2000);
+                  }, 2000);
+        }
 
         console.log(data)
       } catch (error) {
@@ -144,11 +177,12 @@ const CreatePage = () => {
 
   function submitCreateForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
+
       setErrorMessage('')
       setError({    title: '',
         description: '',
         images: '',
-        host: '',
+        host:'',
         location: {
           adress: '',
           city: '',
@@ -166,11 +200,14 @@ const CreatePage = () => {
       if(!validateCreate(form,setError)){
         return setErrorMessage('Fyll i alla fält')
       }
+
       const pricePerNight = Number(form.price_per_night)
       setForm((prev)=>({
        ...prev,
         price_per_night:pricePerNight
       }))
+    console.log(form.propertyId)
+    console.log(form)
    postPropertyForm(form)
 
 
@@ -281,30 +318,30 @@ const CreatePage = () => {
     }
 
     function onClickDeleteImage(index:number){
+        setForm((prev)=>({
+          ...prev,
+          images:[...prev.images.filter((bild,i)=> i !== index)]
+        }))
+        console.log(form.images)
+    }
+
+    function onClickDeleteDate(index:number){
       setForm((prev)=>({
         ...prev,
-        images:[...prev.images.filter((bild,i)=> i !== index)]
+        available_dates:[...prev.available_dates.filter((datum,i)=>(
+          i !== index
+        ))]
       }))
-      console.log(form.images)
-  }
-
-  function onClickDeleteDate(index:number){
-    setForm((prev)=>({
-      ...prev,
-      available_dates:[...prev.available_dates.filter((datum,i)=>(
-        i !== index
-      ))]
-    }))
-  }
+    }
 
   return (
     <div>
         <Navbar/>
         <form onSubmit={submitCreateForm} className='flex flex-col justify-center items-center m-10 border-2 border-customGray  p-10 bg-customWhite'>
-            <h1 className='py-2 px-[100px]  bg-customLightGreen text-customWhite text-2xl 
-            rounded-lg font-semibold max-sm:px-[2rem]'>Skapa&nbsp;en&nbsp;annons</h1>
-            <InputForm nameText={'title'} typeText='text' placeHolder='Fina villan' 
-            labelText='Titel' onChangeInput={onChangeHandler} valueText={form.title} errorText={error.title}/>
+            <h1 className='py-2 px-[100px]  bg-customOrange text-customWhite text-2xl 
+            rounded-lg font-semibold max-sm:px-[2rem]'>Ändra&nbsp;annons</h1>
+            <InputForm nameText={'title'} typeText='text' placeHolder={'Fina Villan'} 
+            labelText='Titel' onChangeInput={onChangeHandler} valueText={form.title} errorText={error.title} />
             <InputForm nameText={'description'} typeText='text' placeHolder='Mitt hus ligger nära...'
              labelText='Beskrivning' onChangeInput={onChangeHandler} valueText={form.description} errorText={error.description}/>
             <div className='flex justify-center items-center flex-col'>
@@ -342,7 +379,7 @@ const CreatePage = () => {
                 form && form.images.length > 0 && form.images.some(image => image !== '') ? (
                   form.images.map((image, index) =>
                         (
-                          <div className='relative' key={index}>
+                      <div className='relative' key={index}>
                         <X className='absolute top-1 right-1 cursor-pointer hover:text-red-600' onClick={() => onClickDeleteImage(index)}/>
                         <CldImage
                           src={image}
@@ -363,30 +400,25 @@ const CreatePage = () => {
   )
 }   
         </div>
-      <div className='mt-5'>
-      { 
 
-        error.images && <span className='text-red-700 text-lg'>{error.images}</span>
-      }       
-      </div>
             <InputForm nameText={'adress'} typeText='text' placeHolder='Bovägen 123' 
             labelText='Adress' 
             onChangeInput={onChangeHandler} 
             valueText={form.location.adress} 
-            errorText={error.location.adress}
-            changeInputSize={true}/>
+            changeInputSize={true}
+            errorText={error.location.adress}/>
             <InputForm nameText={'city'} 
             typeText='text' placeHolder='Stockholm' 
             labelText='Stad' 
             onChangeInput={onChangeHandler}
              valueText={form.location.city} 
-             errorText={error.location.city}
-             changeInputSize={true}/>
+             changeInputSize={true}
+             errorText={error.location.city}/>
             <InputForm nameText={'district'} 
             typeText='text' placeHolder='Täby' 
             labelText='Kommun' 
             onChangeInput={onChangeHandler} 
-            valueText={form.location.district} 
+            valueText={form.location.district}
             errorText={error.location.district} 
             changeInputSize={true}/>
             <InputForm nameText={'price_per_night'} 
@@ -394,15 +426,15 @@ const CreatePage = () => {
             labelText='Pris per natt' 
             onChangeInput={onChangeHandler} 
             valueText={form.price_per_night as string} 
-            errorText={error.price_per_night as string} 
-            changeInputSize={true} />
+            changeInputSize={true}
+            errorText={error.price_per_night} />
             <InputForm nameText={'maximum_guest'} 
             typeText='text' placeHolder='4' 
             labelText='Max antal gäster' 
             onChangeInput={onChangeHandler} 
             valueText={form.maximum_guest} 
-            errorText={error.maximum_guest}
-            changeInputSize={true} />
+            changeInputSize={true} 
+            errorText={error.maximum_guest}/>
     
             <label className='text-center mt-5 text-lg '>Dagar huset är tillgängligt</label>
             <div className='my-5'>
@@ -411,7 +443,7 @@ const CreatePage = () => {
                   error && <span className='text-lg text-red-700'>{error.available_dates}</span>
                 }
             </div>
-            <div className='grid grid-cols-3 gap-3 max-md:grid-cols-1'>
+                <div className='grid grid-cols-3 gap-3 max-md:grid-cols-1'>
                   {
                   form && form.available_dates.map((datum,index)=>(
                     
@@ -514,9 +546,31 @@ const CreatePage = () => {
 
         }
 
+          {
+          form && form.accessibilityImages.map((bild,index)=>(
+            <div key={index} className={`relative w-12 h-12 border-2 mt-5 cursor-pointer 
+`}>
+             <CldImage 
+             src={bild}
+             width={1200}
+             height={1200}
+             className={`border-2 border-customLightGreen ${isActive[index] ? 'border-black opacity-50' : ''}`}
+             alt='TillgänglighetsAnpassade ikoner'/>
+             {
+              isActive[index] || form.accessibilityImages.includes(bild) ? 
+              <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12'>
+                <Check className='text-customGreen w-full h-full'/></span> : ''
+             }
+           </div>
+          ))
+
+        }
+
 
       </div>
-
+      <div className='mt-5'>
+            <span className='text-lg '>Dina Valda Ikoner</span>
+          </div>
              <InputForm nameText={'distanceToNearestBus'} 
             typeText='text' placeHolder='100 m' 
             labelText='Avstånd till buss' 
@@ -525,8 +579,8 @@ const CreatePage = () => {
             errorText={error.distanceToNearestBus}
             changeInputSize={true} />
             
-            <button className='py-2 px-10 bg-customOrange text-customWhite rounded-lg 
-            text-2xl font-semibold mt-10 mb-5 hover:bg-customOrange/80 transition-all'>Skapa&nbsp;Annons</button>
+            <button className='py-2 px-10 bg-customLightGreen text-customWhite rounded-lg 
+            text-2xl font-semibold mt-10 mb-5 hover:bg-customLightGreen/50 transition-all'>Spara&nbsp;Ändring</button>
               {
                 successMessage &&
                 <p className='bg-emerald-600 mt-5 py-2 px-6 text-customWhite font-bold'>{successMessage}</p>
@@ -541,4 +595,4 @@ const CreatePage = () => {
     </div>
   )
 }
-export default CreatePage
+export default ChangeHome

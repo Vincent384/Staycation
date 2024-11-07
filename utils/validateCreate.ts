@@ -1,6 +1,6 @@
 
 
-export function validateCreate(form:CreateListingProperty,
+export function validateCreate(form:CreateListingProperty | ChangeListingProperty,
     setError:React.Dispatch<React.SetStateAction<CreateListingPropertyErrors>>):boolean{
         let isValid = true;
 

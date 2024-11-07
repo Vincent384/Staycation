@@ -63,7 +63,7 @@ export async function POST(req:Request):Promise<NextResponse>{
         }
 
         console.log(populatedHost)
-        return NextResponse.json({message:'Created a host',host:populatedHost},{status:201})
+        return NextResponse.json({message:'Lyckades skapa en host',host:populatedHost},{status:201})
         
 
 

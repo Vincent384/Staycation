@@ -1,5 +1,6 @@
 'use client'
 import { Navbar } from '@/app/component/Navbar'
+import { Camera } from 'lucide-react'
 
 import { CldImage } from 'next-cloudinary'
 import Link from 'next/link'
@@ -56,8 +57,10 @@ const Dashboard = () => {
               userProfile && 
               <div className='flex justify-center items-center gap-10 h-screen max-md:grid max-md:grid-cols-1 
               max-md:place-content-center max-md:mx-auto max-md:w-[300px]'>
-                    <div className="relative w-[300px] h-[300px] overflow-hidden rounded-full">
-                      <Link href={'/change-host-profile'} >
+                    <div className="relative w-[300px] h-[300px] overflow-hidden rounded-full hover:w-[310px]
+                    hover:h-[310px] hover:transition-all 
+                    transition-all ease-out duration-300">
+                      <Link href={'dashboard/change-host-profile'} >
                         <CldImage
                           src={avatarSrc} 
                           height={1200}
@@ -65,6 +68,8 @@ const Dashboard = () => {
                           alt='Profilbild'
                           className="absolute top-0 left-0 w-full h-full object-cover" 
                                       />
+                            <Camera className='text-customWhite bg-customBlack p-2
+                            rounded-full absolute top-10 right-10 w-[50px] h-[50px]'/>
                       </Link> 
                       </div> 
                       <div className='flex justify-center items-center bg-customWhite rounded-lg p-10 max-md:grid grid-cols-1 max-md:p-0'>
@@ -93,11 +98,11 @@ const Dashboard = () => {
                             <button className='py-2 px-4 bg-customGreen container text-customWhite font-semibold text-lg
                             rounded-lg hover:opacity-50 transition-opacity'>Mina&nbsp;hem</button>
                             </Link>
-                            <Link href={'/create-listing'}>
+                            <Link href={'/dashboard/change-profile'}>
                             <button className='py-2 px-4 bg-customOrange container text-customWhite font-semibold text-lg
                             rounded-lg hover:opacity-50 transition-opacity'>Ändra&nbsp;profil</button>
                             </Link>
-                            <Link href={'/create-listing'}>
+                            <Link href={'dashboard/create-listing'}>
                             <button className='py-2 px-4 bg-customGray container text-customWhite font-semibold text-lg
                             rounded-lg hover:opacity-50 transition-opacity'>Mina meddelande</button>
                             </Link>

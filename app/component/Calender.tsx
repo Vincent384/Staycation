@@ -66,7 +66,7 @@ export const Calender = ({onHandleDay,selectedDates}:CalenderProps) => {
 
 
   return (
-    <div onClick={onClickHandler} className='bg-customGray px-4 py-2 cursor-pointer relative text-white border border-l-0 border-black'>
+    <div onClick={onClickHandler} className='bg-customGray px-4 py-2 z-10 cursor-pointer relative text-white border border-l-0 border-black'>
       <span>2024/06/18</span>
       {
         toggler && 
