@@ -101,7 +101,7 @@ const ChangeProfile = () => {
               const data = await res.json()
               console.log(data)
               if(res.status === 200){
-                localStorage.clear
+                localStorage.clear()
                 setSuccessMessage('Kontot är borta. Du loggas nu ut')
                 window.setTimeout(() => {
                   router.push('/')

@@ -96,7 +96,7 @@ const Homes = () => {
                                     <div className='relative flex flex-col bg-customBlack p-12 rounded-lg max-md:mx-10'>
                                         <X className='absolute top-2 right-2 size-8 text-customWhite cursor-pointer hover:text-red-700' onClick={popupModalWarning}/>
                                         <span className='text-xl text-customWhite font-semibold '
-                                        >Varning! Är du säker på att du vill ta ditt Konto?</span>
+                                        >Varning! Är du säker på att du vill ta ditt hem?</span>
                                         <button onClick={() => onClickHandleDeleteProperty(property._id)}
                                         className='py-2 px-4 mt-5 bg-red-700 text-customWhite text-lg font-semibold rounded-lg
                                         hover:bg-red-500 transition-all'>Ta bort</button>
