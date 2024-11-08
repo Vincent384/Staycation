@@ -4,6 +4,7 @@ import { Navbar } from '@/app/component/Navbar'
 import { SideShopBar } from '@/app/component/SideShopBar'
 import { calculateDaysBetween } from '@/utils/calculateday'
 import { Bus, BusIcon, ChevronDown, ChevronUp, Dot, LoaderCircle, MapPin, Star, X } from 'lucide-react'
+import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -89,7 +90,7 @@ console.log(property)
           <LoaderCircle className='h-screen w-[300px] m-auto spin size-60' />
         ) :
             <main className='relative'>
-              <div className='flex'>
+              <div className='flex justify-center items-center flex-wrap'>
                 <DetailPageModal property={property}/>
                 <SideShopBar  checkinDate={checkinDate}checkoutDate={checkoutDate} guests={guests} property={property} resultDay={resultDay} resultOfPrice={resultOfPrice}/>
             
@@ -113,18 +114,22 @@ console.log(property)
                                 {
                                   property.hostAvatar === '' ?
                                   <div className='size-10'>
-                                      <Image className='object-contain'
+                                      <CldImage className='object-contain'
                                       src={'https://res.cloudinary.com/drkty7j9v/image/upload/v1729774400/profileDefault_hfv9ys.png'}
                                       width={1000}
                                       height={1000}
                                       alt={property.hostName}/>
                                   </div>
                                   :
-                                  <Image
-                                  src={property.hostAvatar}
-                                  width={1000}
-                                  height={1000}
-                                  alt={property.hostName}/>
+                                  <div className="relative w-12 h-12 overflow-hidden rounded-full hover:opacity-50 transition-opacity"> 
+                                  <CldImage
+                                      src={property.hostAvatar} 
+                                      height={1200}
+                                      width={1200}
+                                      alt='Profilbild'
+                                      className="absolute top-0 left-0 w-full h-full object-cover" 
+                                  />
+                              </div>
                                 }
                                   <span>{property.hostName}</span>
                                 </div>

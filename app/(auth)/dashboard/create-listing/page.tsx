@@ -109,17 +109,17 @@ const CreatePage = () => {
 
         
         const data = await res.json()
+        console.log(data)
         if(res.status !== 201){          
           setErrorMessage(data.message)
         }else{
           setSuccessMessage(data.message)
+                  window.setTimeout(() => {
+                    router.push('/dashboard')
+                  }, 2000);
+
         }
 
-        window.setTimeout(() => {
-          router.push('/dashboard')
-        }, 2000);
-
-        console.log(data)
       } catch (error) {
         console.log((error as Error).message)
       }
@@ -162,6 +162,8 @@ const CreatePage = () => {
         accessibilityFeatures: '',
         distanceToNearestBus: '',
         accessibilityImages: '',})
+
+        console.log(form)
 
       if(!validateCreate(form,setError)){
         return setErrorMessage('Fyll i alla fält')
@@ -267,7 +269,7 @@ const CreatePage = () => {
             ...prev, 
             accessibilityFeatures:[...prev.accessibilityFeatures,currentAccessibilityFeatures]
           }))
-          setCurrentFacilities('')
+          setcurrentAccessibilityFeatures('')
       }
     }
 

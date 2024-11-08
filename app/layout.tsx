@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-       className="bg-custom-gradient bg-no-repeat h-full">
+       className="bg-custom-gradient bg-no-repeat min-h-screen">
          <AuthContextProvider>
             {children}
          </AuthContextProvider>

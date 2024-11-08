@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { CldImage, CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { CldUploadWidget,CloudinaryUploadWidgetInfo  } from 'next-cloudinary'
+import { X } from 'lucide-react'
 
 const ChangeProfile = () => {
 
@@ -48,7 +49,7 @@ const ChangeProfile = () => {
             avatar:form.avatar,
             hostId:avatar?._id 
           }
-          
+          console.log(bodyPost)
           try {
             const res = await fetch('http://localhost:3000/api/host/homes',{
               method:'PUT',
@@ -66,8 +67,8 @@ const ChangeProfile = () => {
 
                 console.log(data.updated)
                 
-                localStorage.removeItem('Host')
                 localStorage.removeItem('Avatar')
+                localStorage.removeItem('Host')
                 localStorage.setItem('Host',JSON.stringify(data.updated))
                 setSuccessMessage(data.message)
                 window.setTimeout(() => {
@@ -83,6 +84,13 @@ const ChangeProfile = () => {
           }
         postHostData()
           
+        }
+
+        function removeImage(){
+          setForm((prev) => ({
+            ...prev,
+            avatar:''
+          }))
         }
   
 
@@ -109,7 +117,6 @@ const ChangeProfile = () => {
           if (info && info.secure_url) {
             const url = info.secure_url
             setForm((prev) => ({ ...prev, avatar: url }))
-            console.log(url)
           } else {
             console.error('Info saknar secure_url:', info);
           }
@@ -129,13 +136,17 @@ const ChangeProfile = () => {
               <div className='flex justify-center items-center mt-6'>
                 {
                   form.avatar !== '' ? 
+                  <div className='relative'>
+                  <X className='absolute top-1 right-1 cursor-pointer hover:text-red-600' onClick={removeImage}/>
                   <CldImage
                   src={form.avatar}
                   width={100}
                   height={100}
                   crop={'fill'}
                   alt='Profil-bild'
-                  /> : <div className='flex justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
+                  />
+                    </div>
+                   : <div className='flex justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
                       <span className=''>ProfilBild</span>
                   </div>
                 }

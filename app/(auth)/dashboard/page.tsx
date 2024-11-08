@@ -19,7 +19,7 @@ const Dashboard = () => {
     const userId = localStorage.getItem('User')
     
     if(avatar){
-      router.push('/create-host-profile')
+      router.push('/dashboard/create-host-profile')
     }
 
     if(userId){
@@ -56,7 +56,7 @@ const Dashboard = () => {
             {
               userProfile && 
               <div className='flex justify-center items-center gap-10 h-screen max-md:grid max-md:grid-cols-1 
-              max-md:place-content-center max-md:mx-auto max-md:w-[300px]'>
+              max-md:place-content-center max-md:mx-auto max-md:w-[300px] max-md:my-[8rem]'>
                     <div className="relative w-[300px] h-[300px] overflow-hidden rounded-full hover:w-[310px]
                     hover:h-[310px] hover:transition-all 
                     transition-all ease-out duration-300">
@@ -72,7 +72,7 @@ const Dashboard = () => {
                             rounded-full absolute top-10 right-10 w-[50px] h-[50px]'/>
                       </Link> 
                       </div> 
-                      <div className='flex justify-center items-center bg-customWhite rounded-lg p-10 max-md:grid grid-cols-1 max-md:p-0'>
+                      <div className='flex justify-center items-center bg-customWhite border-2 rounded-lg p-10 max-md:grid grid-cols-1 max-md:p-0'>
                         <div className='flex px-10 justify-center items-center gap-5 flex-col'>
                           <h1 className='text-2xl font-semibold border-b-2 border-customGray max-md:mt-5'>Min&nbsp;Profil</h1>
                           <div className='grid grid-cols-2 gap-4 container max-md:grid-cols-1'>
@@ -89,7 +89,7 @@ const Dashboard = () => {
                             <span className='font-semibold text-lg border-customGray max-md:mb-5 max-md:overflow-auto'>{userProfile.email}</span>
                     </div>
                         </div>
-                        <div className='flex flex-col gap-5 px-10'>
+                        <div className='flex flex-col gap-5 px-10 max-md:pb-10'>
                             <Link href={'/dashboard/create-listing'}>
                             <button className='py-2 px-4 bg-customLightGreen container text-customWhite font-semibold text-lg
                             rounded-lg hover:opacity-50 transition-opacity'>Skapa&nbsp;Annons</button>

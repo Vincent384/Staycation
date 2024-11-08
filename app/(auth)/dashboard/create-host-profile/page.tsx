@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { CldImage, CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { CldUploadWidget,CloudinaryUploadWidgetInfo  } from 'next-cloudinary'
+import { X } from 'lucide-react'
 
 const CreateHost = () => {
 
@@ -78,7 +79,12 @@ const CreateHost = () => {
     
     }
 
-    
+    function removeImage(){
+      setForm((prev) => ({
+        ...prev,
+        avatar:''
+      }))
+    }
 
   return (
     <div>
@@ -125,13 +131,17 @@ const CreateHost = () => {
                   <div className='flex justify-center items-center mt-6'>
                     {
                       form.avatar !== '' ? 
-                      <CldImage
-                      src={form.avatar}
-                      width={100}
-                      height={100}
-                      crop={'fill'}
-                      alt='Profil-bild'
-                      /> : <div className='flex justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
+                      <div className='relative'>
+                        <X className='absolute top-1 right-1 cursor-pointer hover:text-red-600' onClick={removeImage}/>
+                        <CldImage
+                        src={form.avatar}
+                        width={100}
+                        height={100}
+                        crop={'fill'}
+                        alt='Profil-bild'
+                        /> 
+                      </div>
+                        : <div className='flex justify-center items-center w-[100px] h-[100px] border-4 border-customGray'>
                           <span className=''>ProfilBild</span>
                       </div>
                     }

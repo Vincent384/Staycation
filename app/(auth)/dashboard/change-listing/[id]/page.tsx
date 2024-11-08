@@ -304,7 +304,7 @@ const ChangeHome = () => {
             ...prev, 
             accessibilityFeatures:[...prev.accessibilityFeatures,currentAccessibilityFeatures]
           }))
-          setCurrentFacilities('')
+          setcurrentAccessibilityFeatures('')
       }
     }
 

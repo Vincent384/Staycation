@@ -77,7 +77,7 @@ const Homes = () => {
     }
     
   return (
-    <div className='h-screen'>
+    <div className='mb-10'>
         <Navbar/>
         <h1 className='text-3xl font-semibold text-center my-10 text-customWhite'>Dina Hem</h1>
         <div className=''>
@@ -88,7 +88,7 @@ const Homes = () => {
           ) : 
           
           property && property.map((property)=>(
-         <div className='bg-customWhite w-[500px] m-auto rounded-lg max-md:w-[300px]' key={property._id}>
+         <div className='bg-customWhite w-[500px] m-auto border-2 rounded-lg max-md:w-[300px]' key={property._id}>
           {
                             modal && 
                           
@@ -113,9 +113,9 @@ const Homes = () => {
                 <button className='py-2 px-4 bg-red-700 text-customWhite text-lg font-semibold rounded-lg' onClick={popupModalWarning}>Ta bort</button>
             </div>
          <div className='flex justify-center items-center '>
-             <div className=''>
-                 <h2 className='bg-customBeige text-customBlack border-2 border-customGray rounded-lg
-                 font-semibold py-2 text-xl my-5 text-center'>{property.title}</h2>
+             <div className='flex justify-center items-center flex-col'>
+                 <h2 className='bg-customBeige  text-customBlack border-2 border-customGray rounded-lg
+                 font-semibold py-2 px-2 text-xl my-5 text-center'>{property.title}</h2>
                  <div className='w-[200px] border-2 border-customGray'>
                  <CldImage
                  src={property.images[activeImage]}
@@ -131,9 +131,9 @@ const Homes = () => {
 
                              <div className='flex m-3 gap-5 max-md:grid max-md:grid-cols-1 '>{property.images.map((image,index)=>(
                                  <div onClick={() => setActiveImage(index)} className='w-[100px] 
-                                 border-2 border-customGray cursor-pointer hover:opacity-50 transition-opacity'
+                                 border-2 border-customGray cursor-pointer  hover:opacity-50 transition-opacity'
                                  key={index}>
-                                 <CldImage 
+                                 <CldImage className='' 
                                  src={image}
                                  width={2000}
                                  height={2000}
@@ -173,32 +173,32 @@ const Homes = () => {
                         <span className='text-lg '>Tillgängliga datum</span>
                     </div>
                     <div className='grid grid-cols-3 text-center bg-customGray p-5 mx-5 rounded-lg mt-5
-                    text-customWhite font-semibold text-lg'>{property.available_dates.map((datum,index)=>(
+                    text-customWhite font-semibold text-lg max-md:grid-cols-2'>{property.available_dates.map((datum,index)=>(
                         <span key={index}>{datum}</span>
                     ))}</div>
                 </div>
                      <h3 className='text-center text-xl mt-5'>Beskrivning</h3>    
-                 <div className=' mt-5 mx-10 text-white rounded-lg bg-customOrange'>
+                 <div className=' mt-5 mx-10 text-white rounded-lg bg-customOrange max-md:mx-5'>
                      <p className='p-5 text-lg'>{property.description}</p>
                  </div>
                  <div>
                      <h4 className='text-xl text-center mt-5'>Hus regler</h4>
                      <div className='flex flex-col items-center mt-5 text-lg justify-center bg-customGreen
-                      text-customWhite rounded-lg mx-10'>{property.house_rules.map((regler,index)=>(
+                      text-customWhite rounded-lg mx-10 p-5'>{property.house_rules.map((regler,index)=>(
                          <div className='' key={index}>
                              <span>{regler}</span>
                          </div>
                      ))}</div>
                                              <h4 className='text-xl text-center mt-5'>Bekvämligheter</h4>
                      <div className='flex flex-col items-center mt-5 text-lg justify-center bg-customGreen
-                      text-customWhite rounded-lg mx-10'>{property.facilities.map((regler,index)=>(
+                      text-customWhite rounded-lg mx-10 p-5'>{property.facilities.map((regler,index)=>(
                          <div className='' key={index}>
                              <span>{regler}</span>
                          </div>
                      ))}</div>
                          <h4 className='text-xl text-center mt-5'>TillgänglighetsAnpassat</h4>
                      <div className='flex flex-col items-center mt-5 text-lg justify-center bg-customGreen
-                      text-customWhite rounded-lg mx-10'>{property.accessibilityFeatures.map((regler,index)=>(
+                      text-customWhite rounded-lg mx-10 p-5'>{property.accessibilityFeatures.map((regler,index)=>(
                          <div className='' key={index}>
                              <span>{regler}</span>
                          </div>

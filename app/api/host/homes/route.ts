@@ -48,6 +48,12 @@ export async function POST(req:Request):Promise<NextResponse>{
             return NextResponse.json({message:'Could not find that user'},{status:404})
         }
 
+        const checkHostName = await Host.findOne({name:name})
+
+        if(checkHostName){
+            return NextResponse.json({message:'Användarnamn redan upptagen'})
+        }
+
         const newHost = new Host({
             name:name,
             avatar:avatar,
@@ -62,7 +68,6 @@ export async function POST(req:Request):Promise<NextResponse>{
             return NextResponse.json({ message: 'Could not find the created host' }, { status: 404 });
         }
 
-        console.log(populatedHost)
         return NextResponse.json({message:'Lyckades skapa en host',host:populatedHost},{status:201})
         
 
@@ -85,17 +90,17 @@ export async function PUT(req:Request):Promise<NextResponse>{
         }
 
 
-        const updateHost = {
-            avatar:avatar
-        }
-
-        const findUserAndUpdate = await Host.findByIdAndUpdate(hostId,updateHost)
+        const findUserAndUpdate = await Host.findByIdAndUpdate(hostId,avatar)
         
-        console.log(updateHost)
-        console.log(findUserAndUpdate)
         
         if(!findUserAndUpdate){
             return NextResponse.json({message:'"Användaren kunde inte hittas"'},{status:500})
+        }
+
+        const updateHost = {
+            name:findUserAndUpdate.name,
+            avatar:findUserAndUpdate.avatar,
+            _id:hostId,
         }
         
         return NextResponse.json({message:'Uppdateringen lyckades',updated:updateHost},{status:201})

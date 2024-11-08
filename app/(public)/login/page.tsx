@@ -54,16 +54,16 @@ const Login = () => {
                 body:JSON.stringify(bodyPost)
             })
 
-            if(res.status !== 200){
-              return setMessageError(res.statusText)
-            }
-
+            
             if(res.ok){
               localStorage.setItem('status','Inloggad')
             }
-
+            
             const data = await res.json()
             
+            if(res.status !== 200){
+              return setMessageError(data.message)
+            }
 
             getDataAvatar(data.responseData.id)
             

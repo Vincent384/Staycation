@@ -66,7 +66,7 @@ const Register = () => {
 
 
       window.setTimeout(() => {
-        router.push('/create-host-profile')
+        router.push('/dashboard/create-host-profile')
       }, 2000);
 
     } catch (error) {

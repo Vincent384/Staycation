@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react'
 
 const ListingProperties = () => {
 
-  const { city } = useParams()
+  const { city } = useParams<{city:string | string[]}>()
   const router = useRouter()
   const [listings, setListings] = useState<ListingProperty[] |null>(null)
   const [filteredListings, setFilteredListings] = useState<ListingProperty[] |null>(null)
@@ -25,6 +25,7 @@ const ListingProperties = () => {
   const guests = '2'
   
   useEffect(() => {
+    console.log(city)
     async function getData() {
       try {
         setLoading(true)
@@ -49,14 +50,16 @@ const ListingProperties = () => {
         }
         setLoading(false)
 
+        const decodedCity = decodeURIComponent(Array.isArray(city) ? city[0] : city).toLowerCase();
+
 
         setListings(properties)
         setListings(properties)
 
         const filteredProperties = properties.filter((property) => 
-          property.location.city.toLowerCase() === city?.toString().toLowerCase()
+          property.location.city.toLowerCase() === decodedCity?.toString().toLowerCase()
         )
-
+   
         setFilteredListings(filteredProperties)
       } catch (error) {
         setLoading(false)

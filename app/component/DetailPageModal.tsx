@@ -1,4 +1,5 @@
 import { BusIcon, ChevronDown, ChevronUp, Dot, X } from 'lucide-react'
+import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
@@ -23,7 +24,7 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
   }
 
   return (
-    <div>  <div className='absolute bg-black/90 top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
+    <div>  <div className='relative flex-col inset-0 flex justify-center items-center bg-black bg-opacity-50  z-10'>
     {
      modalPicture &&   
      <X onClick={modalPictureToggler} className='absolute text-white top-2 right-2 size-10 cursor-pointer z-10'/>
@@ -34,11 +35,12 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
            property.images.map((image)=>(
             <div className='size-[500px] max-lg:size-[300px] animate-slideDown '>
 
-               <Image className='object-contain w-full h-full'
+               <CldImage className='object-contain w-full h-full'
                src={image}
                width={1200}
                height={1200}
                alt={property.title}
+               crop={'fill'}
                />
 
            </div>
@@ -50,14 +52,16 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
 
  {
   property && (
-   <div className='grid grid-cols-3 gap-3 place-content-center container my-10 max-sm:grid-cols-1 max-lg:px-5 
-   max-lg:flex max-lg:justify-center max-lg:gap-0 '>
+   <div className='grid grid-cols-3 gap-3 mx-auto place-content-center container mt-5 max-lg:flex max-lg flex-wrap
+   max-lg:justify-center max-lg:items-center 
+   '>
        <div className='relative border-2 border-customGray col-start-2 col-end-3 row-span-1 container'>
-         <Image className='object-cover h-full w-full'
+         <CldImage className='object-cover h-full w-full'
          src={property.images[0]} 
          width={1200} 
          height={1200}
-         alt={property.title}/>
+         alt={property.title}
+         crop={'fill'}/>
          <div>
           { 
               <span onClick={modalPictureToggler} className='absolute top-2 right-2 
@@ -77,7 +81,7 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
                cursor-pointer bg-customBeige p-2 border border-customGray rounded-lg max-lg:hidden'>Se mer</span>
            
            <div className='flex items-center container justify-between bg-customWhite border border-black rounded-lg mt-5 p-2
-           max-lg:flex-col max-lg:border-none '>
+             '>
                <div className='border-r-2 border-black max-lg:border-none'>
 
                <span className=''>{property.accessibilityImages?.map((images,index)=>(
