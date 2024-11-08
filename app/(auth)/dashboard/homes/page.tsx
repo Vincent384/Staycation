@@ -89,20 +89,21 @@ const Homes = () => {
           
           property && property.map((property)=>(
          <div className='bg-customWhite w-[500px] m-auto rounded-lg max-md:w-[300px]' key={property._id}>
-            {
-                modal && 
-                <div className='relative'>
-                    <div className='absolute top-[10rem] left-[16rem] transform -translate-x-1/2 -translate-y-1/2 max-md:left-[150px]'>
-                        <div className='relative bg-customBlack p-12 rounded-lg'>
-                            <X className='absolute top-2 right-2 size-8 text-customWhite cursor-pointer hover:text-red-700' onClick={popupModalWarning}/>
-                            <span className='text-xl text-customWhite font-semibold pb-10'
-                            >Varning! Är du säker på att du vill&nbsp;ta&nbsp;bort&nbsp;ditt&nbsp;hus?</span>
-                            <button onClick={() => onClickHandleDeleteProperty(property._id)}
-                             className='py-2 px-4 mt-5 bg-red-700 text-customWhite text-lg font-semibold rounded-lg'>Ta bort</button>
-                        </div>
-                    </div>
-                </div>
-            }
+          {
+                            modal && 
+                          
+                                <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10'>
+                                    <div className='relative flex flex-col bg-customBlack p-12 rounded-lg max-md:mx-10'>
+                                        <X className='absolute top-2 right-2 size-8 text-customWhite cursor-pointer hover:text-red-700' onClick={popupModalWarning}/>
+                                        <span className='text-xl text-customWhite font-semibold '
+                                        >Varning! Är du säker på att du vill ta ditt Konto?</span>
+                                        <button onClick={() => onClickHandleDeleteProperty(property._id)}
+                                        className='py-2 px-4 mt-5 bg-red-700 text-customWhite text-lg font-semibold rounded-lg
+                                        hover:bg-red-500 transition-all'>Ta bort</button>
+                                    </div>
+                                </div>
+                            
+                            }
             <div className='p-5 flex justify-between'>
                 <Link href={`/dashboard/change-listing/${property._id}`}>
                 <button className='py-2 px-4 bg-customOrange text-customWhite font-semibold text-lg

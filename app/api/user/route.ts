@@ -23,7 +23,7 @@ export async function PUT(req:Request):Promise<NextResponse>{
             return NextResponse.json({message:'Could not find the User'},{status:404})
         }
 
-        return NextResponse.json({message:'Update User successful',updateUser})
+        return NextResponse.json({message:'Ändringarna sparade',updateUser},{status:200})
         
     } catch (error) {
         console.log(error)
@@ -44,7 +44,7 @@ export async function DELETE(req:Request):Promise<NextResponse>{
             return NextResponse.json({message:'Could not find the User'},{status:404})
         }
 
-        return NextResponse.json({message:'Delete User successful'})
+        return NextResponse.json({message:'Delete User successful'},{status:200})
         
     } catch (error) {
         console.log(error)

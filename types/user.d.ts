@@ -6,13 +6,12 @@ type IUser = {
     password:string,
 }
 
-
 type Login = {
     email:string,
     password:string
 }
 
-type UpdateUser = User & {
+type UpdateUser = IUser & {
     userId:string
 }
 
