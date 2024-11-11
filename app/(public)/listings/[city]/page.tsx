@@ -54,13 +54,23 @@ const ListingProperties = () => {
 
 
         setListings(properties)
-        setListings(properties)
 
         const filteredProperties = properties.filter((property) => 
           property.location.city.toLowerCase() === decodedCity?.toString().toLowerCase()
         )
-   
+
+        console.log(filteredProperties)
+
+        if(filteredProperties.filter((stad) => (stad.location.city === ''))){
+          const filterDisricts = properties.filter((property)=>(
+            property.location.district.toLowerCase() === decodedCity?.toString().toLocaleLowerCase()
+          ))
+         return setFilteredListings(filterDisricts)
+        }
+        
         setFilteredListings(filteredProperties)
+        
+   
       } catch (error) {
         setLoading(false)
       }

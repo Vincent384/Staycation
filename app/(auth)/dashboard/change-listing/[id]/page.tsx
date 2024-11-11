@@ -238,7 +238,6 @@ const ChangeHome = () => {
     function onHandleDay(day:string,year:string,month:string){
       const monthNumber = convertMonthAndDay(month)
       const date = `${year}-${monthNumber}-${day}`
-      console.log(date)
 
       setSelectedDates(prevDates =>
         prevDates.includes(date)
