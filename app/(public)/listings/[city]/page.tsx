@@ -3,9 +3,11 @@ import { Calender } from '@/app/component/Calender'
 import { ModalFilter } from '@/app/component/ModalFilter'
 import { Navbar } from '@/app/component/Navbar'
 import { SearchBar } from '@/app/component/SearchBar'
+import { convertMonthAndDay } from '@/utils/monthDayConvert'
 import { Bed, Bus, CalendarIcon, LoaderCircle, MapPin, Minus, Plus } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
+import { list } from 'postcss'
 import React, { useEffect, useState } from 'react'
 
 
@@ -17,15 +19,19 @@ const ListingProperties = () => {
   const [listings, setListings] = useState<ListingProperty[] |null>(null)
   const [filteredListings, setFilteredListings] = useState<ListingProperty[] |null>(null)
   const [input, setInput] = useState<string>('')
-  const [date, setDate] = React.useState<Date>()
+  const [date, setDate] = useState<any>({
+    available_dates:[]
+  })
   const [displayResult, setDisplayResult] = useState<ListingProperty | null>(null)
   const [loading, setLoading] = useState(false)
+  const [howManyGuests, setHowManyGuests] = useState<number>(2)
+  const [offSet, setOffSet] = useState<number>(0)
+  const [searchResultsCount, setSearchResultsCount] = useState<number>(0)
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const checkinDate = '2025-06-05'
   const checkoutDate = '2025-06-08'
-  const guests = '2'
   
   useEffect(() => {
-    console.log(city)
     async function getData() {
       try {
         setLoading(true)
@@ -55,21 +61,18 @@ const ListingProperties = () => {
 
         setListings(properties)
 
-        const filteredProperties = properties.filter((property) => 
-          property.location.city.toLowerCase() === decodedCity?.toString().toLowerCase()
-        )
-
-        console.log(filteredProperties)
-
-        if(filteredProperties.filter((stad) => (stad.location.city === ''))){
-          const filterDisricts = properties.filter((property)=>(
-            property.location.district.toLowerCase() === decodedCity?.toString().toLocaleLowerCase()
-          ))
-         return setFilteredListings(filterDisricts)
-        }
-        
-        setFilteredListings(filteredProperties)
-        
+        const filteredProperties = properties.filter((property) => {
+          const propertyCity = property.location.city.toLowerCase();
+          const propertyDistrict = property.location.district.toLowerCase();
+  
+          if (propertyDistrict.includes(decodedCity)) {
+            return propertyDistrict === decodedCity;
+          } else {
+            return propertyCity === decodedCity;
+          }
+        });
+      
+        setFilteredListings(filteredProperties);
    
       } catch (error) {
         setLoading(false)
@@ -81,28 +84,103 @@ const ListingProperties = () => {
     }
   }, [])
 
-  
+
+  function navigateOnClick(id:string){
+    router.push(`/listings/${city}/property/${id}/${checkinDate}/${checkoutDate}/${howManyGuests}`)
+  }
+
   function onSubmit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    
+    if(input.trim() === ''){
+      return
+    }
 
     if(!listings) return
 
-    const findTitle = listings.find((todo:ListingProperty) => {
-      return todo.title.toLowerCase() === input.toLowerCase()
-    })
-    console.log(findTitle)
-    setDisplayResult(findTitle as ListingProperty)
+  const filtered = listings.filter((prop) => {
+    const cityInput = prop.location.city
+    const districtInput = prop.location.district
+
+    if(cityInput.includes(input)){
+      setInput('')
+      return cityInput
+    }
+    if(districtInput.includes(input)){
+      setInput('')
+      return districtInput
+    }
+
+  })
+  let sum = filtered.length
+
+ setSearchResultsCount(sum)
+ setFilteredListings(filtered)
+
   }
 
-  function onSearch(propertyTitle:string) {
-    setInput(propertyTitle)
+
+
+  function onChangeSearch(searchTitle:string) {
+    setInput(searchTitle)
   }
 
-  function navigateOnClick(id:string){
-    router.push(`/listings/${city}/property/${id}/${checkinDate}/${checkoutDate}/${guests}`)
+  function onClickGuestHandler(change:number){
+      if(change === -1 && howManyGuests === 0)return
+      setOffSet(prev => prev + change)
   }
 
-  // TODO Göra klart datum/klicka antal gäster funktionen
+  useEffect(() => {
+  setHowManyGuests(offSet)
+  }, [offSet])
+
+
+
+  function onFilterHandler(search: string) {
+ {
+
+  let filtered = [...listings || []] 
+  
+      switch (search) {
+        case 'low':
+       
+          filtered = filtered?.sort((a, b) => a.price_per_night - b.price_per_night);
+          break;
+          
+        case 'high':
+         
+          filtered = filtered?.sort((a, b) => b.price_per_night - a.price_per_night);
+          break
+
+      }
+
+      setFilteredListings(filtered)
+    }
+  }
+
+  function onHandleDay(day:string,year:string,month:string){
+    const monthNumber = convertMonthAndDay(month)
+    const date = `${year}-${monthNumber}-${day}`
+    console.log(date)
+
+    setSelectedDates(prevDates =>
+      prevDates.includes(date)
+      ? prevDates.filter(d => d !== date)
+      :[...prevDates,date]
+    )     
+
+    console.log(selectedDates)
+    // setDate((prev) =>({
+    //   ...prev,
+    //   available_dates:[...prev.includes(date) ?
+    //     prev.filter((datum) => (datum !== date))
+    //     : [...prev,date]
+    //   ]
+    // }))
+
+  }
+  
+
 
   return (
     <>
@@ -113,24 +191,27 @@ const ListingProperties = () => {
       <div>
       <Navbar/> 
        <SearchBar onSubmit={onSubmit} setInput={setInput} 
-       displayResult={displayResult} listings={listings} input={input} onSearch={onSearch}/>
+       displayResult={displayResult} listings={listings} input={input} onChangeSearch={onChangeSearch}/>
 
-      <div>
-        <div className='flex justify-center items-center mt-5'>
+      <div className=''>
+        <div className='grid grid-cols-5 w-[500px] mx-auto mt-5 text-center max-md:w-[300px]'>
           <span className='bg-gray-300 rounded-l-lg p-2 border border-black'>Datum</span>
-          <Calender/>
+              <Calender onHandleDay={onHandleDay} selectedDates={selectedDates} startDate='Start' className='absolute top-16 left-[-50px] z-50 max-sm:left-[150px] max-md:top-[100px]'/>  
+            <Calender onHandleDay={onHandleDay} selectedDates={selectedDates} endDate='Slut' className='absolute top-16 left-[150px] max-md:top-[px] z-50'/>
+
           <span className='bg-gray-300  border border-l-0 border-black p-2'>Antal Gäster</span>
-          <div className='flex bg-customGray gap-2 rounded-r-lg border border-l-0 border-black  p-2'>
-            <Minus className='bg-black rounded-l-lg text-white' />
-            <span className='text-white'>0</span>
-            <Plus className='bg-black rounded-r-lg text-white' />
+          <div className='flex items-center justify-center bg-customGray gap-2 rounded-r-lg border border-l-0 border-black container'>
+            <Minus onClick={() => onClickGuestHandler(-1)} className='bg-black rounded-l-lg cursor-pointer text-white' />
+            <span className='text-white'>{howManyGuests}</span>
+            <Plus onClick={() => onClickGuestHandler(1)} className='bg-black rounded-r-lg cursor-pointer text-white' />
           </div>
         </div>
 
       </div>
-
-      <ModalFilter/>
-
+          <div className='flex justify-around items-center mb-5 mt-3'>
+            <span className='text-customWhite'>Antal Träffar: {searchResultsCount}</span>
+            <ModalFilter onFilterHandler={onFilterHandler}/>
+          </div>
 <div className='flex justify-center items-center gap-10 flex-wrap mb-10'>
       { 
           filteredListings && filteredListings.map((property) => (

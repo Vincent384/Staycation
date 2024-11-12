@@ -1,8 +1,11 @@
 import { ChevronDown, ChevronUp, X } from 'lucide-react'
 import React, { useState } from 'react'
 
+type ModalFilterProps = {
+  onFilterHandler:(text:string,) => void 
+}
 
-export const ModalFilter = ({}) => {
+export const ModalFilter = ({onFilterHandler}:ModalFilterProps) => {
 
     const [buttonModal, setButtonModal] = useState<boolean>(true)
 
@@ -12,9 +15,7 @@ export const ModalFilter = ({}) => {
     
   
     return (
-      //TODO Göra klart antal träffar
-    <div className='flex justify-around items-center mb-5 mt-3'>
-    <span className='text-customWhite'>Antal Träffar:2</span>
+    <div className='z-20'>
     {
 buttonModal ? (
 <div className='relative inline-block'>
@@ -43,28 +44,24 @@ buttonModal ? (
 
         <form className='flex flex-col gap-3'>
           <div className='flex'>
-            <input className='cursor-pointer' type="checkbox" />
+            <input name='lowPrice' onClick={(e) => onFilterHandler('low')} className='cursor-pointer' type="checkbox" />
             <label className='ml-3'>Lägst pris</label>
           </div>
           <div className='flex'>
-            <input className='cursor-pointer' type="checkbox" />
+            <input onClick={() => onFilterHandler('high')} className='cursor-pointer' type="checkbox" />
             <label className='ml-3'>Högst pris</label>
-          </div>
-          <div className='flex'>
-            <input className='cursor-pointer' type="checkbox" />
-            <label className='ml-3'>Senaste hus</label>
           </div>
           <span>Special anpassning:</span>
           <div className='flex items-center'>
-            <input className='cursor-pointer' type="checkbox" />
+            <input onClick={() => onFilterHandler('wheel')} className='cursor-pointer' type="checkbox" />
             <label className='ml-3'>Rullstolsanpassat</label>
           </div>
           <div className='flex'>
-            <input className='cursor-pointer' type="checkbox" />
-            <label className='ml-3'>Synskadeanpassat</label>
+            <input onClick={() => onFilterHandler('synskadad')} className='cursor-pointer' type="checkbox" />
+            <label  className='ml-3'>Synskadeanpassat</label>
           </div>
           <div className='flex'>
-            <input className='cursor-pointer' type="checkbox" />
+            <input onClick={() => onFilterHandler('hearing')} className='cursor-pointer' type="checkbox" />
             <label className='ml-3'>Hörselskadadeanpassat</label>
           </div>
         </form>

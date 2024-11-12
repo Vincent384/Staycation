@@ -6,18 +6,22 @@ import React, { useEffect, useState } from 'react'
 
 type CalenderProps = {
   onHandleDay:(day:string,year:string,month:string) => (void)
-  selectedDates:string[]
+  selectedDates:string[],
+  className?:string,
+  startDate?:string,
+  endDate?:string,
 }
 
-export const Calender = ({onHandleDay,selectedDates}:CalenderProps) => {
+export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate}:CalenderProps) => {
 
   const [toggler, setToggler] = useState(false)
   const [days, setDays] = useState<string[] | null>(null)
   const [displayMonth, setDisplayMonth] = useState<string>('')
   const [year, setYear] = useState<string>('')
   const weekDays:string[] = ['Mån','Tis','Ons','Tors','Fre','Lör','Sön']
-  const [monthOffset, setMonthOffset] = useState(0)
-  
+  const [monthOffset, setMonthOffset] = useState<number>(0)
+  const getdate = new Date()
+  const date = getdate.toLocaleDateString('sv-SE')
   function onClickHandler(){
     setToggler(prev => !prev)
   }
@@ -66,14 +70,23 @@ export const Calender = ({onHandleDay,selectedDates}:CalenderProps) => {
 
 
   return (
-    <div onClick={onClickHandler} className='bg-customGray px-4 py-2 z-10 cursor-pointer relative text-white border border-l-0 border-black'>
-      <span>2024/06/18</span>
+    <div onClick={onClickHandler} className={`bg-customGray px-4 py-2 z-10 cursor-pointer relative text-white border border-l-0 border-black`}>
+      <span>
+        {
+          startDate || endDate ?  
+          <div>
+            <span>{startDate}</span> 
+            <span>{endDate}</span>
+          </div> :
+          <span>{date}</span> 
+        }
+      </span>
       {
         toggler && 
         <div
           onClick={(e) => e.stopPropagation()} 
-          className='absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                     bg-customCalenderGray border text-black border-customGray w-[300px] h-[300px] rounded-xl'
+          className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                     bg-customCalenderGray border text-black border-customGray w-[300px] h-[300px] rounded-xl ${className}`}
         >
           <div>
             <span 
