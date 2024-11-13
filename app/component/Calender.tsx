@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 
 type CalenderProps = {
-  selectedDates:string[],
+  selectedDates?:string[],
   onHandleDay?:(day:string,year:string,month:string,isStartDate:boolean) => (void)
   className?:string,
   startDate?:string,
@@ -15,11 +15,12 @@ type CalenderProps = {
   checkinDate?:string,
   checkoutDate?:string,
   toggler:boolean,
+  selectedDatesEnd?:string[],
   setToggler:React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,endDateCalender,isStartDate
-,checkinDate,checkoutDate,setToggler,toggler}:CalenderProps) => {
+,checkinDate,checkoutDate,setToggler,toggler,selectedDatesEnd}:CalenderProps) => {
 
   const [days, setDays] = useState<string[] | null>(null)
   const [displayMonth, setDisplayMonth] = useState<string>('')
@@ -77,12 +78,12 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,
 
 
   return (
-    <div onClick={onClickHandler} className={`bg-customGray px-4 py-2 z-10 cursor-pointer 
+    <div onClick={onClickHandler} className={`bg-customGray px-4 py-2 cursor-pointer 
     relative text-white border border-l-0 border-black ${className ? 'border-none bg-transparent' : ''}`}>
       <span>
         {
           startDate || endDate ?  
-          <div>
+          <div className='max-md:text-sm'>
             <span>{checkinDate === '' ? startDate : checkinDate}</span> 
             <span>{checkoutDate === '' ? endDate : checkoutDate}</span>
           </div> :
@@ -97,6 +98,16 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,
                      bg-customCalenderGray border text-black border-customGray w-[300px] h-[300px] rounded-xl ${className}`}
         >
           <div>
+            <div className='absolute top-1 left-1'>
+              {
+                startDate && <span className='text-xl font-semibold bg-customCalenderGreen text-customWhite rounded-lg p-1'>StartDatum</span>
+              }
+            </div>
+            <div className='absolute top-1 left-1'>
+              {
+                endDate && <span className='text-xl font-semibold bg-customCalenderRed text-customWhite rounded-lg p-1'>Slutdatum</span>
+              }
+            </div>
             <span 
               className='absolute top-2 right-2 cursor-pointer border-2 border-black rounded-full hover:bg-black hover:text-white' 
               onClick={closeCalendar}
@@ -127,7 +138,8 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,
           {days && days.map((dag, index) => {
                 const monthNumber = convertMonthAndDay(displayMonth)
                 const date = `${year}-${monthNumber}-${dag}`;
-                const isSelected = selectedDates.includes(date)
+                const isSelectedEnd = selectedDatesEnd?.includes(date)
+                const isSelected = selectedDates?.includes(date)
             const isToday = new Date().getDate() === parseInt(dag) && new Date().getMonth() === new Date(parseInt(year), parseInt(displayMonth)).getMonth() && new Date().getFullYear() === parseInt(year);
             const isPastDate = new Date(parseInt(year), new Date().getMonth() + monthOffset, parseInt(dag)) < new Date();
             return (
@@ -142,7 +154,8 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,
                 }}
                 className={`
                   flex items-center justify-center w-8 h-8 
-                  ${isSelected ? 'bg-black rounded-full text-white' : ''} 
+                  ${isSelected ? 'bg-customCalenderGreen rounded-full text-white' : ''} 
+                  ${isSelectedEnd ? 'bg-customCalenderRed rounded-full text-white' : ''} 
                   ${isPastDate ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer'}
                   ${isToday ? 'font-bold underline' : ''}
                   S `}

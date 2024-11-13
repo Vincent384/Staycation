@@ -28,6 +28,7 @@ const ListingProperties = () => {
   const [offSet, setOffSet] = useState<number>(0)
   const [searchResultsCount, setSearchResultsCount] = useState<number>(0)
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [selectedDatesEnd, setSelectedDatesEnd] = useState<string[]>([]);
   const [checkinDate, setCheckinDate] = useState<string>('');
   const [checkoutDate, setCheckoutDate] = useState<string>('');
   const [isStartDate, setIsStartDate] = useState<boolean>(false)
@@ -166,12 +167,9 @@ const ListingProperties = () => {
     setSelectedDates(prevDates =>
       prevDates.includes(date)
       ? prevDates.filter(d => d !== date)
-      :[...prevDates,date]
+      :[date]
     )     
-    
-    if (isStartDate) {
-      setCheckinDate(date)
-    }
+    setCheckinDate(date)
   };
 
   
@@ -180,14 +178,16 @@ const ListingProperties = () => {
     const date = `${year}-${monthNumber}-${day}`;
 
     
-    setSelectedDates(prevDates =>
+    setSelectedDatesEnd(prevDates =>
       prevDates.includes(date)
       ? prevDates.filter(d => d !== date)
-      :[...prevDates,date]
+      :[date]
     )     
 
     setCheckoutDate(date)
-    setToggler(prev => !prev)
+    setTimeout(() => {
+      setToggler(prev => !prev)
+    }, 1000);
   };
 
 
@@ -202,8 +202,8 @@ const ListingProperties = () => {
        <SearchBar onSubmit={onSubmit} setInput={setInput} 
        displayResult={displayResult} listings={listings} input={input} onChangeSearch={onChangeSearch}/>
 
-<div className="mx-auto mt-5 w-[500px] text-center max-md:w-[300px]">
-  <div className="grid grid-cols-5 max-md:w-[300px] items-center gap-0">
+<div className="mx-auto mt-5 w-[500px] text-center max-md:w-[400px]">
+  <div className="grid grid-cols-5 max-md:w-[360px] items-center gap-0">
     <span className="bg-gray-300 rounded-l-lg p-2 border border-black h-full flex items-center justify-center">
       Datum
     </span>
@@ -217,7 +217,7 @@ const ListingProperties = () => {
         checkinDate={checkinDate}
 
         startDate="Startdatum"
-        className="absolute top-16 left-[-50px] z-50 max-sm:left-[150px] max-md:top-[100px]"
+        className="absolute top-16 left-[-50px] z-50 max-md:left-[120px] max-md:top-[100px]"
         />
     </div>
 
@@ -225,13 +225,13 @@ const ListingProperties = () => {
     <div className="relative h-full flex items-center justify-center border border-l-0 bg-customGray p-2 border-black">
       <Calender
         endDateCalender={endDateCalender}
-        selectedDates={selectedDates}
+        selectedDatesEnd={selectedDatesEnd}
         checkoutDate={checkoutDate}
         isStartDate={false}
         toggler={toggler}
         setToggler={setToggler}
         endDate="Slutdatum"
-        className="absolute top-16 left-[150px] max-md:top-[100px] z-50"
+        className="absolute top-16 left-[150px] max-md:top-[400px] max-md:left-[50px] z-50"
       />
     </div>
 

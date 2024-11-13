@@ -15,7 +15,7 @@ export const ModalFilter = ({onFilterHandler}:ModalFilterProps) => {
     
   
     return (
-    <div className='z-20'>
+    <div className=''>
     {
 buttonModal ? (
 <div className='relative inline-block'>
