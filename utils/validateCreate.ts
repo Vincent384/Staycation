@@ -66,12 +66,12 @@ export function validateCreate(form:CreateListingProperty | ChangeListingPropert
             isValid = false;
           }
 
-          if (!form.available_dates || form.available_dates.some((datum) => (datum === ''))) {
-            setError(prev => ({ ...prev, available_dates: 'Måste ange datum' }));
+          if (!Array.isArray(form.available_dates) || form.available_dates.length === 0 || form.available_dates.some((datum) => datum.trim() === '')) {
+            setError(prev => ({ ...prev, available_dates: 'Måste ange husregler' }));
             isValid = false;
           }
 
-          if (!form.house_rules || form.house_rules.some((datum) => (datum === ''))) {
+          if (!Array.isArray(form.house_rules) || form.house_rules.length === 0 || form.house_rules.some((rule) => rule.trim() === '')) {
             setError(prev => ({ ...prev, house_rules: 'Behöver regler' }));
             isValid = false;
           }

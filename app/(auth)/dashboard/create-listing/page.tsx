@@ -438,6 +438,11 @@ const CreatePage = () => {
       >
         Lägg till
       </button>
+      
+            {
+              error && <span className='text-lg text-red-700'>{error.available_dates}</span>
+            }
+      
       {
         form.house_rules.length > 0 &&
         form.house_rules.map((regler,index)=>(

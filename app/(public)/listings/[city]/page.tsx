@@ -3,6 +3,7 @@ import { Calender } from '@/app/component/Calender'
 import { ModalFilter } from '@/app/component/ModalFilter'
 import { Navbar } from '@/app/component/Navbar'
 import { SearchBar } from '@/app/component/SearchBar'
+import { calculateDaysBetween } from '@/utils/calculateday'
 import { convertMonthAndDay } from '@/utils/monthDayConvert'
 import { Bed, Bus, CalendarIcon, LoaderCircle, MapPin, Minus, Plus } from 'lucide-react'
 import Image from 'next/image'
@@ -91,34 +92,50 @@ const ListingProperties = () => {
     router.push(`/listings/${city}/property/${id}/${checkinDate}/${checkoutDate}/${howManyGuests}`)
   }
 
-  function onSubmit(e:React.FormEvent<HTMLFormElement>) {
+  function isDateInRange(availableDate: string, checkinDate: string, checkoutDate: string): boolean {
+    const available = new Date(availableDate);
+    const checkin = new Date(checkinDate);
+    const checkout = new Date(checkoutDate);
+  
+
+    return available >= checkin && available <= checkout;
+  }
+
+  
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    
-    if(input.trim() === ''){
+  
+    if (input.trim() === '') {
       return
     }
-
-    if(!listings) return
-
-  const filtered = listings.filter((prop) => {
-    const cityInput = prop.location.city
-    const districtInput = prop.location.district
-
-    if(cityInput.includes(input)){
-      setInput('')
-      return cityInput
-    }
-    if(districtInput.includes(input)){
-      setInput('')
-      return districtInput
-    }
-
-  })
-  let sum = filtered.length
-
- setSearchResultsCount(sum)
- setFilteredListings(filtered)
-
+  
+    if (!listings) return
+  
+    const filtered = listings.filter((prop) => {
+      const cityInput = prop.location.city.toLowerCase()
+      const districtInput = prop.location.district.toLowerCase()
+      const lowerCaseInput = input.toLowerCase()
+  
+      const matchesCity = cityInput.includes(lowerCaseInput)
+      const matchesDistrict = districtInput.includes(lowerCaseInput)
+  
+      const guest = Number(howManyGuests)
+      const maxGuest = Number(prop.maximum_guest)
+      const meetsGuestRequirement = !howManyGuests || (guest <= maxGuest)
+  
+      const matchesDate = checkinDate && checkoutDate 
+        ? prop.available_dates.some((availableDate) =>
+            isDateInRange(availableDate, checkinDate, checkoutDate)
+          )
+        : true
+  
+      return (matchesCity || matchesDistrict) && meetsGuestRequirement && matchesDate
+    })
+  
+    const sum = filtered.length
+    console.log(filtered)
+    setSearchResultsCount(sum)
+    setFilteredListings(filtered)
   }
 
 
@@ -187,7 +204,7 @@ const ListingProperties = () => {
     setCheckoutDate(date)
     setTimeout(() => {
       setToggler(prev => !prev)
-    }, 1000);
+    }, 2000);
   };
 
 
