@@ -13,24 +13,25 @@ import React, { useEffect, useState } from 'react'
 
 
 const ListingProperties = () => {
-
+  const [toggler, setToggler] = useState<boolean>(false)
   const { city } = useParams<{city:string | string[]}>()
   const router = useRouter()
   const [listings, setListings] = useState<ListingProperty[] |null>(null)
   const [filteredListings, setFilteredListings] = useState<ListingProperty[] |null>(null)
   const [input, setInput] = useState<string>('')
-  const [date, setDate] = useState<any>({
+  const [date, setDate] = useState<{available_dates:string[]}>({
     available_dates:[]
   })
   const [displayResult, setDisplayResult] = useState<ListingProperty | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [howManyGuests, setHowManyGuests] = useState<number>(2)
   const [offSet, setOffSet] = useState<number>(0)
   const [searchResultsCount, setSearchResultsCount] = useState<number>(0)
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
-  const checkinDate = '2025-06-05'
-  const checkoutDate = '2025-06-08'
-  
+  const [checkinDate, setCheckinDate] = useState<string>('');
+  const [checkoutDate, setCheckoutDate] = useState<string>('');
+  const [isStartDate, setIsStartDate] = useState<boolean>(false)
+  const [togglerOffModal, setTogglerOffModal] = useState<boolean>(true)
   useEffect(() => {
     async function getData() {
       try {
@@ -158,28 +159,36 @@ const ListingProperties = () => {
     }
   }
 
-  function onHandleDay(day:string,year:string,month:string){
-    const monthNumber = convertMonthAndDay(month)
-    const date = `${year}-${monthNumber}-${day}`
-    console.log(date)
+  const onHandleDay = (day: string, year: string, month: string, isStartDate: boolean) => {
+    const monthNumber = convertMonthAndDay(month);
+    const date = `${year}-${monthNumber}-${day}`;
 
     setSelectedDates(prevDates =>
       prevDates.includes(date)
       ? prevDates.filter(d => d !== date)
       :[...prevDates,date]
     )     
+    
+    if (isStartDate) {
+      setCheckinDate(date)
+    }
+  };
 
-    console.log(selectedDates)
-    // setDate((prev) =>({
-    //   ...prev,
-    //   available_dates:[...prev.includes(date) ?
-    //     prev.filter((datum) => (datum !== date))
-    //     : [...prev,date]
-    //   ]
-    // }))
-
-  }
   
+  const endDateCalender = (day: string, year: string, month: string) => {
+    const monthNumber = convertMonthAndDay(month);
+    const date = `${year}-${monthNumber}-${day}`;
+
+    
+    setSelectedDates(prevDates =>
+      prevDates.includes(date)
+      ? prevDates.filter(d => d !== date)
+      :[...prevDates,date]
+    )     
+
+    setCheckoutDate(date)
+    setToggler(prev => !prev)
+  };
 
 
   return (
@@ -193,21 +202,52 @@ const ListingProperties = () => {
        <SearchBar onSubmit={onSubmit} setInput={setInput} 
        displayResult={displayResult} listings={listings} input={input} onChangeSearch={onChangeSearch}/>
 
-      <div className=''>
-        <div className='grid grid-cols-5 w-[500px] mx-auto mt-5 text-center max-md:w-[300px]'>
-          <span className='bg-gray-300 rounded-l-lg p-2 border border-black'>Datum</span>
-              <Calender onHandleDay={onHandleDay} selectedDates={selectedDates} startDate='Start' className='absolute top-16 left-[-50px] z-50 max-sm:left-[150px] max-md:top-[100px]'/>  
-            <Calender onHandleDay={onHandleDay} selectedDates={selectedDates} endDate='Slut' className='absolute top-16 left-[150px] max-md:top-[px] z-50'/>
+<div className="mx-auto mt-5 w-[500px] text-center max-md:w-[300px]">
+  <div className="grid grid-cols-5 max-md:w-[300px] items-center gap-0">
+    <span className="bg-gray-300 rounded-l-lg p-2 border border-black h-full flex items-center justify-center">
+      Datum
+    </span>
+    <div className=" h-full flex items-center justify-center border border-black bg-customGray p-2">
+      <Calender
+        onHandleDay={onHandleDay}
+        isStartDate={true}
+        selectedDates={selectedDates}
+        toggler={toggler}
+        setToggler={setToggler}
+        checkinDate={checkinDate}
 
-          <span className='bg-gray-300  border border-l-0 border-black p-2'>Antal Gäster</span>
-          <div className='flex items-center justify-center bg-customGray gap-2 rounded-r-lg border border-l-0 border-black container'>
-            <Minus onClick={() => onClickGuestHandler(-1)} className='bg-black rounded-l-lg cursor-pointer text-white' />
-            <span className='text-white'>{howManyGuests}</span>
-            <Plus onClick={() => onClickGuestHandler(1)} className='bg-black rounded-r-lg cursor-pointer text-white' />
-          </div>
-        </div>
+        startDate="Startdatum"
+        className="absolute top-16 left-[-50px] z-50 max-sm:left-[150px] max-md:top-[100px]"
+        />
+    </div>
 
-      </div>
+
+    <div className="relative h-full flex items-center justify-center border border-l-0 bg-customGray p-2 border-black">
+      <Calender
+        endDateCalender={endDateCalender}
+        selectedDates={selectedDates}
+        checkoutDate={checkoutDate}
+        isStartDate={false}
+        toggler={toggler}
+        setToggler={setToggler}
+        endDate="Slutdatum"
+        className="absolute top-16 left-[150px] max-md:top-[100px] z-50"
+      />
+    </div>
+
+
+    <span className="bg-gray-300 border border-l-0 border-black p-2 h-full flex items-center justify-center">
+      Antal Gäster
+    </span>
+
+
+    <div className="flex items-center justify-center bg-customGray gap-2 rounded-r-lg border border-l-0 border-black h-full">
+      <Minus onClick={() => onClickGuestHandler(-1)} className="bg-black rounded-l-lg cursor-pointer text-white p-1" />
+      <span className="text-white">{howManyGuests}</span>
+      <Plus onClick={() => onClickGuestHandler(1)} className="bg-black rounded-r-lg cursor-pointer text-white p-1" />
+    </div>
+  </div>
+</div>
           <div className='flex justify-around items-center mb-5 mt-3'>
             <span className='text-customWhite'>Antal Träffar: {searchResultsCount}</span>
             <ModalFilter onFilterHandler={onFilterHandler}/>

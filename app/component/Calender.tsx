@@ -5,16 +5,22 @@ import React, { useEffect, useState } from 'react'
 
 
 type CalenderProps = {
-  onHandleDay:(day:string,year:string,month:string) => (void)
   selectedDates:string[],
+  onHandleDay?:(day:string,year:string,month:string,isStartDate:boolean) => (void)
   className?:string,
   startDate?:string,
   endDate?:string,
+  endDateCalender?:(day:string,year:string,month:string) => (void)
+  isStartDate?: boolean
+  checkinDate?:string,
+  checkoutDate?:string,
+  toggler:boolean,
+  setToggler:React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate}:CalenderProps) => {
+export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,endDateCalender,isStartDate
+,checkinDate,checkoutDate,setToggler,toggler}:CalenderProps) => {
 
-  const [toggler, setToggler] = useState(false)
   const [days, setDays] = useState<string[] | null>(null)
   const [displayMonth, setDisplayMonth] = useState<string>('')
   const [year, setYear] = useState<string>('')
@@ -24,6 +30,7 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate}
   const date = getdate.toLocaleDateString('sv-SE')
   function onClickHandler(){
     setToggler(prev => !prev)
+
   }
 
   function closeCalendar() {
@@ -70,19 +77,20 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate}
 
 
   return (
-    <div onClick={onClickHandler} className={`bg-customGray px-4 py-2 z-10 cursor-pointer relative text-white border border-l-0 border-black`}>
+    <div onClick={onClickHandler} className={`bg-customGray px-4 py-2 z-10 cursor-pointer 
+    relative text-white border border-l-0 border-black ${className ? 'border-none bg-transparent' : ''}`}>
       <span>
         {
           startDate || endDate ?  
           <div>
-            <span>{startDate}</span> 
-            <span>{endDate}</span>
+            <span>{checkinDate === '' ? startDate : checkinDate}</span> 
+            <span>{checkoutDate === '' ? endDate : checkoutDate}</span>
           </div> :
           <span>{date}</span> 
         }
       </span>
       {
-        toggler && 
+        toggler &&
         <div
           onClick={(e) => e.stopPropagation()} 
           className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
@@ -125,8 +133,19 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate}
             return (
               <span 
                 key={index} 
-                onClick={() => !isPastDate && onHandleDay(dag, year, displayMonth)} 
-                className={`flex items-center justify-center w-8 h-8 ${isSelected ? 'bg-black rounded-full text-white' : ''} ${isPastDate ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer'} ${isToday ? 'font-bold underline' : ''}`}
+                onClick={() => {
+                  if (isStartDate) {
+                    onHandleDay?.(dag, year.toString(), displayMonth.toString(), true);
+                  } else {
+                    endDateCalender?.(dag, year.toString(), displayMonth.toString());
+                  }
+                }}
+                className={`
+                  flex items-center justify-center w-8 h-8 
+                  ${isSelected ? 'bg-black rounded-full text-white' : ''} 
+                  ${isPastDate ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer'}
+                  ${isToday ? 'font-bold underline' : ''}
+                  S `}
               >
                 {dag}
               </span>

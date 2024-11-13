@@ -18,7 +18,7 @@ import { validateCreate } from '@/utils/validateCreate'
 const ChangeHome = () => {
 
   const router = useRouter()
-
+  const [toggler, setToggler] = useState<boolean>(false)
   const [currentRule, setCurrentRule] = useState<string>('')
   const [currentFacilities, setCurrentFacilities] = useState<string>('')
   const [currentAccessibilityFeatures, setcurrentAccessibilityFeatures] = useState<string>('')
@@ -235,7 +235,7 @@ const ChangeHome = () => {
     });
   }
 
-    function onHandleDay(day:string,year:string,month:string){
+    function onHandleDay(day:string,year:string,month:string,isStartDate:boolean){
       const monthNumber = convertMonthAndDay(month)
       const date = `${year}-${monthNumber}-${day}`
 
@@ -437,7 +437,7 @@ const ChangeHome = () => {
     
             <label className='text-center mt-5 text-lg '>Dagar huset är tillgängligt</label>
             <div className='my-5'>
-                <Calender onHandleDay={onHandleDay} selectedDates={selectedDates}/>
+                <Calender setToggler={setToggler} toggler={toggler} onHandleDay={onHandleDay} selectedDates={selectedDates}/>
                 {
                   error && <span className='text-lg text-red-700'>{error.available_dates}</span>
                 }

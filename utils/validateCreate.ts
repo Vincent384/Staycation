@@ -4,7 +4,6 @@ export function validateCreate(form:CreateListingProperty | ChangeListingPropert
     setError:React.Dispatch<React.SetStateAction<CreateListingPropertyErrors>>):boolean{
         let isValid = true;
 
-        // Exempel på validering
         if (!form.title || form.title.trim() === '') {
           setError(prev => ({ ...prev, title: 'Titel är obligatorisk' }));
           isValid = false;
