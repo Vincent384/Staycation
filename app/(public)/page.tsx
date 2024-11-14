@@ -59,6 +59,9 @@ const Home = () => {
 
     if(!listings) return
 
+    if(input.trim() === ''){
+      return
+    }
 
     console.log(input)
     router.push(`listings/${input}`)

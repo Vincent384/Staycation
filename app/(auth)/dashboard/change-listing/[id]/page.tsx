@@ -437,7 +437,7 @@ const ChangeHome = () => {
     
             <label className='text-center mt-5 text-lg '>Dagar huset är tillgängligt</label>
             <div className='my-5'>
-                <Calender setToggler={setToggler} toggler={toggler} onHandleDay={onHandleDay} selectedDates={selectedDates}/>
+                <Calender setToggler={setToggler} className='z-20' toggler={toggler} onHandleDay={onHandleDay} selectedDates={selectedDates}/>
                 {
                   error && <span className='text-lg text-red-700'>{error.available_dates}</span>
                 }

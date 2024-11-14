@@ -3,6 +3,7 @@ import { DetailPageModal } from '@/app/component/DetailPageModal'
 import { Navbar } from '@/app/component/Navbar'
 import { SideShopBar } from '@/app/component/SideShopBar'
 import { calculateDaysBetween } from '@/utils/calculateday'
+import { convertMonthAndDay } from '@/utils/monthDayConvert'
 import { Bus, BusIcon, ChevronDown, ChevronUp, Dot, LoaderCircle, MapPin, Star, X } from 'lucide-react'
 import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
@@ -19,11 +20,15 @@ const DetailPropertyPage = () => {
     guests: string;
   };
 
+  const [toggler, setToggler] = useState<boolean>(false)
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [property, setProperty] = useState<ListingPropertyWithHost | null>(null)
   const [resultDay, setResultDay] = useState<number | null>(null)
   const [resultOfPrice, setResultOfPrice] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [modalButton, setModalButton] = useState<boolean>(false)
+  const [selectedDatesEnd, setSelectedDatesEnd] = useState<string[]>([]);
+
 
  
 
@@ -46,6 +51,7 @@ const DetailPropertyPage = () => {
         const reviewsArray = reviewsData.property.reviews
    
         setProperty({...data,reviews:reviewsArray})
+
         const result = calculateDaysBetween(checkinDate,checkoutDate) 
         setResultDay(result)
       } catch (error) {
@@ -75,7 +81,7 @@ const DetailPropertyPage = () => {
   }, [property,resultDay])
 
 
-  
+
   
   function modalButtonToggler():void{
     setModalButton(prev => !prev)
@@ -92,7 +98,10 @@ console.log(property)
             <main className='relative'>
               <div className='flex justify-center items-center flex-wrap'>
                 <DetailPageModal property={property}/>
-                <SideShopBar  checkinDate={checkinDate}checkoutDate={checkoutDate} guests={guests} property={property} resultDay={resultDay} resultOfPrice={resultOfPrice}/>
+                <SideShopBar  checkinDate={checkinDate}checkoutDate={checkoutDate}
+                 guests={guests} property={property}
+                resultDay={resultDay}
+                 resultOfPrice={resultOfPrice}/>
             
               </div>
 

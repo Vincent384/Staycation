@@ -32,8 +32,8 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
   {
          modalPicture && (
          property && (
-           property.images.map((image)=>(
-            <div className='size-[500px] max-lg:size-[300px] animate-slideDown '>
+           property.images.map((image,index)=>(
+            <div key={index} className='size-[500px] max-lg:size-[300px] animate-slideDown '>
 
                <CldImage className='object-contain w-full h-full'
                src={image}
@@ -71,11 +71,12 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
        </div>
            <div className='size-[200px] border-2 container border-customGray col-start-3 col-end-4 col-span-2
             relative max-lg:w-[100px]  max-lg:bg-customWhite'>
-             <Image className='object-cover h-full w-full max-lg:hidden'
+             <CldImage className='object-cover h-full w-full max-lg:hidden'
              src={property.images[1]}
              width={1200}
              height={1200}
              alt={property.title}
+             crop={'fill'}
              />
                <span onClick={modalPictureToggler} className='absolute top-2 right-2 
                cursor-pointer bg-customBeige p-2 border border-customGray rounded-lg max-lg:hidden'>Se mer</span>
@@ -86,7 +87,7 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
 
                <span className=''>{property.accessibilityImages?.map((images,index)=>(
                 <div key={index}>
-                 <Image
+                 <CldImage
                    src={images}
                    width={30}
                    height={30}

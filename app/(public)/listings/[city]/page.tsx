@@ -30,10 +30,10 @@ const ListingProperties = () => {
   const [searchResultsCount, setSearchResultsCount] = useState<number>(0)
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [selectedDatesEnd, setSelectedDatesEnd] = useState<string[]>([]);
-  const [checkinDate, setCheckinDate] = useState<string>('');
-  const [checkoutDate, setCheckoutDate] = useState<string>('');
-  const [isStartDate, setIsStartDate] = useState<boolean>(false)
+  let [checkinDate, setCheckinDate] = useState<string>('');
+  let [checkoutDate, setCheckoutDate] = useState<string>('');
   const [togglerOffModal, setTogglerOffModal] = useState<boolean>(true)
+  const [errorMessage, setErrorMessage] = useState('')
   useEffect(() => {
     async function getData() {
       try {
@@ -89,51 +89,66 @@ const ListingProperties = () => {
 
 
   function navigateOnClick(id:string){
+    if(!checkinDate || checkinDate.trim() === ''){
+      const date = new Date()
+      const getToday = date.getDay()
+      const getMonth = date.getMonth()
+      const getYear = date.getFullYear()
+      checkinDate = `${getYear}-${getMonth}-${getToday}`
+  }
+
+  if(!checkoutDate || checkoutDate.trim() === ''){
+    const date = new Date()
+    const getToday = date.getDay()
+    const getMonth = date.getMonth()
+    const getYear = date.getFullYear()
+    checkoutDate = `${getYear}-${getMonth}-${getToday}`
+}
     router.push(`/listings/${city}/property/${id}/${checkinDate}/${checkoutDate}/${howManyGuests}`)
   }
 
-  function isDateInRange(availableDate: string, checkinDate: string, checkoutDate: string): boolean {
-    const available = new Date(availableDate);
-    const checkin = new Date(checkinDate);
-    const checkout = new Date(checkoutDate);
-  
-
-    return available >= checkin && available <= checkout;
-  }
 
   
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
   
-    if (input.trim() === '') {
-      return
-    }
+    // if (!input || input.trim() === ''){
+      
+    //   return
+    // }
+    
   
     if (!listings) return
   
     const filtered = listings.filter((prop) => {
-      const cityInput = prop.location.city.toLowerCase()
-      const districtInput = prop.location.district.toLowerCase()
-      const lowerCaseInput = input.toLowerCase()
-  
-      const matchesCity = cityInput.includes(lowerCaseInput)
-      const matchesDistrict = districtInput.includes(lowerCaseInput)
-  
-      const guest = Number(howManyGuests)
-      const maxGuest = Number(prop.maximum_guest)
-      const meetsGuestRequirement = !howManyGuests || (guest <= maxGuest)
-  
-      const matchesDate = checkinDate && checkoutDate 
-        ? prop.available_dates.some((availableDate) =>
-            isDateInRange(availableDate, checkinDate, checkoutDate)
-          )
-        : true
-  
-      return (matchesCity || matchesDistrict) && meetsGuestRequirement && matchesDate
+      const citySearch = prop.location.city.toLowerCase()
+      const districtSearch = prop.location.district.toLowerCase()
+      const guests = Number(prop.maximum_guest)
+    
+      const matchesLocation =
+        citySearch.includes(input.toLowerCase()) || districtSearch.includes(input.toLowerCase())
+   
+      const matchesDateAndGuests =
+        checkinDate &&
+        checkoutDate &&
+        guests >= howManyGuests &&
+        prop.available_dates.includes(checkinDate) &&
+        prop.available_dates.includes(checkoutDate)
+    
+    
+      if (matchesLocation && matchesDateAndGuests) {
+        setInput('')
+        return true
+      }
+    
+     
+      return false
     })
-  
+    
+
+
     const sum = filtered.length
-    console.log(filtered)
+
     setSearchResultsCount(sum)
     setFilteredListings(filtered)
   }
@@ -170,7 +185,16 @@ const ListingProperties = () => {
          
           filtered = filtered?.sort((a, b) => b.price_per_night - a.price_per_night);
           break
-
+        case 'wheel':
+          filtered = filtered?.filter((prop) => 
+            prop.accessibilityImages.includes('https://res.cloudinary.com/drkty7j9v/image/upload/v1729670272/Namnl%C3%B6st-1_koufja.png'))
+          break
+          case'synskadad':
+          filtered = filtered?.filter((prop) => 
+            prop.accessibilityImages.includes('https://res.cloudinary.com/drkty7j9v/image/upload/v1730714294/%C3%B6ron_wnmxtf.png'))
+          case'hearing':
+          filtered = filtered?.filter((prop) => 
+            prop.accessibilityImages.includes('https://res.cloudinary.com/drkty7j9v/image/upload/v1730713492/84529_ix44n3.png'))
       }
 
       setFilteredListings(filtered)
@@ -202,9 +226,6 @@ const ListingProperties = () => {
     )     
 
     setCheckoutDate(date)
-    setTimeout(() => {
-      setToggler(prev => !prev)
-    }, 2000);
   };
 
 

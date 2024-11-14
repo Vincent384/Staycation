@@ -79,7 +79,7 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,
 
   return (
     <div onClick={onClickHandler} className={`bg-customGray px-4 py-2 cursor-pointer 
-    relative text-white border border-l-0 border-black ${className ? 'border-none bg-transparent' : ''}`}>
+    relative text-white border border-l-0 border-black ${startDate || endDate ? 'border-none bg-transparent' : ''}`}>
       <span>
         {
           startDate || endDate ?  
@@ -146,7 +146,7 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,
               <span 
                 key={index} 
                 onClick={() => {
-                  if (isStartDate) {
+                  if (selectedDates) {
                     onHandleDay?.(dag, year.toString(), displayMonth.toString(), true);
                   } else {
                     endDateCalender?.(dag, year.toString(), displayMonth.toString());
