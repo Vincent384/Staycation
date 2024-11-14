@@ -112,12 +112,6 @@ const ListingProperties = () => {
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
   
-    // if (!input || input.trim() === ''){
-      
-    //   return
-    // }
-    
-  
     if (!listings) return
   
     const filtered = listings.filter((prop) => {

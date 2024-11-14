@@ -52,8 +52,8 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
 
  {
   property && (
-   <div className='grid grid-cols-3 gap-3 mx-auto place-content-center container mt-5 max-lg:flex max-lg flex-wrap
-   max-lg:justify-center max-lg:items-center 
+   <div className='grid grid-cols-3 gap-3 mx-auto place-content-center container mt-5 max-lg:flex max-lg: flex-wrap
+   max-lg:justify-center max-lg:items-center max-lg:p-5
    '>
        <div className='relative border-2 border-customGray col-start-2 col-end-3 row-span-1 container'>
          <CldImage className='object-cover h-full w-full'
@@ -70,7 +70,7 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
          </div>
        </div>
            <div className='size-[200px] border-2 container border-customGray col-start-3 col-end-4 col-span-2
-            relative max-lg:w-[100px]  max-lg:bg-customWhite'>
+            relative max-lg:w-[300px]  max-lg:bg-transparent max-lg:border-none max-lg:size-12 max-lg:mb-12 '>
              <CldImage className='object-cover h-full w-full max-lg:hidden'
              src={property.images[1]}
              width={1200}
@@ -82,7 +82,7 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
                cursor-pointer bg-customBeige p-2 border border-customGray rounded-lg max-lg:hidden'>Se mer</span>
            
            <div className='flex items-center container justify-between bg-customWhite border border-black rounded-lg mt-5 p-2
-             '>
+             max-lg:w-[300px] max-lg:mt-0'>
                <div className='border-r-2 border-black max-lg:border-none'>
 
                <span className=''>{property.accessibilityImages?.map((images,index)=>(

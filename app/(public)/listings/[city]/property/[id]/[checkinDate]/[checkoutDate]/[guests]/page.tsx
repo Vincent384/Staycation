@@ -8,11 +8,11 @@ import { Bus, BusIcon, ChevronDown, ChevronUp, Dot, LoaderCircle, MapPin, Star, 
 import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const DetailPropertyPage = () => {
-
+  const searchParams = useSearchParams()
   const {id,checkinDate,checkoutDate,guests} = useParams() as {
     id: string;
     checkinDate: string;
@@ -28,6 +28,7 @@ const DetailPropertyPage = () => {
   const [loading, setLoading] = useState(false)
   const [modalButton, setModalButton] = useState<boolean>(false)
   const [selectedDatesEnd, setSelectedDatesEnd] = useState<string[]>([]);
+  const [errorMessage, setErrorMessage] = useState('')
 
 
  
@@ -80,7 +81,18 @@ const DetailPropertyPage = () => {
 
   }, [property,resultDay])
 
+function onSubmitButton(){
+ 
+  if(guests === '0'){
+    return setErrorMessage
+  }
 
+  const url = new URL('http://localhost:3000/checkout')
+  url.searchParams.append("checkinDate", checkinDate)
+  url.searchParams.append("checkoutDate", checkoutDate)
+  url.searchParams.append("guests", guests)
+
+}
 
   
   function modalButtonToggler():void{
@@ -101,7 +113,8 @@ console.log(property)
                 <SideShopBar  checkinDate={checkinDate}checkoutDate={checkoutDate}
                  guests={guests} property={property}
                 resultDay={resultDay}
-                 resultOfPrice={resultOfPrice}/>
+                 resultOfPrice={resultOfPrice} onSubmitButton={onSubmitButton}
+                 errorMessage={errorMessage}/>
             
               </div>
 
@@ -109,7 +122,7 @@ console.log(property)
                   <div className='flex justify-center items-center'>
 
                         <div className='my-10 bg-customWhite w-[500px] border-2
-                        border-customGray p-5 rounded-lg max-md:w-[300px]'>
+                        border-customGray p-5 rounded-lg max-md:w-[300px] max-lg:m-0'>
                           <div className=''>
                             <div className='flex justify-between'>
                                   <div className='flex'>

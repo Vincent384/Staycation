@@ -26,5 +26,11 @@ export async function middleware(req:NextRequest){
 }
 
 export const config = {
-    matcher: ['/dashboard/homes','/create-host-profile','/dashboard','/change-host-profile','/create-listing'],  
+    matcher: ['/dashboard/homes',
+        '/dashboard/create-host-profile',
+        '/dashboard',
+        '/dashboard/change-host-profile',
+        '/dashboard/create-listing',
+        '/dashboard/change-listing',
+        '/dashboard/change-profile'],  
 };
