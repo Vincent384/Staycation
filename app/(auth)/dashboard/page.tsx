@@ -1,5 +1,6 @@
 'use client'
 import { Navbar } from '@/app/component/Navbar'
+import { useAuthContext } from '@/context/authContext'
 import { Camera } from 'lucide-react'
 
 import { CldImage } from 'next-cloudinary'

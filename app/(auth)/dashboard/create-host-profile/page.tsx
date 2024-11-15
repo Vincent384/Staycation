@@ -3,7 +3,7 @@ import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
 import { useAuthContext } from '@/context/authContext'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CldImage, CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { CldUploadWidget,CloudinaryUploadWidgetInfo  } from 'next-cloudinary'
 import { X } from 'lucide-react'
@@ -17,13 +17,21 @@ const CreateHost = () => {
     avatar:''
   })
 
-  const [imageUrl, setImageUrl] = useState('')
-
-  const { userId,setAvatar } = useAuthContext()
+  const { setAvatar } = useAuthContext()
 
   const [successMessage, setSuccessMessage] = useState<string>('')
 
   const [messageError, setMessageError] = useState<string | null>(null)
+  const [userId, setUserId] = useState<string>('')
+
+  useEffect(() => {
+    const getuserID = localStorage.getItem('User')
+    if(getuserID){
+      const id = JSON.parse(getuserID)
+      setUserId(id)
+    }
+  }, [])
+  
 
   function submitLoginForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
@@ -47,16 +55,18 @@ const CreateHost = () => {
             body:JSON.stringify(bodyPost)
           })
 
-          if (res.status !== 201) {
-            const errorMessage = await res.text()
-            return setMessageError(errorMessage)
-          }
           const data = await res.json()
           
-          await setAvatar(data.host.name,data.host.avatar)
+          if (res.status !== 201) {
+            return setMessageError(data.message)
+          }
           console.log(data)
+          setSuccessMessage(data.message)
           localStorage.removeItem('Avatar')
-          router.push('/dashboard')
+          localStorage.setItem('Host',JSON.stringify(data.host))         
+          window.setTimeout(() => {
+            router.push('/dashboard')
+          }, 1000);
         } catch (error) {
           console.log((error as Error).message)
         }

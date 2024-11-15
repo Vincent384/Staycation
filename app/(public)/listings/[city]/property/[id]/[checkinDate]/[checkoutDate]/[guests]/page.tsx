@@ -45,7 +45,9 @@ const DetailPropertyPage = () => {
   })
 
 
- 
+ console.log(property?.reviews.map((rev) =>
+rev.hostId))
+ console.log(property)
 
   useEffect(() => {
     async function getProperty(){
@@ -94,6 +96,7 @@ const DetailPropertyPage = () => {
 
 
   }, [property,resultDay])
+
 
 function onSubmitButton(){
  setErrorMessage('')
@@ -149,7 +152,7 @@ function onSubmitButton(){
           hostId: host._id,
           propertyId:property?._id
       }
-
+      console.log(requestBody)
       try {
         const res = await fetch('http://localhost:3000/api/property/review',{
           method:'POST',
@@ -158,10 +161,6 @@ function onSubmitButton(){
           },
           body:JSON.stringify(requestBody)
         })
-
-        if(res.status !== 201){
-          throw new Error('Något gick fel')
-        }
 
         const data = await res.json()
         console.log(data)
@@ -297,7 +296,7 @@ function onSubmitButton(){
                               <div className='flex justify-between items-center relative'>
                                   <h4 className='text-2xl'>Recensioner</h4>
                                   <button className='px-4 py-2 bg-customGreen text-customWhite text-lg rounded-full 
-                                  cursor-pointer hover:opacity-50 transition-opacity' onClick={reviewButton}>Lägg till en recension</button>
+                                  cursor-pointer hover:opacity-50 transition-opacity' onClick={reviewButton}>Lägg&nbsp;till</button>
                                     {
                                     reviewModal && 
                                     <form onSubmit={submitReview}
@@ -330,11 +329,11 @@ function onSubmitButton(){
                                   }
                               </div>
 
-                              {property.reviews.map((rev,index)=> (
-                                <div key={index}>
+                              {property && property.reviews.map((rev,index)=> (
+                                <div className='border-2 p-2 mt-5' key={index}>
                                   <div className='flex justify-between items-center'>
                                     {
-                                      rev.hostId.avatar === '' ?
+                                      rev.hostId?.avatar === '' ?
                                       <div className='size-10 cursor-pointer'>
                                       <Image className='object-contain'
                                       src={'https://res.cloudinary.com/drkty7j9v/image/upload/v1729774400/profileDefault_hfv9ys.png'}
@@ -343,11 +342,14 @@ function onSubmitButton(){
                                       alt={property.hostName}/>
                                   </div>
                                   :
-                                  <Image
+                                  <div className='w-12 h-12 overflow-hidden rounded-full' >
+                                  <CldImage
                                   src={rev.hostId.avatar}
                                   width={1000}
                                   height={1000}
-                                  alt={property.hostName}/>
+                                  alt={property.hostName}
+                                  crop={'fill'}/>
+                                  </div>
                                 }
                                 <span className='cursor-pointer'>{rev.hostId.name}</span>
                                   </div>

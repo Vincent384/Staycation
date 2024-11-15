@@ -21,6 +21,7 @@ try {
     const hostName = property.host?.name
 
     const responseData = {
+        _id:id,
         title: property.title,
         description: property.description,
         images: property.images,

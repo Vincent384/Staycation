@@ -10,7 +10,7 @@ import { useAuthContext } from '@/context/authContext'
 
 const Register = () => {
 
-  const { setToken,getDataAvatar } = useAuthContext()
+  const { getDataAvatar } = useAuthContext()
   const router = useRouter()
 
   const [form, setForm] = useState<RegisterForm>({
@@ -30,7 +30,7 @@ const Register = () => {
   })
   const [messageError, setMessageError] = useState<string>('')
 
-  const [successMessage, setSuccessMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState<string>('')
 
   const bodyPost = {
     firstName:form.firstName,
@@ -49,18 +49,18 @@ const Register = () => {
         },
         body:JSON.stringify(bodyPost)
       })
-
+      
       const data = await res.json()
-
+      console.log(data)
       if(res.status !== 201){
-        return setMessageError(res.statusText)
+        console.log(data.message)
+        return setMessageError(data.message)
       }
     
-      if(res.ok){
-        localStorage.setItem('status','Inloggad')
-      }
-
-      getDataAvatar(data.responseData.id)
+   
+      localStorage.setItem('User',JSON.stringify(data.responseData._id))
+      localStorage.setItem('status','Inloggad')
+      
 
       setSuccessMessage(data.message)
 
@@ -73,7 +73,6 @@ const Register = () => {
       console.log((error as Error).message)
     }
   }
-
 
 
   function submitRegisterForm(e:React.FormEvent<HTMLFormElement>){
@@ -121,14 +120,17 @@ const Register = () => {
             <button className='py-2 px-10 bg-customOrange text-customWhite rounded-lg 
             text-2xl font-semibold mt-10 mb-5 hover:opacity-50 transition-opacity'>Registrera</button>
             <Link className='text-customBlue my-2' href={'/login'}>Har du redan ett konto? Logga in här</Link>
-        </form>
-        <p>{successMessage}</p>
         <div className={``}>
                 {
                   messageError &&
                 <p className='bg-red-600 mt-5 py-2 px-6 text-customWhite font-bold'>{messageError}</p>
                 }
+        {
+          successMessage &&
+        <p className='bg-customLightGreen mt-5 py-2 px-6 text-customWhite font-bold'>{successMessage}</p>
+        }
             </div>
+        </form>
     </div>
   )
 }

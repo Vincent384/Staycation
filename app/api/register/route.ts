@@ -31,6 +31,7 @@ export async function POST(req:Request){
 
 
         const responseData = {
+            _id:newUser._id,
             firstName,
             lastName,
             phone,
