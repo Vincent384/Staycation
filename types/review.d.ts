@@ -1,5 +1,5 @@
 type UserReview = {
-    rating:number,
+    rating:string,
     comment:string,
     hostId:ObjectId,
     propertyId:ObjectId,

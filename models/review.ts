@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose'
 
 
 const reviewSchema = new Schema({
-    rating:{type:Number,required:true},
+    rating:{type:String,required:true},
     comment:{type:String,required:true},
     hostId:{type:mongoose.Schema.Types.ObjectId,ref:'Host'},
     propertyId:{type:mongoose.Schema.Types.ObjectId,ref:'Property'},

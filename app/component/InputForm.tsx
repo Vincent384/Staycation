@@ -9,6 +9,7 @@ type InputProps = {
   valueText: string;
   errorText?: string;
   changeInputSize?: boolean;
+  pattern?:string
 };
 
 export const InputForm = ({
