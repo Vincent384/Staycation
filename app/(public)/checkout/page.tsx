@@ -3,10 +3,11 @@ import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
 import { calculateDaysBetween } from '@/utils/calculateday'
 import { CldImage } from 'next-cloudinary'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const Checkout = () => {
+    const router = useRouter()
 
     const searchParams = useSearchParams()
     const [property, setProperty] = useState<ListingPropertyWithHost | null>(null)
@@ -17,6 +18,11 @@ const Checkout = () => {
     const checkoutDate = searchParams.get('checkoutDate') as string   
     const guests = searchParams.get('guests') as string 
     const id = searchParams.get('id') as string  
+
+    const [form, setForm] = useState<{name:string,card:string}>({
+        name:'',
+        card:''
+    })
 
     useEffect(() => {
         async function getProperty(){
@@ -53,14 +59,22 @@ const Checkout = () => {
             if(!login){
                 return console.log('måste logga in')
             }
-
-            console.log('hej')
-
-      }
-
-      function onChangeInput(){
+            
+            router.push('/checkout/confirmation')
 
       }
+
+      function onChangeHandler(e:React.ChangeEvent<HTMLInputElement>){
+        const {name,value} = e.target
+            
+        setForm((prev) =>{
+                return {
+                    ...prev,
+                    [name]:value
+                }
+            })
+        
+        }
 
   return (
     <div>
@@ -69,7 +83,7 @@ const Checkout = () => {
         property ?
             <div className='flex justify-center items-center '>
 
-            <div className='grid grid-cols-2 gap-5 my-5 w-[800px] text-center'>
+            <div className='grid grid-cols-2 gap-5 my-5 w-[800px] text-center max-lg:flex max-lg:flex-col max-lg:p-5'>
                 <div>
                     <div>
                         <div className='flex justify-center items-center gap-3 bg-customWhite border-2 p-5'>
@@ -100,12 +114,12 @@ const Checkout = () => {
                         </div>
                         <div className='bg-customWhite border-2 mt-2 p-4'>
                             <div className=''>
-                                <InputForm changeInputSize={true} typeText='' placeHolder='Olof Jönsson' 
-                                labelText='Namn' valueText='' errorText='' nameText=''
-                                onChangeInput={onChangeInput}/>
-                                                        <InputForm changeInputSize={true} typeText='' placeHolder='1230912123' 
-                                labelText='KortNummer' valueText='' errorText='' nameText=''
-                                onChangeInput={onChangeInput}/>
+                                <InputForm changeInputSize={true} typeText='text' placeHolder='Olof Jönsson' 
+                                labelText='Namn' valueText={form.name} errorText='' nameText='name'
+                                onChangeInput={onChangeHandler}/>
+                                                        <InputForm changeInputSize={true} typeText='text' placeHolder='1230912123' 
+                                labelText='KortNummer' valueText={form.card} errorText='' nameText='card'
+                                onChangeInput={onChangeHandler}/>
                             </div>
                         </div>
 

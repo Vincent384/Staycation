@@ -7,6 +7,8 @@ const reviewSchema = new Schema({
     comment:{type:String,required:true},
     hostId:{type:mongoose.Schema.Types.ObjectId,ref:'Host'},
     propertyId:{type:mongoose.Schema.Types.ObjectId,ref:'Property'},
+    hostAvatar: { type: String }, 
+    hostName: { type: String },
 },{timestamps:true})
 
 const Review = mongoose.models.Review || mongoose.model('Review',reviewSchema)

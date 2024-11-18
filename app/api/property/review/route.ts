@@ -8,7 +8,7 @@ export async function POST(res:Request){
     try {
         await connectMongoDb()
 
-        const { rating, comment,hostId,propertyId}: UserReview = await res.json()
+        const { rating, comment,hostId,propertyId,hostAvatar,hostName}: UserReview = await res.json()
 
         if(!rating || !comment || !hostId || !propertyId){
             return NextResponse.json({message:'Please fill all required fields'},{status:400})
@@ -33,7 +33,18 @@ export async function POST(res:Request){
 
         await property.save()
 
-        return NextResponse.json({message:'Review was created',newReview},{status:201})
+        const responseData = {
+            _id: newReview._id,
+            comment: newReview.comment,
+            createdAt: newReview.createdAt,
+            hostId: {
+                _id: hostId,
+                name: hostName,
+                avatar: hostAvatar,
+            },
+        };
+
+        return NextResponse.json({message:'Review was created',responseData},{status:201})
 
 
     } catch (error) {

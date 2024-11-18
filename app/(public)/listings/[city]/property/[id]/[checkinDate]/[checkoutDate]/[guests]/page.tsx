@@ -10,6 +10,7 @@ import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
+import { hostname } from 'os'
 import React, { useEffect, useState } from 'react'
 
 const DetailPropertyPage = () => {
@@ -34,20 +35,19 @@ const DetailPropertyPage = () => {
     rating:'',
     comment:'',
     hostId:'',
-    propertyId:''
+    propertyId:'',
+    hostAvatar:'',
+    hostName:''
   })
 
   const [error, setError] = useState<UserReview>({
     rating:'',
     comment:'',
     hostId:'',
-    propertyId:''
+    propertyId:'',
+    hostAvatar:'',
+    hostName:''
   })
-
-
- console.log(property?.reviews.map((rev) =>
-rev.hostId))
- console.log(property)
 
   useEffect(() => {
     async function getProperty(){
@@ -85,6 +85,8 @@ rev.hostId))
 
   }, [id,checkinDate,checkoutDate])
   
+  console.log(property)
+
   useEffect(() => {
  
       if(property && resultDay != null){
@@ -150,9 +152,11 @@ function onSubmitButton(){
           rating:form.rating,
           comment:form.comment,
           hostId: host._id,
-          propertyId:property?._id
+          propertyId:property?._id,
+          hostname:host.name,
+          hostAvatar:host.avatar
       }
-      console.log(requestBody)
+
       try {
         const res = await fetch('http://localhost:3000/api/property/review',{
           method:'POST',
@@ -164,11 +168,13 @@ function onSubmitButton(){
 
         const data = await res.json()
         console.log(data)
+        const newReview = data.responseData
+        console.log(newReview)
         setProperty((prev) => {
           if (prev) {
             return {
               ...prev,
-              reviews: [...prev.reviews, data]
+              reviews: [...prev.reviews, newReview]
             };
           } else {
             console.log("Property is null, review cannot be added")
@@ -247,7 +253,7 @@ function onSubmitButton(){
                                   />
                               </div>
                                 }
-                                  <span>{property.hostName}</span>
+                                  <span className='text-lg'>{property.hostName}</span>
                                 </div>
                             </Link>
                               <p className='mt-5 text-lg'>{property.description}</p>
@@ -329,40 +335,38 @@ function onSubmitButton(){
                                   }
                               </div>
 
-                              {property && property.reviews.map((rev,index)=> (
-                                <div className='border-2 p-2 mt-5' key={index}>
-                                  <div className='flex justify-between items-center'>
-                                    {
-                                      rev.hostId?.avatar === '' ?
-                                      <div className='size-10 cursor-pointer'>
-                                      <Image className='object-contain'
-                                      src={'https://res.cloudinary.com/drkty7j9v/image/upload/v1729774400/profileDefault_hfv9ys.png'}
-                                      width={1000}
-                                      height={1000}
-                                      alt={property.hostName}/>
-                                  </div>
-                                  :
-                                  <div className='w-12 h-12 overflow-hidden rounded-full' >
-                                  <CldImage
-                                  src={rev.hostId.avatar}
-                                  width={1000}
-                                  height={1000}
-                                  alt={property.hostName}
-                                  crop={'fill'}/>
-                                  </div>
-                                }
-                                <span className='cursor-pointer'>{rev.hostId.name}</span>
-                                  </div>
-                                  <div className='my-5'>
-                                    <div className='flex mt-3 gap-1'>
-                                    <span className='text-lg font-semibold'>{rev.rating}</span>
-                                    <Star/>
-                                    </div>
-                                  <p>{rev.comment}</p>
+                              {property?.reviews?.map((rev,index)=> (
+                                <div className='border-2 p-5 mt-5' key={index}>
+                                  <div className='flex gap-3 mb-5 items-center'>
+                                       {rev.hostId?.avatar ? (
+                                           <>
+                                         <div className="w-12 h-12 overflow-hidden rounded-full">
+                                          <CldImage
+                                            src={rev.hostId.avatar}
+                                            width={1000}
+                                            height={1000}
+                                            alt={"Host Avatar"}
+                                            crop="fill"
+                                            />
+                                        </div>
 
+                                        <span className='text-lg'>{rev.hostId.name}</span>
+                                        </>
+                                      ) : (
+                                        <div className="size-10 cursor-pointer">
+                                          <Image
+                                            className="object-contain"
+                                            src="https://res.cloudinary.com/drkty7j9v/image/upload/v1729774400/profileDefault_hfv9ys.png"
+                                            width={1000}
+                                            height={1000}
+                                            alt="Default Avatar"
+                                          />
+                                        </div>
+                                      )}
+                                    </div>
+                                    <p className='text-lg'>{rev.comment}</p>
                                   </div>
-                                </div>
-                              ))}
+                                ))}
                             </div>
                           }
                       </div>
