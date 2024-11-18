@@ -21,29 +21,27 @@ const id = searchParams.get('id') as string
 
 
 useEffect(() => {
-    async function getProperty(){
-      try {
-        const res = await fetch(`http://localhost:3000/api/property?id=${id}`)
+  async function getProperty(){
+    try {
+      const res = await fetch(`http://localhost:3000/api/property?id=${id}`);
 
-        if(!res.ok){
-          throw new Error('Hittade inte bostaden')
-        }
+      if(!res.ok){
+        throw new Error('Hittade inte bostaden');
+      }
 
-        const data:ListingPropertyWithHost = await res.json()
-        console.log(data)
-        setProperty(data)
-      } catch (error) {
-        console.log(error)
-    } 
+      const data: ListingPropertyWithHost = await res.json();
+      console.log(data);
+      setProperty(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
-}
-
-if(id){
-    console.log(id)
-  getProperty()
-}
-
-  }, [id])
+  if(id) {
+    console.log('Fetching property with id:', id);
+    getProperty();
+  }
+}, [id]);
   return (
     <>
     <Navbar/>
@@ -61,18 +59,18 @@ if(id){
       </div>
       <p className='text-2xl font-semibold mb-5'>Kvitto har skickats till din mejl</p>
         <div>
-            {
-                property &&
-            <div className='flex m-auto border-2 border-customBlack justify-center w-[300px] h-[300px]'>
-            <CldImage
-            className='w-full h-full'
-            src={property.images[0]}
-            width={2000}
-            height={2000}
-            crop={'fill'}
-            alt={property.description}/>
-            </div>
-            }
+        {property && property.images && property.images.length > 0 && (
+  <div className="flex m-auto border-2 border-customBlack justify-center w-[300px] h-[300px]">
+    <CldImage
+      className="w-full h-full"
+      src={property.images[0]}
+      width={2000}
+      height={2000}
+      crop={'fill'}
+      alt={property.description}
+    />
+  </div>
+)}
         </div>
     </div>
           </>
