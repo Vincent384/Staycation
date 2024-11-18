@@ -59,9 +59,11 @@ const Checkout = () => {
             if(!login){
                 return console.log('måste logga in')
             }
-            
-            router.push('/checkout/confirmation')
 
+            const url = new URL('http://localhost:3000/checkout/confirmation')
+            url.searchParams.append('id',id)
+          
+            window.location.href = url.toString()
       }
 
       function onChangeHandler(e:React.ChangeEvent<HTMLInputElement>){

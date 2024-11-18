@@ -121,11 +121,11 @@ function onSubmitButton(){
   }
 
   function reviewButton(){
-    // setErrorMessage('')
-    // const login = localStorage.getItem('status')
-    // if(!login){
-    //     return setErrorMessage('Du behöver vara inloggad')
-    // }
+    setErrorMessage('')
+     const login = localStorage.getItem('status')
+    if(!login){
+         return setErrorMessage('Du behöver vara inloggad')
+     }
 
     setReviewModal(prev => !prev)
 

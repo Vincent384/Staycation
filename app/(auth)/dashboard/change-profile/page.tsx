@@ -1,6 +1,7 @@
 'use client'
 import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
+import { validateChangePassword } from '@/utils/validateChangePassword'
 import { validateRgister } from '@/utils/validateRegister'
 import { validateUpdateUser } from '@/utils/validateUpdate'
 import { Camera, X } from 'lucide-react'
@@ -18,7 +19,7 @@ const ChangeProfile = () => {
   const [modal, setModal] = useState<boolean>(false)
   const [modalPassword, setModalPassword] = useState<boolean>(false)
   const [checkPassword, setCheckPassword] = useState<string>('')
-
+  const [newPassword, setNewPassword] = useState<string>('')
   const [form, setForm] = useState<UpdateUser>({
     firstName:'',
     lastName:'',
@@ -35,7 +36,6 @@ const ChangeProfile = () => {
     email:'',
     password:'',
   })
-  console.log(form)
   
   useEffect(() => {
     
@@ -99,7 +99,6 @@ const ChangeProfile = () => {
               }
 
               const data = await res.json()
-              console.log(data)
               if(res.status === 200){
                 localStorage.clear()
                 setSuccessMessage('Kontot är borta. Du loggas nu ut')
@@ -139,7 +138,6 @@ const ChangeProfile = () => {
         if(res.status === 200){
           setSuccessMessage(data.message)
         }
-        console.log(data)
 
       } catch (error) { 
         console.log((error as Error).message)
@@ -156,7 +154,13 @@ const ChangeProfile = () => {
   
   async function submitNewPassword(e:React.MouseEvent<HTMLButtonElement>){
     e.preventDefault()
-    console.log('hej')
+    if(!validateChangePassword({newPassword,checkPassword,setError})){
+        return
+    }
+
+    console.log(newPassword)
+    console.log(checkPassword)
+
   }
 
   return (
@@ -205,10 +209,10 @@ const ChangeProfile = () => {
                               <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10'>
                                   <div className='relative bg-customWhite border-2 border-customGray p-12 rounded-lg'>
                                       <X className='absolute top-2 right-2 size-8 text-customBlack cursor-pointer hover:text-red-700' onClick={onModalPasswordToggler}/>
-                                      <InputForm valueText={form.password} onChangeInput={onChangeHandler} typeText='text'
+                                      <InputForm valueText={form.password} onChangeInput={e => setNewPassword(e.target.value)} typeText='password'
                                         errorText={error.password} placeHolder='' labelText='Nytt lösenord' nameText='password' changeInputSize/>
-                                      <InputForm valueText={checkPassword} onChangeInput={onChangeHandler} typeText='text'
-                                        errorText={error.password} placeHolder='' labelText='Repetera lösenord' nameText='password' changeInputSize/>
+                                      <InputForm valueText={checkPassword} onChangeInput={e => setCheckPassword(e.target.value)} typeText='password'
+                                        errorText={error.password} placeHolder='' labelText='Repetera lösenord' nameText='checkPassword' changeInputSize/>
                                       <button onClick={submitNewPassword}
                                         className='py-2 px-4 mt-5 bg-customLightGreen container text-customWhite text-lg font-semibold rounded-lg hover:opacity-50 transition-opacity'>Spara</button>
                                   </div>
