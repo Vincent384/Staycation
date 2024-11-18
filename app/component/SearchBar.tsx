@@ -14,7 +14,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ listings, displayResult, o
   const [selectedIndex, setSelectedIndex] = useState<number>(-1)
   
 
-  const filteredResults = listings 
+  const filteredResults = listings && input 
     ? Array.from(new Set(
         listings
           .filter((property) => {
@@ -59,7 +59,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ listings, displayResult, o
             value={input}
             onKeyDown={handleKeyDown}
             onChange={e => {
-              setInput(e.target.value);
+              setInput(e.target.value || '');
               setSelectedIndex(-1);
             }}
             className='rounded-lg rounded-r-none pr-[10rem] pl-4 py-3 border bg-customWhite border-black max-sm:pr-[5rem] w-full'

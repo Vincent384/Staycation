@@ -268,7 +268,7 @@ function onSubmitButton(){
                     rounded-lg hover:opacity-50 transition-opacity'>Vad&nbsp;som&nbsp;ingår</button>
                       {
                         modalButton &&
-                        <div className='relative animate-slideDown'>
+                        <div className='relative animate-slideDown z-20'>
 
                         <div className='absolute top-12 right-0  
                           transform -translate-x-0 -transform-y-0 bg-customWhite p-2 w-[300px] rounded-lg border border-customGray'>

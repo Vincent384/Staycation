@@ -47,7 +47,7 @@ const Dashboard = () => {
 
   const defaultAvatarSrc = 'https://res.cloudinary.com/drkty7j9v/image/upload/v1729774400/profileDefault_hfv9ys.png';
 
-  console.log(userProfile)
+
   const avatarSrc: string = userProfile?.avatar && userProfile.avatar !== '' ? userProfile.avatar : defaultAvatarSrc;
 
   return (

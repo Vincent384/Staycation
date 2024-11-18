@@ -109,39 +109,44 @@ const ListingProperties = () => {
 
   
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+    e.preventDefault();
   
-    if (!listings) return
+    if (!listings) return;
   
     const filtered = listings.filter((prop) => {
-      const citySearch = prop.location.city.toLowerCase()
-      const districtSearch = prop.location.district.toLowerCase()
-      const guests = Number(prop.maximum_guest)
-    
-      const matchesLocation =
-        citySearch.includes(input.toLowerCase()) || districtSearch.includes(input.toLowerCase())
-   
+      const citySearch = prop.location.city.toLowerCase();
+      const districtSearch = prop.location.district.toLowerCase();
+      const guests = Number(prop.maximum_guest);
+  
+ 
+      const matchesLocation = 
+        input && (citySearch.includes(input.toLowerCase()) || districtSearch.includes(input.toLowerCase()));
+  
       const matchesDateAndGuests =
         checkinDate &&
         checkoutDate &&
         guests >= howManyGuests &&
         prop.available_dates.includes(checkinDate) &&
-        prop.available_dates.includes(checkoutDate)
-    
-    
+        prop.available_dates.includes(checkoutDate);
+  
+      
       if (matchesLocation && matchesDateAndGuests) {
-        setInput('')
         return true
       }
-    
-     
-      return false
+  
+      if (matchesLocation && !checkinDate && !checkoutDate && howManyGuests === 0) {
+        return true
+      }
+  
+      if (!input && matchesDateAndGuests) {
+        return true
+      }
+  
+      return false 
     })
-    
-
-
+  
     const sum = filtered.length
-
+  
     setSearchResultsCount(sum)
     setFilteredListings(filtered)
   }

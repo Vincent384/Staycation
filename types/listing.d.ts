@@ -117,3 +117,28 @@ type ListingPropertyWithHost = ListingProperty & {
     hostName: string,
     hostAvatar: string,
 }
+
+type PropertyType = {
+    _id: string
+    title: string
+    description: string
+    images: string[]
+    location: {
+      city: string
+      district: string
+    }
+    price_per_night: number
+    maximum_guest: number
+    house_rules: string[]
+    available_dates: string[]
+    facilities?: string[]
+    accessibilityFeatures?: string[]
+    distanceToNearestBus?: number
+    accessibilityImages?: string[]
+  }
+  
+  type ListingType = {
+    _id: string
+    listings: PropertyType[] 
+  }
+  

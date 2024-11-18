@@ -17,7 +17,9 @@ const ChangeProfile = () => {
       avatar:''
     })
 
-    const [avatar, setAvatar] = useState<HostDataWithId | null>(null)
+    const { setAvatar } = useAuthContext()
+
+    const [avatarImage, setAvatarImage] = useState<HostDataWithId | null>(null)
 
     useEffect(() => {
 
@@ -29,7 +31,7 @@ const ChangeProfile = () => {
 
     const avatarData = JSON.parse(getHost)
         
-    setAvatar(avatarData)
+    setAvatarImage(avatarData)
 
     }, [])
     
@@ -47,7 +49,7 @@ const ChangeProfile = () => {
   
           const bodyPost = {
             avatar:form.avatar,
-            hostId:avatar?._id 
+            hostId:avatarImage?._id 
           }
           console.log(bodyPost)
           try {
@@ -70,10 +72,11 @@ const ChangeProfile = () => {
                 localStorage.removeItem('Avatar')
                 localStorage.removeItem('Host')
                 localStorage.setItem('Host',JSON.stringify(data.updated))
+             
                 setSuccessMessage(data.message)
                 window.setTimeout(() => {
                     router.push('/dashboard')
-                  }, 2000);
+                  }, 1000);
        
      
             
@@ -102,7 +105,7 @@ const ChangeProfile = () => {
         max-sm:px-[2rem]'>Ändra&nbsp;Profilbild</h1>
     <div>
         {
-         avatar && <h2 className='mt-5 text-xl font-semibold'>{avatar.name}</h2>
+         avatarImage && <h2 className='mt-5 text-xl font-semibold'>{avatarImage.name}</h2>
         }
     </div>
 

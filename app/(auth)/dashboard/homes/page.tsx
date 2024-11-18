@@ -224,7 +224,7 @@ const Homes = () => {
          
               } 
 
-           {
+           {/* {
             property ?
             '': 
             <div className='text-center'>
@@ -233,7 +233,7 @@ const Homes = () => {
                 hover:opacity-50 transition-opacity'>Gå tillbaka</span></Link>
             </div>
              
-           }
+           } */}
         </div>
     </div>
   )

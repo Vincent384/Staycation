@@ -150,6 +150,20 @@ export async function PUT(req:Request):Promise<NextResponse>{
             return NextResponse.json({message:"No listing found with that id"},{status:404})
         }
 
+        const listingId = '670e44711445d7876123e5ce'
+
+        const listing = await Listing.findById(listingId)
+
+        const index = listing.listings.findIndex((item: PropertyType) => item._id.toString() === propertyId)
+
+        if (index === -1) {
+            return NextResponse.json({ message: 'Property not found in listings' }, { status: 404 })
+        }
+
+        listing.listings[index] = { ...updateProperty, _id: propertyId }
+
+        await listing.save()
+
         return NextResponse.json({message:"Ändringarna sparade",updateProperty,},{status:200})
 
     } catch (error) {

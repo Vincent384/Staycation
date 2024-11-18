@@ -90,7 +90,11 @@ export async function PUT(req:Request):Promise<NextResponse>{
         }
 
 
-        const findUserAndUpdate = await Host.findByIdAndUpdate(hostId,avatar)
+        const findUserAndUpdate = await Host.findByIdAndUpdate(
+            hostId,
+            { avatar }, 
+            { new: true } 
+        );
         
         
         if(!findUserAndUpdate){
