@@ -4,13 +4,11 @@ import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
 import { SideShopBar } from '@/app/component/SideShopBar'
 import { calculateDaysBetween } from '@/utils/calculateday'
-import { convertMonthAndDay } from '@/utils/monthDayConvert'
-import { Bus, BusIcon, ChevronDown, ChevronUp, Dot, LoaderCircle, MapPin, Star, X } from 'lucide-react'
+import {  Dot, LoaderCircle, MapPin, X } from 'lucide-react'
 import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useParams, useSearchParams } from 'next/navigation'
-import { hostname } from 'os'
+import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const DetailPropertyPage = () => {
@@ -21,14 +19,11 @@ const DetailPropertyPage = () => {
     guests: string;
   };
 
-  const [toggler, setToggler] = useState<boolean>(false)
-  const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [property, setProperty] = useState<ListingPropertyWithHost | null>(null)
   const [resultDay, setResultDay] = useState<number | null>(null)
   const [resultOfPrice, setResultOfPrice] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [modalButton, setModalButton] = useState<boolean>(false)
-  const [selectedDatesEnd, setSelectedDatesEnd] = useState<string[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [reviewModal, setReviewModal] = useState<boolean>(false)
   const [form, setForm] = useState<UserReview>({

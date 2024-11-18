@@ -39,7 +39,7 @@ export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,
   }
 
   function displayDays(offset:number){
-    let array = []
+    const array = []
     const date = new Date()
     date.setMonth(date.getMonth() + offset)
     

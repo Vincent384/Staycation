@@ -3,12 +3,10 @@ import { Calender } from '@/app/component/Calender'
 import { ModalFilter } from '@/app/component/ModalFilter'
 import { Navbar } from '@/app/component/Navbar'
 import { SearchBar } from '@/app/component/SearchBar'
-import { calculateDaysBetween } from '@/utils/calculateday'
 import { convertMonthAndDay } from '@/utils/monthDayConvert'
-import { Bed, Bus, CalendarIcon, LoaderCircle, MapPin, Minus, Plus } from 'lucide-react'
+import { Bed, Bus, LoaderCircle, MapPin, Minus, Plus } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import { list } from 'postcss'
 import React, { useEffect, useState } from 'react'
 
 
@@ -20,9 +18,6 @@ const ListingProperties = () => {
   const [listings, setListings] = useState<ListingProperty[] |null>(null)
   const [filteredListings, setFilteredListings] = useState<ListingProperty[] |null>(null)
   const [input, setInput] = useState<string>('')
-  const [date, setDate] = useState<{available_dates:string[]}>({
-    available_dates:[]
-  })
   const [displayResult, setDisplayResult] = useState<ListingProperty | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [howManyGuests, setHowManyGuests] = useState<number>(2)
@@ -32,7 +27,6 @@ const ListingProperties = () => {
   const [selectedDatesEnd, setSelectedDatesEnd] = useState<string[]>([]);
   let [checkinDate, setCheckinDate] = useState<string>('');
   let [checkoutDate, setCheckoutDate] = useState<string>('');
-  const [togglerOffModal, setTogglerOffModal] = useState<boolean>(true)
   useEffect(() => {
     async function getData() {
       try {

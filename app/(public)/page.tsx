@@ -1,11 +1,9 @@
 'use client'
 import { LoaderCircle } from 'lucide-react'
-import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { SearchBar } from '../component/SearchBar'
 import { Navbar } from '../component/Navbar'
 import { City } from '../component/City'
-import ListingProperties from './listings/[city]/page'
 import { useRouter } from 'next/navigation'
 
 
