@@ -103,7 +103,7 @@ const Dashboard = () => {
                             <button className='py-2 px-4 bg-customOrange container text-customWhite font-semibold text-lg
                             rounded-lg hover:opacity-50 transition-opacity'>Ändra&nbsp;profil</button>
                             </Link>
-                            <Link href={'dashboard/create-listing'}>
+                            <Link href={'/dashboard/message'}>
                             <button className='py-2 px-4 bg-customGray container text-customWhite font-semibold text-lg
                             rounded-lg hover:opacity-50 transition-opacity'>Mina meddelande</button>
                             </Link>

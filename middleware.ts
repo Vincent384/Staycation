@@ -32,5 +32,6 @@ export const config = {
         '/dashboard/change-host-profile',
         '/dashboard/create-listing',
         '/dashboard/change-listing',
-        '/dashboard/change-profile'],  
+        '/dashboard/change-profile',
+    '/dashboard/message'],  
 };

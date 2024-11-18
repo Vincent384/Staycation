@@ -224,7 +224,16 @@ const Homes = () => {
          
               } 
 
-           
+           {
+            property ?
+            '': 
+            <div className='text-center'>
+                <h1 className='text-center text-xl mb-10'>Du har inte lagt till något hem</h1>
+                <Link href={'/dashboard'}><span className='mt-5 bg-customBlue px-4 py-2 text-customWhite rounded-lg font-semibold text-xl
+                hover:opacity-50 transition-opacity'>Gå tillbaka</span></Link>
+            </div>
+             
+           }
         </div>
     </div>
   )

@@ -33,7 +33,6 @@ const ListingProperties = () => {
   let [checkinDate, setCheckinDate] = useState<string>('');
   let [checkoutDate, setCheckoutDate] = useState<string>('');
   const [togglerOffModal, setTogglerOffModal] = useState<boolean>(true)
-  const [errorMessage, setErrorMessage] = useState('')
   useEffect(() => {
     async function getData() {
       try {
@@ -162,6 +161,9 @@ const ListingProperties = () => {
   setHowManyGuests(offSet)
   }, [offSet])
 
+  console.log(listings?.map((prop)=>(
+    prop.accessibilityImages
+  )))
 
 
   function onFilterHandler(search: string) {
@@ -185,10 +187,12 @@ const ListingProperties = () => {
           break
           case'synskadad':
           filtered = filtered?.filter((prop) => 
-            prop.accessibilityImages.includes('https://res.cloudinary.com/drkty7j9v/image/upload/v1730714294/%C3%B6ron_wnmxtf.png'))
+            prop.accessibilityImages.includes('https://res.cloudinary.com/drkty7j9v/image/upload/v1730713492/84529_ix44n3.png'))
+          break
           case'hearing':
           filtered = filtered?.filter((prop) => 
-            prop.accessibilityImages.includes('https://res.cloudinary.com/drkty7j9v/image/upload/v1730713492/84529_ix44n3.png'))
+            prop.accessibilityImages.includes('https://res.cloudinary.com/drkty7j9v/image/upload/v1730714294/%C3%B6ron_wnmxtf.png'))
+          break
       }
 
       setFilteredListings(filtered)
@@ -234,7 +238,7 @@ const ListingProperties = () => {
        <SearchBar onSubmit={onSubmit} setInput={setInput} 
        displayResult={displayResult} listings={listings} input={input} onChangeSearch={onChangeSearch}/>
 
-<div className="mx-auto mt-5 w-[500px] text-center max-md:w-[400px]">
+<div className="mx-auto  mt-5 w-[500px] text-center max-md:w-[400px]">
   <div className="grid grid-cols-5 max-md:w-[360px] items-center gap-0">
     <span className="bg-gray-300 rounded-l-lg p-2 border border-black h-full flex items-center justify-center">
       Datum

@@ -18,6 +18,7 @@ const ChangeProfile = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [modal, setModal] = useState<boolean>(false)
   const [modalPassword, setModalPassword] = useState<boolean>(false)
+  const [modalSuccess, setModalSuccess] = useState<boolean>(false)
   const [checkPassword, setCheckPassword] = useState<string>('')
   const [newPassword, setNewPassword] = useState<string>('')
   const [form, setForm] = useState<UpdateUser>({
@@ -114,6 +115,11 @@ const ChangeProfile = () => {
 
     async function onSubmitForm(e:React.FormEvent<HTMLFormElement>){
       e.preventDefault()
+      setSuccessMessage('')
+      setError((prev)=>({
+        ...prev,
+        password:''
+      }))
 
       if(!validateUpdateUser(form,setError)){
         return console.log('gick inte')
@@ -158,8 +164,29 @@ const ChangeProfile = () => {
         return
     }
 
-    console.log(newPassword)
-    console.log(checkPassword)
+    const responseBody = {
+      password:newPassword,
+      userId:form.userId
+    }
+
+    try {
+        const res = await fetch('http://localhost:3000/api/user/auth',{
+          method:'PUT',
+          headers:{
+            'Content-type':'application/json'
+          },
+          body:JSON.stringify(responseBody)
+        })
+
+        const data = await res.json()
+        console.log(data)
+        if(res.status === 200){
+          setModalPassword(false)
+        }
+
+    } catch (error) {
+      console.log((error as Error).message)
+    }
 
   }
 

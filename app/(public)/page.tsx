@@ -50,7 +50,6 @@ const Home = () => {
     }
     getData()
   }, [])
-  console.log(listings)
 
 
 
@@ -63,7 +62,6 @@ const Home = () => {
       return
     }
 
-    console.log(input)
     router.push(`listings/${input}`)
   }
 

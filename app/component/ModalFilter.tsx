@@ -34,7 +34,7 @@ buttonModal ? (
     <div className={`relative z-20 animate-slideDown`}>
       <div className='absolute top-[145px] left-1/2 transform -translate-x-1/2
             -translate-y-1/2 
-            bg-customBeige py-5 px-5 rounded-lg mt-3 border-2 border-customGray ease-ease-in-out'>
+            bg-customBeige py-5 px-5 rounded-lg mt-3 border-2 border-customGray ease-ease-in-out max-lg:left-1/3'>
         
         <div className='flex justify-between gap-10'>
           <span className='mb-3'>Sortera Efter:</span>

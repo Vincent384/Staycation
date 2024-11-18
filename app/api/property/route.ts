@@ -121,7 +121,7 @@ export async function PUT(req:Request):Promise<NextResponse>{
 
         const {title,description,images,location,price_per_night,maximum_guest,house_rules,
             facilities,available_dates,propertyId,accessibilityFeatures,
-            distanceToNearestBus,accessibilityImages} = await req.json()
+            distanceToNearestBus,accessibilityImages}:ListingProperty & {propertyId:string} = await req.json()
     
         if(!title || !description || !images || !location || 
             !price_per_night || !maximum_guest || !house_rules || !available_dates || !propertyId){

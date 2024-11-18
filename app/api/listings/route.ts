@@ -25,7 +25,7 @@ export async function POST(req:Request){
     try {
         await connectMongoDb()
     
-        const { listingId } = await req.json()
+        const { listingId }:{listingId:string} = await req.json()
     
         if(!listingId){
             return NextResponse.json({message:"Hittade ingen egendom med det angivna ID"},{status:404})
