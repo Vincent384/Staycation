@@ -1,10 +1,9 @@
 'use client'
 import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
-import { useAuthContext } from '@/context/authContext'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { CldImage, CloudinaryUploadWidgetResults } from 'next-cloudinary'
+import { CldImage } from 'next-cloudinary'
 import { CldUploadWidget,CloudinaryUploadWidgetInfo  } from 'next-cloudinary'
 import { X } from 'lucide-react'
 
@@ -17,7 +16,6 @@ const CreateHost = () => {
     avatar:''
   })
 
-  const { setAvatar } = useAuthContext()
 
   const [successMessage, setSuccessMessage] = useState<string>('')
 

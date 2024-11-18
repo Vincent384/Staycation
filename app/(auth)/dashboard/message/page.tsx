@@ -1,6 +1,4 @@
 import { Navbar } from '@/app/component/Navbar'
-import { CldImage } from 'next-cloudinary'
-import Link from 'next/link'
 import React from 'react'
 
 const Messages = () => {

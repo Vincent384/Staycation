@@ -2,12 +2,10 @@
 import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
 import { validateChangePassword } from '@/utils/validateChangePassword'
-import { validateRgister } from '@/utils/validateRegister'
 import { validateUpdateUser } from '@/utils/validateUpdate'
-import { Camera, X } from 'lucide-react'
+import {  X } from 'lucide-react'
 
-import { CldImage } from 'next-cloudinary'
-import Link from 'next/link'
+
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -18,7 +16,6 @@ const ChangeProfile = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [modal, setModal] = useState<boolean>(false)
   const [modalPassword, setModalPassword] = useState<boolean>(false)
-  const [modalSuccess, setModalSuccess] = useState<boolean>(false)
   const [checkPassword, setCheckPassword] = useState<string>('')
   const [newPassword, setNewPassword] = useState<string>('')
   const [form, setForm] = useState<UpdateUser>({
@@ -46,27 +43,29 @@ const ChangeProfile = () => {
     if(userId){
       const id = JSON.parse(userId)
 
-      async function getUserProfile(){
-        try {
-          const res = await fetch(`http://localhost:3000/api/profile?userId=${id}`)
 
-          const data = await res.json()
-  
-          setForm(data.userProfile)
-          setForm((prev) => ({
-            ...prev,
-            userId:id
-          }))
-        } catch (error) {
-          console.log(error)
-        }
-      }
   
 
-      getUserProfile()
+      getUserProfile(id)
     }
    
   }, [])
+
+  async function getUserProfile(id:string){
+    try {
+      const res = await fetch(`http://localhost:3000/api/profile?userId=${id}`)
+
+      const data = await res.json()
+
+      setForm(data.userProfile)
+      setForm((prev) => ({
+        ...prev,
+        userId:id
+      }))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   function onChangeHandler(e:React.ChangeEvent<HTMLInputElement>){
     const {name,value} = e.target
@@ -100,6 +99,7 @@ const ChangeProfile = () => {
               }
 
               const data = await res.json()
+              console.log(data)
               if(res.status === 200){
                 localStorage.clear()
                 setSuccessMessage('Kontot är borta. Du loggas nu ut')

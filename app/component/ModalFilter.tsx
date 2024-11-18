@@ -44,7 +44,7 @@ buttonModal ? (
 
         <form className='flex flex-col gap-3'>
           <div className='flex'>
-            <input name='lowPrice' onClick={(e) => onFilterHandler('low')} className='cursor-pointer' type="checkbox" />
+            <input name='lowPrice' onClick={() => onFilterHandler('low')} className='cursor-pointer' type="checkbox" />
             <label className='ml-3'>Lägst pris</label>
           </div>
           <div className='flex'>

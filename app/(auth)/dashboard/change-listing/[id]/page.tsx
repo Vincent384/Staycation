@@ -1,16 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { Navbar } from '@/app/component/Navbar'
 import { InputForm } from '@/app/component/InputForm'
-import { validateRgister } from '@/utils/validateRegister'
 import { useParams, useRouter } from 'next/navigation'
-import { setTimeout } from 'timers/promises'
-import { useAuthContext } from '@/context/authContext'
-import { CldImage, CloudinaryUploadWidgetResults } from 'next-cloudinary'
+import { CldImage} from 'next-cloudinary'
 import { CldUploadWidget,CloudinaryUploadWidgetInfo  } from 'next-cloudinary'
 import { Calender } from '@/app/component/Calender'
-import { Check, CheckCheckIcon, X } from 'lucide-react'
+import { Check, X } from 'lucide-react'
 import { convertMonthAndDay } from '@/utils/monthDayConvert'
 import { validateCreate } from '@/utils/validateCreate'
 
@@ -25,9 +21,8 @@ const ChangeHome = () => {
   const [isActive, setIsActive] = useState<{[key:number]:boolean}>({})  
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [currentProperty, setCurrentProperty] = useState<CreateListingProperty | null>(null)
-  const [imageArray, setImageArray] = useState(['https://res.cloudinary.com/drkty7j9v/image/upload/v1729670272/Namnl%C3%B6st-1_koufja.png',
-    'https://res.cloudinary.com/drkty7j9v/image/upload/v1730714294/%C3%B6ron_wnmxtf.png','https://res.cloudinary.com/drkty7j9v/image/upload/v1730713492/84529_ix44n3.png'])
+  const imageArray =['https://res.cloudinary.com/drkty7j9v/image/upload/v1729670272/Namnl%C3%B6st-1_koufja.png',
+    'https://res.cloudinary.com/drkty7j9v/image/upload/v1730714294/%C3%B6ron_wnmxtf.png','https://res.cloudinary.com/drkty7j9v/image/upload/v1730713492/84529_ix44n3.png']
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
 
   const { id } = useParams() 
@@ -235,7 +230,7 @@ const ChangeHome = () => {
     });
   }
 
-    function onHandleDay(day:string,year:string,month:string,isStartDate:boolean){
+    function onHandleDay(day:string,year:string,month:string){
       const monthNumber = convertMonthAndDay(month)
       const date = `${year}-${monthNumber}-${day}`
 

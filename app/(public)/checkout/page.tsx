@@ -3,17 +3,15 @@ import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
 import { calculateDaysBetween } from '@/utils/calculateday'
 import { CldImage } from 'next-cloudinary'
-import { useRouter, useSearchParams } from 'next/navigation'
+import {  useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const Checkout = () => {
-    const router = useRouter()
 
     const searchParams = useSearchParams()
     const [property, setProperty] = useState<ListingPropertyWithHost | null>(null)
     const [resultDay, setResultDay] = useState<number | null>(null)
     const [resultOfPrice, setResultOfPrice] = useState<number | null>(null)
-    const [loading, setLoading] = useState(false)
     const checkinDate = searchParams.get('checkinDate') as string    
     const checkoutDate = searchParams.get('checkoutDate') as string   
     const guests = searchParams.get('guests') as string 
@@ -25,9 +23,20 @@ const Checkout = () => {
     })
 
     useEffect(() => {
+ 
+        if(property && resultDay != null){
+          const price = property?.price_per_night as number 
+          console.log(price)
+          const calculatePrice = resultDay * price 
+          setResultOfPrice(calculatePrice)
+      }
+  
+  
+    }, [property,resultDay])
+
+    useEffect(() => {
         async function getProperty(){
           try {
-            setLoading(true)
             const res = await fetch(`http://localhost:3000/api/property?id=${id}`)
     
             if(!res.ok){
@@ -35,14 +44,12 @@ const Checkout = () => {
             }
     
             const data:ListingPropertyWithHost = await res.json()
-            console.log(data)
             setProperty(data)
             const result = calculateDaysBetween(checkinDate,checkoutDate) 
             setResultDay(result)
           } catch (error) {
             console.log(error)
           }finally{
-            setLoading(false)
           }
         } 
     
@@ -114,7 +121,7 @@ const Checkout = () => {
                                 />
                             </div>
                         </div>
-                        <div className='bg-customWhite border-2 mt-2 p-4'>
+                        <div className='bg-customWhite border-2 mt-2 p-7'>
                             <div className=''>
                                 <InputForm changeInputSize={true} typeText='text' placeHolder='Olof Jönsson' 
                                 labelText='Namn' valueText={form.name} errorText='' nameText='name'

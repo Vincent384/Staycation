@@ -24,23 +24,23 @@ const Dashboard = () => {
     if(userId){
       const id = JSON.parse(userId)
 
-      async function getUserProfile(){
-        try {
-          const res = await fetch(`http://localhost:3000/api/profile?userId=${id}`)
 
-          const data = await res.json()
-  
-          setUserProfile(data.userProfile)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-  
 
-      getUserProfile()
+      getUserProfile(id)
     }
    
   }, [])
+  async function getUserProfile(id:string){
+    try {
+      const res = await fetch(`http://localhost:3000/api/profile?userId=${id}`)
+
+      const data = await res.json()
+
+      setUserProfile(data.userProfile)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 
   const defaultAvatarSrc = 'https://res.cloudinary.com/drkty7j9v/image/upload/v1729774400/profileDefault_hfv9ys.png';

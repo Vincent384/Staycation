@@ -3,14 +3,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import favicon from '../favicon.ico'
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation'
-import { useAuthContext } from '@/context/authContext'
 import { CldImage } from 'next-cloudinary'
 
 export const Navbar = () => {
 
-    const router = useRouter()
+
     const [loggedIn, setLoggedIn] = useState<boolean>(false)
     const [avatar, setAvatar] = useState<HostData | null>(null)
 

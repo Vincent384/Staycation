@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 
 type SearchBarProps = {
     listings: ListingProperty[] | null,
-    displayResult: ListingProperty | null,
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
     setInput: (value: string) => void,
     onChangeSearch: (title: string) => void,
     input: string
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ listings, displayResult, onSubmit, setInput, input, onChangeSearch }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ listings, onSubmit, setInput, input, onChangeSearch }) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(-1)
   
 

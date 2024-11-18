@@ -1,5 +1,4 @@
 import React from 'react'
-import { Calender } from './Calender'
 
 type SideShopBarProps = {
 checkinDate:string,

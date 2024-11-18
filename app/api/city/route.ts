@@ -32,7 +32,7 @@ export async function POST(res:Request){
             return NextResponse.json({message:'Need to fill out a cityName and a cityImage'},{status:400})
         }
 
-        const createCity = await City.create({cityName,cityImage})
+        await City.create({cityName,cityImage})
 
         return NextResponse.json({message:'Creation was successfull'},{status:201})
 

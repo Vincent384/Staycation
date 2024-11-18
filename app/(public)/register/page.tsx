@@ -5,12 +5,10 @@ import { Navbar } from '@/app/component/Navbar'
 import { InputForm } from '@/app/component/InputForm'
 import { validateRgister } from '@/utils/validateRegister'
 import { useRouter } from 'next/navigation'
-import { setTimeout } from 'timers/promises'
-import { useAuthContext } from '@/context/authContext'
+
 
 const Register = () => {
 
-  const { getDataAvatar } = useAuthContext()
   const router = useRouter()
 
   const [form, setForm] = useState<RegisterForm>({

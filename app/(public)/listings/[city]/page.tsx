@@ -18,15 +18,14 @@ const ListingProperties = () => {
   const [listings, setListings] = useState<ListingProperty[] |null>(null)
   const [filteredListings, setFilteredListings] = useState<ListingProperty[] |null>(null)
   const [input, setInput] = useState<string>('')
-  const [displayResult, setDisplayResult] = useState<ListingProperty | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [howManyGuests, setHowManyGuests] = useState<number>(2)
   const [offSet, setOffSet] = useState<number>(0)
   const [searchResultsCount, setSearchResultsCount] = useState<number>(0)
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [selectedDatesEnd, setSelectedDatesEnd] = useState<string[]>([]);
-  let [checkinDate, setCheckinDate] = useState<string>('');
-  let [checkoutDate, setCheckoutDate] = useState<string>('');
+  const [checkinDate, setCheckinDate] = useState<string>('');
+  const [checkoutDate, setCheckoutDate] = useState<string>('');
   useEffect(() => {
     async function getData() {
       try {
@@ -87,7 +86,7 @@ const ListingProperties = () => {
       const getToday = date.getDay()
       const getMonth = date.getMonth()
       const getYear = date.getFullYear()
-      checkinDate = `${getYear}-${getMonth}-${getToday}`
+      setCheckinDate(`${getYear}-${getMonth}-${getToday}`)
   }
 
   if(!checkoutDate || checkoutDate.trim() === ''){
@@ -95,7 +94,7 @@ const ListingProperties = () => {
     const getToday = date.getDay()
     const getMonth = date.getMonth()
     const getYear = date.getFullYear()
-    checkoutDate = `${getYear}-${getMonth}-${getToday}`
+    setCheckoutDate(`${getYear}-${getMonth}-${getToday}`)
 }
     router.push(`/listings/${city}/property/${id}/${checkinDate}/${checkoutDate}/${howManyGuests}`)
   }
@@ -198,7 +197,7 @@ const ListingProperties = () => {
     }
   }
 
-  const onHandleDay = (day: string, year: string, month: string, isStartDate: boolean) => {
+  const onHandleDay = (day: string, year: string, month: string) => {
     const monthNumber = convertMonthAndDay(month);
     const date = `${year}-${monthNumber}-${day}`;
 
@@ -235,7 +234,7 @@ const ListingProperties = () => {
       <div>
       <Navbar/> 
        <SearchBar onSubmit={onSubmit} setInput={setInput} 
-       displayResult={displayResult} listings={listings} input={input} onChangeSearch={onChangeSearch}/>
+        listings={listings} input={input} onChangeSearch={onChangeSearch}/>
 
 <div className="mx-auto  mt-5 w-[500px] text-center max-md:w-[400px]">
   <div className="grid grid-cols-5 max-md:w-[360px] items-center gap-0">

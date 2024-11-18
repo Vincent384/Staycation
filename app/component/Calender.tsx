@@ -19,8 +19,8 @@ type CalenderProps = {
   setToggler:React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,endDateCalender,isStartDate
-,checkinDate,checkoutDate,setToggler,toggler,selectedDatesEnd}:CalenderProps) => {
+export const Calender = ({onHandleDay,selectedDates,className,startDate,endDate,endDateCalender,
+checkinDate,checkoutDate,setToggler,toggler,selectedDatesEnd}:CalenderProps) => {
 
   const [days, setDays] = useState<string[] | null>(null)
   const [displayMonth, setDisplayMonth] = useState<string>('')

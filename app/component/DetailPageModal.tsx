@@ -1,6 +1,5 @@
 import { BusIcon, ChevronDown, ChevronUp, Dot, X } from 'lucide-react'
 import { CldImage } from 'next-cloudinary'
-import Image from 'next/image'
 import React, { useState } from 'react'
 
 type DetailPageModalProps = {

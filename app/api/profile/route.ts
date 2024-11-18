@@ -1,6 +1,5 @@
 import { User } from "@/models/user"
 import { NextResponse } from "next/server"
-import * as jwt from 'jsonwebtoken';
 import { Host } from "@/models/host";
 
 

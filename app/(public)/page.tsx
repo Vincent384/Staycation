@@ -14,7 +14,6 @@ const Home = () => {
   const router = useRouter()
   const [listings, setListings] = useState<ListingProperty[] |null>(null)
   const [input, setInput] = useState<string>('')
-  const [displayResult, setDisplayResult] = useState<ListingProperty | null>(null)
   const [loading, setLoading] = useState(false)
   
   useEffect(() => {
@@ -79,7 +78,7 @@ const Home = () => {
         <Navbar/> 
           <h1 className='text-white text-center text-5xl p-5 mt-5 max-md:text-3xl'>Vart vill du boka?</h1>
          <SearchBar onSubmit={onSubmit} setInput={setInput} 
-         displayResult={displayResult} listings={listings} input={input} onChangeSearch={onChangeSearch}/>
+          listings={listings} input={input} onChangeSearch={onChangeSearch}/>
         <h2 className='bg-customGreen w-[1000px] rounded-full p-2 text-center text-3xl mx-auto mt-10 text-customWhite max-md:hidden'>Upptäck världen hemifrån – din bästa semester väntar runt hörnet!</h2>
         <City/>
         </div>
