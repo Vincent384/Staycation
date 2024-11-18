@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "lottie-web": "^5.12.2",
     "lucide-react": "^0.441.0",
+    "mongoose": "^8.8.1",
     "next": "^15.0.1",
     "next-client-cookies": "^2.0.0",
     "next-cloudinary": "^6.13.0",
