@@ -67,6 +67,9 @@ useEffect(() => {
       width={2000}
       height={2000}
       crop={'fill'}
+      quality="auto" 
+      dpr="auto" 
+      loading="lazy"
       alt={property.description}
     />
   </div>

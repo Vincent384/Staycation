@@ -143,6 +143,9 @@ const ChangeProfile = () => {
                   width={100}
                   height={100}
                   crop={'fill'}
+                  quality="auto" 
+                  dpr="auto" 
+                  loading="lazy"
                   alt='Profil-bild'
                   />
                     </div>

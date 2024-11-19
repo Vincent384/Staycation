@@ -4,7 +4,7 @@ import { InputForm } from '@/app/component/InputForm'
 import { Navbar } from '@/app/component/Navbar'
 import { SideShopBar } from '@/app/component/SideShopBar'
 import { calculateDaysBetween } from '@/utils/calculateday'
-import {  Dot, LoaderCircle, MapPin, X } from 'lucide-react'
+import {  Dot, LoaderCircle, MapPin, Star, X } from 'lucide-react'
 import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -243,6 +243,9 @@ function onSubmitButton(){
                                       src={property.hostAvatar} 
                                       height={1200}
                                       width={1200}
+                                      quality="auto" 
+                                      dpr="auto" 
+                                      loading="lazy"
                                       alt='Profilbild'
                                       className="absolute top-0 left-0 w-full h-full object-cover" 
                                   />
@@ -254,9 +257,11 @@ function onSubmitButton(){
                               <p className='mt-5 text-lg'>{property.description}</p>
                           </div>
                       </div>
-
+                                
                     </div>
+                    
               )}
+           
                          <div className='relative  flex justify-center mb-10'>
                     <button onClick={modalButtonToggler} className='bg-customOrange
                      text-customWhite mt-2 cursor-pointer py-2 px-10 border border-black
@@ -332,28 +337,39 @@ function onSubmitButton(){
 
                               {property?.reviews?.map((rev,index)=> (
                                 <div className='border-2 p-5 mt-5' key={index}>
-                                  <div className='flex gap-3 mb-5 items-center'>
+                                  <div className='flex justify-between gap-3 mb-5 items-center'>
                                        {rev.hostId?.avatar ? (
                                            <>
+                                        <div className='flex items-center justify-center gap-3'>
                                          <div className="w-12 h-12 overflow-hidden rounded-full">
                                           <CldImage
                                             src={rev.hostId.avatar}
                                             width={1000}
                                             height={1000}
+                                            quality="auto" 
+                                            dpr="auto" 
+                                            loading="lazy"
                                             alt={"Host Avatar"}
                                             crop="fill"
                                             />
                                         </div>
-
                                         <span className='text-lg'>{rev.hostId.name}</span>
+                                        </div>   
+                                        <div className='flex items-center justify-center gap-1'>
+                                              <span className='font-semibold text-lg'>{rev.rating}</span>
+                                              <Star/>
+                                        </div>
                                         </>
                                       ) : (
                                         <div className="size-10 cursor-pointer">
-                                          <Image
+                                          <CldImage
                                             className="object-contain"
                                             src="https://res.cloudinary.com/drkty7j9v/image/upload/v1729774400/profileDefault_hfv9ys.png"
                                             width={1000}
                                             height={1000}
+                                            quality="auto" 
+                                            dpr="auto" 
+                                            loading="lazy"
                                             alt="Default Avatar"
                                           />
                                         </div>
@@ -365,7 +381,28 @@ function onSubmitButton(){
                             </div>
                           }
                       </div>
+                      {
+                    property &&     <div className='flex justify-center items-center'>
 
+                    <div className='mb-10 bg-customWhite w-[500px] border-2
+                    border-customGray p-5 rounded-lg max-md:w-[300px] max-lg:m-0'>
+                      <div className=''>
+                        <div className='text-center mb-5'>
+                              <h2 className='text-2xl font-bold text-customBlack'>Husregler</h2>
+                              <p className="text-sm text-gray-500">Vänligen läs igenom innan bokning</p>
+                        </div>
+                  
+                
+                        <ul className="list-disc list-inside mt-5 text-lg space-y-2">
+                          {property.house_rules.map((regler, index) => (
+                            <li key={index}>{regler}</li>
+                          ))}
+                        </ul>
+                      </div>
+                  </div>
+                            
+                </div>
+                  }    
             </main>
 
      }

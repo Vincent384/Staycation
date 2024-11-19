@@ -380,6 +380,9 @@ const ChangeHome = () => {
                           width={100}
                           height={100}
                           crop={'fill'}
+                          quality="auto" 
+                          dpr="auto" 
+                          loading="lazy"
                           alt='Hus-bild'
                         />
                       </div>
@@ -528,6 +531,9 @@ const ChangeHome = () => {
              src={bild}
              width={1200}
              height={1200}
+             quality="auto" 
+             dpr="auto" 
+             loading="lazy"
              className={`${isActive[index] ? 'border-black opacity-50' : ''}`}
              alt='TillgänglighetsAnpassade ikoner'/>
              {
@@ -548,6 +554,9 @@ const ChangeHome = () => {
              src={bild}
              width={1200}
              height={1200}
+             quality="auto" 
+             dpr="auto" 
+             loading="lazy"
              className={`border-2 border-customLightGreen ${isActive[index] ? 'border-black opacity-50' : ''}`}
              alt='TillgänglighetsAnpassade ikoner'/>
              {

@@ -121,6 +121,9 @@ const Homes = () => {
                  src={property.images[activeImage]}
                  width={2000}
                  height={2000}
+                 quality="auto" 
+                 dpr="auto" 
+                 loading="lazy" 
                  alt='Husbild'
                  crop={'fill'}/>
                  </div>
@@ -137,6 +140,9 @@ const Homes = () => {
                                  src={image}
                                  width={2000}
                                  height={2000}
+                                 quality="auto" 
+                                 dpr="auto" 
+                                 loading="lazy"
                                  crop={'fill'}
                                  alt='Husbilder'/>
                                  </div>
@@ -211,6 +217,9 @@ const Homes = () => {
                              src={image}
                              width={1200}
                              height={1200}
+                             quality="auto" 
+                             dpr="auto" 
+                             loading="lazy"
                              alt='Tillgänglighetsanpassade bilder'/>
                          </div>
                      ))}</div>

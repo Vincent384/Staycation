@@ -5,6 +5,7 @@ import { Navbar } from '@/app/component/Navbar'
 import { SearchBar } from '@/app/component/SearchBar'
 import { convertMonthAndDay } from '@/utils/monthDayConvert'
 import { Bed, Bus, LoaderCircle, MapPin, Minus, Plus } from 'lucide-react'
+import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -80,24 +81,43 @@ const ListingProperties = () => {
   }, [])
 
 
-  function navigateOnClick(id:string){
-    if(!checkinDate || checkinDate.trim() === ''){
-      const date = new Date()
-      const getToday = date.getDay()
-      const getMonth = date.getMonth()
-      const getYear = date.getFullYear()
-      setCheckinDate(`${getYear}-${getMonth}-${getToday}`)
-  }
+  function navigateOnClick(id: string) {
+    let finalCheckinDate = checkinDate;
+    let finalCheckoutDate = checkoutDate;
+    let guests = 0
 
-  if(!checkoutDate || checkoutDate.trim() === ''){
-    const date = new Date()
-    const getToday = date.getDay()
-    const getMonth = date.getMonth()
-    const getYear = date.getFullYear()
-    setCheckoutDate(`${getYear}-${getMonth}-${getToday}`)
-}
-    router.push(`/listings/${city}/property/${id}/${checkinDate}/${checkoutDate}/${howManyGuests}`)
+    if (!checkinDate || checkinDate.trim() === '') {
+      const date = new Date();
+      const today = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      finalCheckinDate = `${year}-${month.toString().padStart(2, '0')}-${today.toString().padStart(2, '0')}`;
+    }
+  
+
+    if (!checkoutDate || checkoutDate.trim() === '') {
+      const date = new Date();
+      date.setDate(date.getDate() + 1)
+      const tomorrow = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      finalCheckoutDate = `${year}-${month.toString().padStart(2, '0')}-${tomorrow.toString().padStart(2, '0')}`;
+    }
+
+    if(!howManyGuests || howManyGuests === 0){
+      guests = 2
+    }
+  
+    if (checkinDate && checkoutDate && howManyGuests) {
+      router.push(`/listings/${city}/property/${id}/${checkinDate}/${checkoutDate}/${howManyGuests}`);
+    } else if(checkinDate && checkoutDate) {
+      router.push(`/listings/${city}/property/${id}/${checkinDate}/${checkoutDate}/${guests}`);
+    } 
+    else{
+      router.push(`/listings/${city}/property/${id}/${finalCheckinDate}/${finalCheckoutDate}/${guests}`);
+    }
   }
+  
 
 
   
@@ -299,10 +319,13 @@ const ListingProperties = () => {
                 </div>
               </div>
               <div className='size-[299px] h-[200px]'>
-                <Image className='object-cover h-full w-full'
+                <CldImage className='object-cover h-full w-full'
                 src={property.images[0]}
                 width={1200}
                 height={1200}
+                quality="auto" 
+                dpr="auto" 
+                loading="lazy"
                 alt={property.title}/>
               </div>
               <div className='bg-customWhite flex justify-around gap-5 p-5 border-t-2 rounded-b-lg border-customGray'>
@@ -325,7 +348,8 @@ const ListingProperties = () => {
                     {
                       property?.accessibilityImages.map((image,index)=>(
                         <div key={index} className='w-[30px] bg-white'>
-                            <Image src={image} width={300} height={300} alt={property.accessibilityFeatures[0]}/>
+                            <CldImage src={image} width={300} height={300} quality="auto" dpr="auto" 
+                              loading="lazy" alt={property.accessibilityFeatures[0]}/>
                         </div>
                       ))
                     }

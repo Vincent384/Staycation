@@ -21,9 +21,10 @@ export const SideShopBar = ({checkinDate,
     {
       checkinDate && checkoutDate && guests &&        
       <div className='flex flex-col items-center border-2 border-customGray rounded-lg'>
-      <span>Checkin: {checkinDate}</span>
-      <span>CheckOut: {checkoutDate}</span>
+      <span>Incheckning: {checkinDate}</span>
+      <span>Utcheckning: {checkoutDate}</span>
       <span>Antal Gäster: {guests}</span>
+      
   </div>
     }
   

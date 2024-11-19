@@ -38,6 +38,9 @@ export const DetailPageModal = ({property}:DetailPageModalProps) => {
                src={image}
                width={1200}
                height={1200}
+               quality="auto" 
+               dpr="auto" 
+               loading="lazy"
                alt={property.title}
                crop={'fill'}
                />
