@@ -36,6 +36,7 @@ export async function POST(res:Request){
         const responseData = {
             _id: newReview._id,
             comment: newReview.comment,
+            rating:newReview.rating,
             createdAt: newReview.createdAt,
             hostId: {
                 _id: hostId,

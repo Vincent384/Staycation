@@ -162,21 +162,20 @@ function onSubmitButton(){
         })
 
         const data = await res.json()
-        console.log(data)
         const newReview = data.responseData
         console.log(newReview)
+        setReviewModal(prev => !prev)
         setProperty((prev) => {
           if (prev) {
             return {
               ...prev,
               reviews: [...prev.reviews, newReview]
-            };
+            }
           } else {
             console.log("Property is null, review cannot be added")
             return null
           }
         })
-
       } catch (error) {
         console.log((error as Error).message)
       }
