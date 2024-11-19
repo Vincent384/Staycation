@@ -66,6 +66,9 @@ export const Navbar = () => {
                                     src={avatarSrc} 
                                     height={1200}
                                     width={1200}
+                                    quality="auto" 
+                                    dpr="auto" 
+                                    loading="lazy"
                                     alt='Profilbild'
                                     className="absolute top-0 left-0 w-full h-full object-cover" 
                                 />
